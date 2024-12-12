@@ -6,7 +6,7 @@ website:
   page-navigation: true
   title: "CUS - Spring 2025"
   description: "Homepage for Computational Urban Science - Network Science Institute, Spring 2025."
-  site-url: "https://SUNLab-NetSI.github.io/CUS"
+  site-url: "https://socialurban.net/CUS"
   repo-url: "https://github.com/SUNLab-NetSI/CUS"
   repo-actions: [edit, issue]
   
