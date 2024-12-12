@@ -40,6 +40,12 @@ jobs:
     - name: Render Quarto Project
       run: |
         quarto render
+    
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: github-pages
+        path: ./_site 
 
   deploy:
     runs-on: ubuntu-latest
