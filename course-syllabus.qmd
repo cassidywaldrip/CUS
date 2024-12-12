@@ -1,0 +1,86 @@
+---
+title: "Syllabus"
+bibliography: references.bib
+---
+
+[**Click here**](/documents/sta210-s22-syllabus.pdf "PDF of syllabus") **to download a PDF copy of the syllabus.**
+
+## Course info
+
+|          | Day      | Time              | Location                     |
+|----------|----------|-------------------|------------------------------|
+| Lectures | Tuesdays | 3:00 pm - 6:30 pm | 177 Huntington Ave, Room 207 |
+
+## Course Description
+
+This course introduces students to the growing field of Computational Urban Science. Students will learn how to collect and critically analyze urban data using a range of techniques, including Geographical Information Systems, Network Science, Machine Learning, Spatial Models, and Causal Techniques. We will discuss how these techniques can be used by urban planners, social scientists, and urban geographers to understand the network dynamics of cities and design new interventions and policies. Students will have access to unique large datasets, offering the opportunity to work with real-world urban data. Homework assignments will involve coding in the R/Python programming languages to analyze these datasets for specific use cases. There will be a final homework assignment based on the use of large urban datasets for a specific comprehensive application covered in the course.
+
+## Learning objectives
+
+After the course the students will be able to:
+
+-   **Collect and Analyze Urban Data:** using GIS, spatial models, spatial visualization, and network science techniques, using tools like R and Python and software libraries for visualization and analysis or urban data.
+-   **Use Computational Social Science tools for urban insights:** apply machine learning, spatial analysis, network science, and causal inference techniques to extract insights from urban big data.
+-   **Understand Urban Dynamics:** analyze complex urban phenomena like mobility patterns, social urban networks, lifestyle patterns, urban decision-making using computational models to inform urban policy and planning.
+-   **Develop urban data solutions:** design and implement data-driven solutions for urban challenges, such as sustainability, transportation, epidemics, resilience by creating models and simulations
+-   **Design and evaluate urban interventions:** use causal inference methods to evaluate the impact of interventions and policies in urban contexts.
+-   **Collaborate and communicate effectively:** coordinate in multidisciplinary teams to solve urban problems and communicate findings clearly through reports, decision-making tools, or participation in urban challenges.
+
+## Prerequisites
+
+Knowledge of Networks (PHYS/NETS 5116N, or equivalent), statistics (INSH 5301 or CS 6220, or equivalent), and spatial analysis (GIS) are preferred but not required.
+
+Material and hands-on exercises during class will be in R and sometimes in Python. Thus, a good understanding and working knowledge of programming, data science, and statistical tools is recommended, especially in R. Contact the instructor if you are uncertain about your background or need some material to get up to speed with R.
+
+## Community
+
+As a student in this course, you have agreed to uphold Northeastern University's [Code of Student Conduct](https://catalog.northeastern.edu/handbook/code-student-conduct/) and the [Academic Integrity Policy](https://catalog.northeastern.edu/handbook/policies-regulations/academic-integrity/) as well as the practices specific to this course.
+
+This course is, by definition, designed to study our diverse communities in urban areas. It is then our intent that students from all diverse backgrounds are represented and the perspective of different communities is brought to this class. It is our intention to present materials, data, analysis, and activities that are respectful of that diversity. Your suggestions are encouraged and appreciated. Please let me know ways to improve the effectiveness of the course for you personally, or for other students or student groups. We (as many people) are constantly learning about other peoples' perspectives, experiences and identities. Let us know how we can create a learning environment for everybody that supports a diversity of thoughts, perspectives and experiences, and honors your identities.
+
+### Communication
+
+All lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website at [course.com](course/website).
+
+We will use Canvas and Slack to communicate. Canvas is for official announcements and private communications with the instructor/students. We will use Slack for daily information, Q&As, team discussions, and casual conversations. Although it is optional to complete the course, using Slack is encouraged to get the most helpful information. The address for the course’s Slack workspace is
+
+<https://netsi-cus-course.slack.com>
+
+Join using the following link:
+
+<https://join.slack.com/t/netsi-cus-course/signup>
+
+Anyone with a northeastern.edu email address can join. Contact the instructor if you have any issues or restrictions regarding using Slack or other email domains.
+
+All lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website at [sta210-s22.github.io/website](https://sta210-s22.github.io/website).
+
+## Class structure
+
+This is once-a-week class course. Each class has two blocks: in the first one, some introduction to the topic and a review of reading material will be presented by the instructor(s). The second hands-on part will use coding and urban data to test the topic’s ideas, concepts, and applications.
+
+## Grading
+
+Grading in this course will be as follows.
+
+Attendance and Participation: 20%. Homework assignments: 20% each. Final project: 40%.
+
+| **Category**                 | **Percentage** |
+|------------------------------|----------------|
+| Attendance and Participation | 20%            |
+| Homework assignments.        | 20% each       |
+| Final project                | 40%            |
+
+## Course Materials
+
+There are no required materials for this course. Here is the most relevant and general. More specific materials will be given/introduced for each class.
+
+-   Salganik, Matthew J. Bit by bit: Social research in the digital age. Princeton University Press, 2019.
+-   Bettencourt, Luís MA. Introduction to urban science: evidence and theory of cities as complex systems. MIT Press (2021). [@bettencourt_introduction_2021]
+-   O'Brien, Daniel T. Urban informatics: using big data to understand and serve communities. Chapman and Hall/CRC, 2022. [@obrien2022urban]
+-   Rey, Sergio, Dani Arribas-Bel, and Levi John Wolf. Geographic data science with Python. Chapman and Hall/CRC, 2023. [@rey2023geographic]
+-   Pebesma, Edzer, and Roger Bivand. Spatial data science: With applications in R. Chapman and Hall/CRC, 2023. [@pebesma2023spatial]
+-   Lovelace, Robin, Jakub Nowosad, and Jannes Muenchow. Geocomputation with R. Chapman and Hall/CRC, 2019. [@lovelace2019geocomputation]
+-   Cunningham, Scott. Causal inference: The mixtape. Yale University Press, 2021.
+-   Facure, Matheus. Causal Inference in Python. " O'Reilly Media, Inc.", 2023.
+-   Barthélemy, Marc. "Spatial networks." Physics reports 499.1-3 (2011): 1-101.
+-   Barbosa, Hugo, et al. "Human mobility: Models and applications." Physics Reports 734 (2018): 1-74. [@barbosa_human_2018]

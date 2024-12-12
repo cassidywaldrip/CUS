@@ -1,0 +1,24 @@
+---
+title: "Teaching team"
+---
+
+## Instructors
+
+![](images/emoro.jpeg){style="float:right;padding: 0 0 0 10px;" fig-alt="Headshot of Esteban Moro" width="200"}
+
+[**Prof. Esteban Moro**](https://estebanmoro.org) is a full professor and director of the Social Urban Networks (SUN) group at the Network Science Institute at Northeastern University and affiliated faculty at the MIT Media Lab. He was previously a professor and researcher at the Department of Mathematics at Universidad Carlos III de Madrid, the Sociotechnical Systems Research Center at MIT, and the University of Oxford. He holds a Ph.D. in Physics. Esteban's work lies in the intersection of big data and computational social science, with particular attention to human dynamics, collective intelligence, social networks, and urban mobility in problems like viral marketing, natural disaster management, or economic segregation in cities. He has received numerous awards for his research, and his work has appeared in major journals and is regularly covered by media outlets.
+
+![](images/hgibbs.jpeg){style="float:right;padding: 0 0 0 10px;" fig-alt="Headshot of Hamish Gibbs" width="200"}
+
+[**Dr. Hamish Gibbs**](https://hamishgibbs.net) is is a Postdoctoral Researcher in the Social and Urban Networks Group. His research focuses on identifying and mitigating biases in large-scale mobile phone data to enhance their reliability and effectiveness for monitoring human mobility. His work aims to improve the accuracy of mobility data as a tool for informing public policy decisions, with a focus on public health emergencies. During the COVID-19 pandemic, Hamish worked as a research assistant at the London School of Hygiene and Tropical Medicine. He received his PhD from University College London where his thesis focused on addressing bias in large-scale mobility datasets, using mobility data for infectious disease modeling, and improving the privacy of mobility data used in public health emergencies.
+
++---------------+------------------------------------------------------+
+| Office hours  | Location                                             |
++===============+======================================================+
+| TBD           | TBD                                                  |
++---------------+------------------------------------------------------+
+| TBD           | TBD                                                  |
++---------------+------------------------------------------------------+
+
+If these times don't work for you or you'd like to schedule a one-on-one meeting, send me an email to XXX.
+

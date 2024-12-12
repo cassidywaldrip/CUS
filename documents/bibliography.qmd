@@ -1,0 +1,86 @@
+---
+title: "Computational Urban Science :: An annotated bibliography"
+format: pdf
+editor: visual
+bibliography: ../references.bib
+csl: chicago-syllabus.csl
+number-sections: true
+author: 
+  name: "Esteban Moro, SUNLab group"
+  affiliation: "Network Science Institute"
+---
+
+## Introduction
+
+In this annotated bibliography, we present the **core works** on human mobility and activity in urban settings. This bibliography is far from complete and probably misses your favorite paper. But all works included are seminal works that have shaped and changed our field of human mobility.
+
+We have grouped the references into different blocks. Some of the works could be in several of them.
+
+-   Human mobility, the reviews: @sec-reviews
+-   Properties and models of human mobility: @sec-models
+-   Predictability of human mobility: @sec-predictability
+-   Scaling in cities: @sec-scaling
+-   Mobility and segregation: @sec-segregation
+-   Social networks in cities: @sec-social
+
+## Human mobility, the reviews {#sec-reviews}
+
+1.  @barbosa_human_2018 Covers different aspects of human mobility, from metrics to models and applications. Pre-GPS data, it does not include recent work, though.
+
+2.  @pappalardo_future_2023 A more recent review, although shorter. It mentions some of the challenges of mobility data, specially secondary data from mobile phones, and the main applications.
+
+3. @
+
+## Properties and models of human mobility {#sec-models}
+
+1.  @gonzalez_understanding_2008 One of the first works to analyze human mobility from massive data (CDRs). They found that hops between places in urban areas resemble a Lévy flight and thus has no characteristic spatial scale. However it is bounded by repetitive behaviors (work/home).
+
+2.  @song_modelling_2010 They describe the statistics of jumps and visitation patterns in human mobility. They introduce the famous Exploration and Preferential Return (EPR) model of human mobility.
+
+![The famous EPR model from @song_modelling_2010](images/epr.png){width="80%"}
+
+3.  @simini_universal_2012 Introduces the *Radiation model* to explain flows between areas. The authors found that the radiation model is a better (parameter-less) way to describe aggregated flows than the typical Gravity Law. However, this result does not apply universaly at large or short distances.
+
+4.  @pappalardo_returners_2015 More on the returning vs. exploring behavior of people. The paper finds two distinct classes of individuals: returners that constantly come back to previously visited places, and explorers, than visit new places around them.
+
+5.  @schlapfer_universal_2021 This paper explores the universal visitation law of people to a place combining the results of EPR model (probability of returning to a previous visited place) with the Gravity Law (probability of visit a place is inversely proportional to the distance).
+
+6.  @alessandretti_scales_2020 They study the apparent lack of spatial scale of human mobility and found that it is driven by the existence of individual contexts (containers) at different scales. The scale-free results at the aggregate level arise from aggregating displacements across containers. Thus the scale-free power law of human displacements is bunch of exponentials at different spatial scales.
+
+## Predictability of human mobility {#sec-predictability}
+
+1.  @song_limits_2010 Because human movements are very repetitive, they are very predictable. The paper describes how to quantify the predictability of human mobility and finds a 93% potential predictability in user mobility across the whole user base. This was later revisited and found that it is not that large once we account for home/work places.
+
+2. @smith2014refined Smith and co-authors found that predictability depends on the temporal and spatial resolution of mobility data, indicating that human mobility is less predictable than previously thought.
+
+## Scaling in cities {#sec-scaling}
+
+1.  @bettencourt_origins_2013 Properties of cities scale with population. This paper presents a theoretical framework based on outputs and costs to explain those scaling relationships for infrastructure, social, and other spatial properties of cities.
+
+2.  @arcaute_constructing_2015 The theory of urban scaling also depends on the definition of city (metropolitan areas? commuting area?). The authors propose that the scaling relationships might be very simple to explain the complex patterns between city heterogeneity
+
+3.  @arvidsson_urban_2023 Another critique on the theory of urban scaling: it seems to work only at aggregate level: scaling of social, economic and innovation depends on the tail of distribution of those processes. Thus, urban scaling is in large part a story about inequality in cities and seems to be explained only by a small number of population/resources.
+
+## Mobility and segregation {#sec-segregation}
+
+1.  @wang_urban_2018 Using Twitter data this paper found inbalances in the mobility of rich/poor people in cities to visit other rich/poor areas.
+
+2.  @moro_mobility_2021 Our paper on the impact of mobility patterns in economic experienced segregation using GPS high-resolution data. We also use the EPR and Schelling models to explain individual experienced segregation.
+
+![Exposure to income groups in the city, from @moro_mobility_2021](images/seg.png){width="80%"}
+
+3.  @athey_estimating_2021 Using the same type of data, Athey and collaborators found similar patters of experienced racial segregation in urban areas in the US. Note this is for racial segregation, our paper is for income segregation.
+
+## Social networks in cities {#sec-social}
+
+1.  @bailey_social_2020 Using data from Facebook they study social connectivity between areas in cities and the main drivers of it. They found that geographical distance and other demographic distances explain the probability of social connectivity between zip codes.
+
+2.  @aiello_urban_2024 What is the impact of physical barriers in social connectivity in cities? Here they study that long-standing question and found that highways are barriers to social ties.
+
+3.  @toole_coupling_2015 Mobility/visitation patterns and social connections in cities are coupled. Toole et al. find that visitation patterns are more predictable and similar with social contacts.
+
+![Coupling of mobility and social connectivity, from @toole_coupling_2015](images/coupling.png){width="80%"}
+
+
+## References
+

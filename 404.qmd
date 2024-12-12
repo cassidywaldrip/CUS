@@ -1,0 +1,7 @@
+---
+title: 404 Page Not Found
+---
+
+Looks like you got lost. Go back to the [course index](/index.html)
+
+![](images/404.gif){fig-alt="Illustration of Travolta trying to find his way around" width="300"}
