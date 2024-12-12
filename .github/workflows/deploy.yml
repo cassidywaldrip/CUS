@@ -27,6 +27,15 @@ jobs:
       run: |
         quarto install tinytex
 
+    - name: Install R and renv
+      run: |
+        sudo apt-get install -y r-base
+        R -e 'install.packages("renv", repos="https://cloud.r-project.org")'
+
+    - name: Restore R Packages
+      run: |
+        R -e 'renv::restore()'
+
     - name: Render Quarto Project
       run: |
         quarto render
