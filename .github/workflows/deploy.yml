@@ -51,6 +51,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      pages: write
     needs: build
     steps:
       - name: Checkout repository
