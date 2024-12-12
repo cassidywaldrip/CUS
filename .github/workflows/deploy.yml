@@ -40,11 +40,10 @@ jobs:
       run: |
         quarto render
     
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload artifact for deployment
+      uses: actions/upload-pages-artifact@v1
       with:
-        name: github-pages
-        path: ./_site 
+        path: ./_site
 
   deploy:
     runs-on: ubuntu-latest
