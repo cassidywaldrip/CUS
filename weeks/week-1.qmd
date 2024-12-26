@@ -2,6 +2,8 @@
 title: "Week 1"
 subtitle: "Welcome to CUS 2025"
 editor: visual
+bibliography: ../references.bib
+csl: ../nature-communications.csl
 ---
 
 Welcome to the course! We will introduce the course, ourselves, and how to access the computing resources.
@@ -11,6 +13,13 @@ Welcome to the course! We will introduce the course, ourselves, and how to acces
 📖 Read the [syllabus](/course-syllabus.html)
 
 📖 Read the [support](/course-support.html) resources
+
+📖 Read some general bibliography about Computational Social Science and Urban Science
+
+- [Computational Social Science, Lazer et al 2009](/pdfs/ComputationalSocialScience.pdf) @lazer2009computational
+
+ - [Cities as Complex Systems - Batty](/pdfs/Cities_Complex_Systems_Batty_2008.pdf) @batty2009cities 
+ 
 
 ## Participate
 
