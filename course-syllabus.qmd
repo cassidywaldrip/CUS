@@ -3,7 +3,7 @@ title: "Syllabus"
 bibliography: references.bib
 ---
 
-[**Click here**](/documents/sta210-s22-syllabus.pdf "PDF of syllabus") **to download a PDF copy of the syllabus.**
+[**Click here**](/documents/Computational-Urban-Science.pdf "PDF of syllabus") **to download a PDF copy of the syllabus.**
 
 ## Course info
 
