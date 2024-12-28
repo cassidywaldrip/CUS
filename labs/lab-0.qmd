@@ -6,3 +6,16 @@ editor: visual
 Today's lab is short and sweet! We just need you to fill out the "Getting to know you" survey. Please go [here](https://sakai.duke.edu/samigo-app/servlet/Login?id=6fa7ebf3-01af-42a6-91ba-3e813d3901221641094171786) to take it. You will need to log on to Sakai to access to survey.
 
 Your answers can be brief. Some of your answers will be used to guide what application examples might be of interest to a majority of students in the course and some of your answers will be used to help guide team formation. We expect this will take you \~10 minutes.
+
+```{r}
+library(arrow)
+data_path <- "/data/sunlab-census/v1.0/USMETRO/data/acs/acs_2020/14460_acs_2020.parquet"
+
+if (file.exists(data_path)) {
+  df <- read_parquet(data_path)
+  head(df)
+} else {
+  cat("Secure data file not found. Rendering a placeholder.\n")
+  df <- data.frame()
+}
+```
