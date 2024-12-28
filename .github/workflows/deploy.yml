@@ -15,42 +15,53 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y pandoc
-        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - 
-        sudo apt-get install -y nodejs
-    
-    - name: Install Quarto
-      uses: quarto-dev/quarto-actions/setup@v2
+      - name: Preserve Pre-Rendered Labs
+        run: |
+          mkdir -p .temp_labs
+          if [ -d "_site/labs" ]; then
+            cp _site/labs/*.html .temp_labs/ || true
+          fi
 
-    - name: Install TinyTeX
-      run: |
-        quarto install tinytex
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+          curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo apt-get install -y nodejs
 
-    - name: Install R and renv
-      run: |
-        sudo apt-get install -y r-base
-        R -e 'install.packages("renv", repos="https://cloud.r-project.org")'
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
 
-    - name: Restore R Packages
-      run: |
-        R -e 'renv::restore()'
+      - name: Install TinyTeX
+        run: |
+          quarto install tinytex
 
-    - name: Render Quarto Project
-      run: |
-        quarto render
-    
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./_site
+      - name: Install R and renv
+        run: |
+          sudo apt-get install -y r-base
+          R -e 'install.packages("renv", repos="https://cloud.r-project.org")'
 
-  # Deployment job
+      - name: Restore R Packages
+        run: |
+          R -e 'renv::restore()'
+
+      - name: Render Quarto Project (Exclude Labs)
+        run: |
+          quarto render
+
+      - name: Restore Pre-Rendered Labs
+        run: |
+          mkdir -p _site/labs
+          cp .temp_labs/*.html _site/labs/ || true
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
   deploy:
     environment:
       name: github-pages
