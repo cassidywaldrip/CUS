@@ -4,7 +4,10 @@
 .Ruserdata
 
 /.quarto/
-_site
+_site/*
+!_site/labs/
+_site/labs/*
+!_site/labs/*.html
 _freeze
 
 .DS_Store
