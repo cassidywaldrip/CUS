@@ -1,0 +1,73 @@
+---
+title: "Lecture 0 - Welcome to CUS 2025!"
+author: "Esteban Moro"
+institute:
+  - Network Science Institute | Northeastern University
+  - NETS 7983 Computational Urban Science 
+  - Last updated `r Sys.Date()`
+format: 
+  revealjs:
+    theme: mytheme.scss
+    multiplex: true
+    code-overflow: wrap
+#    embed-resources: true
+    chalkboard: true
+    slide-number: true
+code-line-numbers: false
+execute:
+  echo: true
+editor: visual
+logo: ./img/afi.png
+footer: "CUS 2025, SUNLab group"
+link-external-icon: true
+link-external-newwindow: true
+---
+
+```{r}
+#| include: false
+library(countdown)
+```
+
+# Welcome!
+
+## Meet the instructors
+
+::: columns
+::: {.column width="40%"}
+![Prof. Esteban Moro (he/him)](images/emoro.jpeg){fig-alt="Headshot of Prof. Esteban Moro" fig-align="left" width="200"}
+:::
+
+::: {.column width="60%"}
+-   Full Professor in Physics, Department of Physics & Network Science Institute, Northeastern University.
+-   Affiliated Researcher at MIT Media Lab
+-   Find out more at [estebanmoro.org](https://estebanmoro.org)
+:::
+:::
+
+::: columns
+::: {.column width="40%"}
+![Prof. Hamish Gibbs (he/him)](images/hgibbs.jpeg){fig-alt="Headshot of Dr. Hamish Gibbs" fig-align="left" width="200"}
+:::
+
+::: {.column width="60%"}
+-   Postdoctoral Researcher at Network Science Institute, Northeastern University.
+-   Find out more at [estebanmoro.org](https://estebanmoro.org)
+:::
+:::
+
+# Communication
+
+We will use:
+
+- **Canvas** for official announcements and private communications
+- **Slack** for daily information, Q&A, team discussions, can casual conversations.
+
+[https://netsi-cus-course.slack.com](https://netsi-cus-course.slack.com)
+
+Join using the following link:
+
+[https://join.slack.com/t/netsi-cus-course/signup](https://join.slack.com/t/netsi-cus-course/signup
+)
+
+
+
