@@ -1,0 +1,9 @@
+---
+title: "NETS 7983 Computational Urban Science"
+---
+
+Welcome!
+
+This course introduces the field of **Computational Urban Science**, focusing on methods to collect and analyze urban data. Covers techniques such as Geographic Information Systems, network science, machine learning, spatial models, and causal inference to examine city dynamics and inform urban planning, policy, and research. Explores the application of these methods to real-world urban datasets, including mobile phone data, social media, and transactional data, enabling critical insights into the complexities of urban systems.
+
+![Computational Urban Science](./images/banner.jpg)

@@ -1,0 +1,65 @@
+---
+title: "Access to the Server"
+---
+
+## Course server
+
+We are going to share some large datasets for this course, during the labs, the homework and the final project. To facilitate the use to this, sometimes, restrictive-access data, we are going to use our SUNLab server `stella.northeastern.edu`
+
+Here are the instructions to access the server:
+
+1.  **Apply for an account:** request an account on the server to the instructors [e.moroegido\@northeastern.edu](mailto:e.moroegido@northeastern.edu) or [h.gibbs\@northestern.edu](mailto:h.gibbs@northeastern.edu).
+
+2.  **User login and password:** You will be assigned a unique user login and password to access the server.
+
+3.  **Troubleshooting Access Issues:** If you encounter any problems accessing the server, please contact the instructors immediately for assistance.
+
+## Working with the server
+
+Please, check the instructions to work remotely on the server using Jupyter Notebooks, RStudio or VSCode.
+
+## Rules of access and use of the course server
+
+1.  **Authorized Use Only**\*
+
+-   Access to `stella` is strictly limited to enrolled students and authorized personnel in the Computational Urban Science course.
+-   Use of the server must align with course-related activities, including research, analysis, and assignments.
+-   Personal or commercial use of the server is prohibited.
+
+2.  **Data Confidentiality and Security**
+
+-   Certain data hosted on `stella` is subject to access restrictions and must not be moved, copied, or shared.
+-   Do not attempt to download restricted data onto personal devices or external storage systems.
+-   Unauthorized distribution, replication, or modification of data is strictly prohibited unless otherwise permitted.
+
+3.  **Access Credentials**
+
+-   Your login credentials are for your use only. Sharing login details with others is strictly forbidden.
+-   Notify the course instructors immediately if you suspect your credentials have been compromised.
+
+4.  **Permissible Activities**
+
+-   Activities on `stella` must comply with the Northeastern University’s Acceptable Use Policy.
+-   Use server resources efficiently to ensure equitable access for all users. Note that this is a shared resource so do not overuse the CPUs and RAM in the server.
+-   Refrain from engaging in activities that may disrupt server operations or jeopardize security.
+
+5.  **Prohibited Actions**
+
+-   Do not attempt to circumvent server security measures or access unauthorized data.
+-   Do not install, modify, or execute programs that may harm the server or violate university policies.
+-   Avoid storing personal or non-course-related data on the server.
+
+6.  **Academic Integrity**
+
+-   All work performed on `stella` must comply with Northeastern University’s academic integrity guidelines.
+-   Ensure proper attribution of data and resources in your academic work.
+
+7.  **Monitoring and Compliance**
+
+-   Server usage may be monitored to ensure compliance with these rules.
+-   Violations may result in loss of server access, disciplinary action, or other penalties as deemed appropriate by the university.
+
+8.  **Acknowledgment**
+
+-   All students must acknowledge and agree to these rules before gaining access to the server.
+-   By using `stella`, you agree to abide by these rules and accept any consequences of non-compliance.

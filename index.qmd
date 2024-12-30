@@ -3,30 +3,28 @@ title: "NETS 7983 Computational Urban Science"
 tbl-colwidths: [5,15,30,5,5,5,5,5,5,5]
 ---
 
-
 Welcome to the homepage of "Computational Urban Science", NETS 7983 course in the *Network Science* Phd Program in Northeastern University
 
 This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses, with all changes documented here.
-
 
 ::: column-screen-inset-right
 | Week | Date | Topic | Prepare | Slides | AE | Lab | HW | Exam | Project |
 |:--:|----|----|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 | [1](/weeks/week-1.html) | Tue Jan 7 | Introduction to Computational Social Sciences |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 | [2](/weeks/week-1.html) | Tue Jan 14 | Urban Data - Maps + Census |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
-| [3](/weeks/week-1.html) | Tue Jan 21 | Urban Data - Activity: Mobile phone  |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
+| [3](/weeks/week-1.html) | Tue Jan 21 | Urban Data - Activity: Mobile phone |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 | [4](/weeks/week-1.html) | Tue Jan 28 | Urban Data - Activity: Social Media, Transactional Data. Legal / Ethical Considerations |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 | [5](/weeks/week-1.html) | Tue Mar 4 | NU Spring Break |  |  |  |  |  |  |  |
 | [6](/weeks/week-1.html) | Tue Mar 11 | Analysis of Urban Data |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 | [7](/weeks/week-1.html) | Tue Mar 18 | Statistical/Causal Inference for Urban Data |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 |  | Wed Mar 19 | Released: HW 1 |  |  |  |  | [✍️](/hw/hw-5.html){aria-label="HW 1 instructions"} |  |  |
 | [8](/weeks/week-1.html) | Tue Mar 25 | Causal Inference for Urban Data |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
-| [9](/weeks/week-1.html) | Tue Apr 1 | Mobility models for Urban Systems|  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
+| [9](/weeks/week-1.html) | Tue Apr 1 | Mobility models for Urban Systems |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 | [10](/weeks/week-1.html) | Tue Apr 8 | Social/network models for Urban Systems |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 |  | Wed Apr 9 | Released: HW 1 |  |  |  |  | [✍️](/hw/hw25.html){aria-label="HW 2 instructions"} |  |  |
 | [11](/weeks/week-1.html) | Tue Apr 15 | Agent-based models / Hypothesis testing |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 | [12](/weeks/week-1.html) | Tue Apr 22 | Applications: Recommendation/Geomarketing |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
-|  | Fri, Apr 25 | Project topic ideas |  |  |  |  | | |  [📂](project-description.html#topic-ideas){aria-label="Project topic ideas"} |
+|  | Fri, Apr 25 | Project topic ideas |  |  |  |  |  |  | [📂](project-description.html#topic-ideas){aria-label="Project topic ideas"} |
 | [13](/weeks/week-1.html) | Tue Apr 29 | Sustainability / Environmental justice / Segregation |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
-| [14](/weeks/week-1.html) | Tue May 6  | Epidemics / Natural Disasters / Policy interventions |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
+| [14](/weeks/week-1.html) | Tue May 6 | Epidemics / Natural Disasters / Policy interventions |  | [🖥️](/slides/lab-0.html "Lab slides"){aria-label="Lab 0 slides"} |  | [💻](/labs/lab-0.html "Lab instructions"){aria-label="Lab 0 instructions"} |  |  |  |
 :::

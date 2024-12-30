@@ -18,7 +18,7 @@ website:
     
   page-footer: 
     right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
-    left: "&copy; Copyright 2022, Esteban Moro"
+    left: "&copy; Copyright 2024, SUNLab, Northeastern University"
     background: "#D9E3E4"
   
   sidebar: 
@@ -28,7 +28,8 @@ website:
     align: center
     tools: 
       - icon: github
-        href: https://github.com
+        href: https://github.com/SUNLab-NetSI/CUS
+        text: "Course Github Repo"
         
     style: "docked"
     search: true
@@ -36,18 +37,34 @@ website:
     contents:
       - section: "Course Information"
         contents: 
-          - href: index.qmd
+          - href: course-overview.qmd
             text: Overview
           - href: course-syllabus.qmd
             text: Syllabus
           - href: course-team.qmd
             text: Teaching team
-          - href: about.qmd
-            text: About
+          - href: index.qmd
+            text: Schedule
+#          - href: course-links.qmd
+#            text: Useful links
+          - href: course-faq.qmd
+            text: FAQ
       - section: "Computing"
         contents:
           - href: computing-access.qmd
-            text: Access
+            text: Access to the server
+          - href: computing-working.qmd
+            text: Working with the server
+      - section: "Projects"
+        contents:
+          - href: project-description.qmd
+            text: Description
+          - href: project-tips-resources.qmd
+            text: Tips + resources
+      - section: "Supplemental notes"
+        contents:
+          - href: supplemental/other-visualization-tools.qmd
+            text: Other visualization tools
 
 format:
   html:
