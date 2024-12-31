@@ -47,7 +47,13 @@ jobs:
             libproj-dev \
             libudunits2-dev \
             libharfbuzz-dev \
-            libfribidi-dev
+            libfribidi-dev \
+            libfreetype6-dev \
+            libpng-dev \
+            libtiff5-dev \
+            libjpeg-dev \
+            libxml2-dev \
+            libgit2-dev 
           curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           sudo apt-get install -y nodejs
 
