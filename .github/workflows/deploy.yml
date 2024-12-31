@@ -14,9 +14,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      RENV_PATHS_CACHE: ~/.cache/R/renv
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
+      - name: Cache renv Packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/R/renv
+          key: ${{ runner.os }}-renv-${{ hashFiles('renv.lock') }}
+          restore-keys: ${{ runner.os }}-renv-
 
       - name: Preserve Pre-Rendered Labs
         run: |
@@ -25,10 +35,16 @@ jobs:
             cp _site/labs/*.html .temp_labs/ || true
           fi
 
-      - name: Install Dependencies
+      - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc libcurl4-openssl-dev
+          sudo apt-get install -y \
+            pandoc \
+            libcurl4-openssl-dev \
+            gdal-bin \
+            libgdal-dev \
+            libgeos-dev \
+            libproj-dev
           curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           sudo apt-get install -y nodejs
 
