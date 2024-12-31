@@ -1,0 +1,24 @@
+---
+title: "Leaflet"
+format: html
+code-line-numbers: false
+execute:
+  echo: true
+  warning: false
+  messages: false
+editor: visual
+logo: ./img/sunlab.png
+footer: "CUS, Northeastern Spring 2025"
+link-external-icon: true
+link-external-newwindow: true
+---
+
+```{r}
+require(leaflet)
+leaflet()
+```
+
+```{r}
+require(mapview)
+mapview()
+```
