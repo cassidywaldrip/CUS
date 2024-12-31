@@ -15,5 +15,5 @@ link-external-newwindow: true
 
 ```{r}
 require(leaflet)
-leaflet()
+leaflet() |> mapview()
 ```
