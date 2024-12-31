@@ -44,7 +44,8 @@ jobs:
             gdal-bin \
             libgdal-dev \
             libgeos-dev \
-            libproj-dev
+            libproj-dev \
+            libudunits2-dev
           curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           sudo apt-get install -y nodejs
 
