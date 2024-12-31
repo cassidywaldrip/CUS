@@ -6,20 +6,26 @@ bibliography: ../references.bib
 csl: ../nature-communications.csl
 ---
 
-Welcome to the course! We will introduce the course, ourselves, and how to access the computing resources.
+Welcome to the course! In this week we will introduce the course, ourselves, and how to access the computing resources. We will also present a brief introduction to *Computational Urban Science* and a Crash Course on GIS with `R`.
 
 ## Prepare
 
-📖 Read the [syllabus](/course-syllabus.html)
+📖 Read the [syllabus](/course-syllabus.html) of the course.
 
-📖 Read the [support](/course-support.html) resources
+📖 Read the Computing resources
+
+-   [Access to the computing server](/computing-access.html)
+-   [Working with the server](/computing-working.html)
 
 📖 Read some general bibliography about Computational Social Science and Urban Science
 
-- [Computational Social Science, Lazer et al 2009](/pdfs/ComputationalSocialScience.pdf) @lazer2009computational
+-   [Computational Social Science, Lazer et al 2009](/pdfs/ComputationalSocialScience.pdf) @lazer2009computational
 
- - [Cities as Complex Systems - Batty](/pdfs/Cities_Complex_Systems_Batty_2008.pdf) @batty2009cities 
- 
+-   [Computational Social Science: obstacles and opportunities](/pdfs/ComputationalSocialScience2.pdf) @lazer_computational_2020
+
+-   [Cities as Complex Systems - Batty](/pdfs/Cities_Complex_Systems_Batty_2008.pdf) @batty2009cities
+
+-   [Chapter 2 of *Bit by Bit* book by Salganik](/pdfs/BitbyBit.pdf) @salganik2019bit
 
 ## Participate
 

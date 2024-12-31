@@ -9,6 +9,7 @@ _site/*
 _site/labs/*
 !_site/labs/*.html
 !_site/labs/*_files
+!_site/labs/img
 _freeze
 
 .DS_Store

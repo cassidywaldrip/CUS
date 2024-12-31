@@ -55,12 +55,16 @@ website:
             text: Access to the server
           - href: computing-working.qmd
             text: Working with the server
-      - section: "Projects"
+      - section: "Project"
         contents:
           - href: project-description.qmd
             text: Description
           - href: project-tips-resources.qmd
             text: Tips + resources
+      - section: "Weekly materials"
+        contents:
+          - href: weeks/week-1.qmd
+            text: Week 1 (Jan 7)
       - section: "Supplemental notes"
         contents:
           - href: supplemental/other-visualization-tools.qmd
