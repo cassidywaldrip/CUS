@@ -77,7 +77,11 @@ jobs:
 
       - name: Render Quarto Project (Exclude Labs)
         run: |
-          quarto render
+          while IFS= read -r file; do
+            echo "Rendering $file"
+            quarto render "$file"
+          done < <(find . -name '*.qmd' -not -path './labs/*')
+        shell: bash
 
       - name: Restore Pre-Rendered Labs
         run: |
