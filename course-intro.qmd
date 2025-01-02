@@ -21,6 +21,12 @@ Cities and the epicenters of human activity, driving economic growth, innovation
 
 ![Growth of population in Urban areas](images/urbanization_chart.jpg){fig-align="left" width="400"}
 
+Urban areas are not only attracting more people, but also increasingly concentrating more resources and outcomes. For example, cities generate over 80 percent of the world's GPD
+
+economies of scale
+
+
+
 # Computational
 
 # Science

@@ -13,11 +13,10 @@ execute:
   warning: false
   messages: false
 editor: visual
-logo: ./img/sunlab.png
+logo: ./img/logo.png
 footer: "CUS, Northeastern Spring 2025"
 link-external-icon: true
 link-external-newwindow: true
-bibliography: ../references.bib
 ---
 
 ## Introduction
@@ -36,7 +35,7 @@ You will need:
 
 -   A Google account and you need to set up Google Maps to [login in to](https://support.google.com/maps/answer/2803351?hl=en&co=GENIE.Platform%3DAndroid) your account.
 
-![Google Maps App with user logged in](../images/googlemaps.jpeg){width="40%"}
+![Google Maps App with user logged in](img/googlemaps.jpeg){width="40%"}
 
 ## Location settings and Google Timeline
 
@@ -55,7 +54,7 @@ We need to do two things:
     3.  You will get today's mobility activity. If you have activated the Timeline previous, check it is storing your past mobility by going to another day.
     4.  If you want to have regular backups, click on the cloud icon next to **Timeline** at the top
 
-![Timeline in Google Maps](../images/googletimeline.jpeg){width="40%"}
+![Timeline in Google Maps](img/googletimeline.jpeg){width="40%"}
 
 ## Download your personal data
 

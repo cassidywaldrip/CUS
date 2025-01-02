@@ -13,7 +13,7 @@ execute:
   warning: false
   messages: false
 editor: visual
-logo: ./img/sunlab.png
+logo: ./img/logo.png
 footer: "CUS, Northeastern Spring 2025"
 link-external-icon: true
 link-external-newwindow: true
