@@ -1,0 +1,69 @@
+---
+title: "Lab 1-2 - Collect and analyze you own mobility data"
+author: "Esteban Moro"
+institute:
+  - Network Science Institute, Northeastern University
+  - NETS 7983 Computational Urban Science
+date: last-modified
+format: html
+code-line-numbers: false
+execute:
+  echo: true
+#  cache: true
+  warning: false
+  messages: false
+editor: visual
+logo: ./img/sunlab.png
+footer: "CUS, Northeastern Spring 2025"
+link-external-icon: true
+link-external-newwindow: true
+bibliography: ../references.bib
+---
+
+## Introduction
+
+In this lab, we will walk through how to setup [Google Timeline](google.com/maps/timeline) (previously known as Google Location History) to enable you mobile phone to collect your mobility data. Once we collect enough data, we will analyze it in future sesssions.
+
+::: callout-note
+Participation in this lab is completely voluntary. If you have any concerns about sharing or collecting your mobility data with Google or other providers, please don’t hesitate to reach out to the lab coordinator or instructor. We’re happy to explore alternative ways for you to participate. Your privacy matters, and we want to ensure that your involvement aligns with your preferences and comfort level.
+:::
+
+## Mobile Phone and Google Maps set up
+
+You will need:
+
+-   A smartphone with Google Maps App installed: [iphone](https://apps.apple.com/us/app/google-maps/id585027354) or [android](https://play.google.com/store/apps/details?id=com.google.android.apps.maps&hl=en_US&pli=1)
+
+-   A Google account and you need to set up Google Maps to [login in to](https://support.google.com/maps/answer/2803351?hl=en&co=GENIE.Platform%3DAndroid) your account.
+
+![Google Maps App with user logged in](../images/googlemaps.jpeg){width="40%"}
+
+## Location settings and Google Timeline
+
+To start collecting your mobility/location data, we will use the [Google Maps Timeline](https://support.google.com/maps/answer/6258979?hl=en&co=GENIE.Platform%3DAndroid#zippy=%2Csave-your-search-browsing-activity-with-google). The Timeline is a personal map that helps you remember routes and trips you've taken and places you've been based on your Location history.
+
+We need to do two things:
+
+-   **Activate your Location for Google Maps**: Go to your Location settings and allow Google Maps to collection your location. This setting is different in different operating systems. You have the instructions [here](https://support.google.com/maps/answer/6258979?hl=en&co=GENIE.Platform%3DiOS&oco=0#zippy=%2Csave-your-search-browsing-activity-with-google). For example in iPhone you have to
+    1.  On your iPhone or iPad, open the Google Maps app.
+    2.  Tap your *Profile Picture* or *Initials* and then *Settings*.
+    3.  Tap **Personal content** \> **Location settings.**
+    4.  Under “Location settings,” check that it says “Location Services is on.” If it doesn’t, tap **Location Services is not set to always** \> **Location** \> **Always**.
+-   **Check the timeline has been created**:
+    1.  On your mobile phone, open the Google Maps app.
+    2.  Tap your *Profile Picture* or *Initials* and then **Your timeline**.
+    3.  You will get today's mobility activity. If you have activated the Timeline previous, check it is storing your past mobility by going to another day.
+    4.  If you want to have regular backups, click on the cloud icon next to **Timeline** at the top
+
+![Timeline in Google Maps](../images/googletimeline.jpeg){width="40%"}
+
+## Download your personal data
+
+Your personal data can be downloaded from your Google Maps app on your phone. Here are the instructions for iOS:
+
+1.  On you iPhone or iPad, open the Google Maps app
+2.  Tap your *Profile Picture* or *Initials* and then **Settings**.
+3.  Tap **Personal content** \> **Export Timeline Data**.
+4.  Download the file to your phone or send it to your computer
+
+The downloaded file is a JSON collection of *visits* and *trips*

@@ -8,7 +8,7 @@ We are going to share some large datasets for this course, during the labs, the 
 
 Here are the instructions to access the server:
 
-1.  **Apply for an account:** request an account on the server to the instructors [e.moroegido\@northeastern.edu](mailto:e.moroegido@northeastern.edu) or [h.gibbs\@northestern.edu](mailto:h.gibbs@northeastern.edu).
+1.  **Apply for an account:** request an account on the server to the instructors [e.moroegido\@northeastern.edu](mailto:e.moroegido@northeastern.edu) or [h.gibbs\@northeastern.edu](mailto:h.gibbs@northeastern.edu).
 
 2.  **User login and password:** You will be assigned a unique user login and password to access the server.
 
@@ -20,7 +20,7 @@ Please, check the instructions to work remotely on the server using Jupyter Note
 
 ## Rules of access and use of the course server
 
-1.  **Authorized Use Only**\*
+1.  **Authorized Use Only**
 
 -   Access to `stella` is strictly limited to enrolled students and authorized personnel in the Computational Urban Science course.
 -   Use of the server must align with course-related activities, including research, analysis, and assignments.
