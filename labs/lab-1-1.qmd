@@ -1,0 +1,592 @@
+---
+title: "Lab 1-1 - Crash course on GIS with R"
+author: "Esteban Moro"
+institute:
+  - Network Science Institute, Northeastern University
+  - NETS 7983 Computational Urban Science
+  - Last updated `r Sys.Date()`
+format: html
+code-line-numbers: false
+execute:
+  echo: true
+#  cache: true
+  warning: false
+  messages: false
+editor: visual
+logo: ./img/logo.png
+footer: "CUS, Northeastern Spring 2025"
+link-external-icon: true
+link-external-newwindow: true
+bibliography: ../references.bib
+---
+
+## Objective
+
+In this lab we will get introduced to geographical information, how to process, analyze, and visualize it. In particular
+
+-   We will understand the different types of geographical information.
+-   What are the different formats to store that information
+-   How to use `R` and some libraries to deal with that information.
+-   How to process geographical data
+-   How to analyze geographical data
+-   How to visualize geographical data.
+
+## Geographical Information Systems
+
+There are many platforms to analyze geographical data. They are commonly known as GIS (Geographical Information Systems).
+
+-   You can find a list of those platforms in the [Wikipedia Page about GIS](https://en.wikipedia.org/wiki/List_of_geographic_information_systems_software)
+
+-   Some important examples:
+
+    -   [ESRI products](https://esri.com), including the famous ArcGIS that contains both online and desktop versions (commercial).
+    -   [QGIS (Quantum GIS)](https://www.qgis.org), a free and open-source alternative to ArcGIS
+
+-   Of course, `R` can be used also as a GIS.
+
+    -   We can find a list of libraries to do spatial statistics and visualization at the [Task View for Spatial Statistics](https://cran.r-project.org/web/views/Spatial.html)
+    -   There are mainly two categories:
+        -   Libraries to treat spatial data in vector format, like `sf`.
+        -   Libraries to treat spatial data in raster format, like `terra`.
+        -   Libraries for visualization like `leaflet`, `mapview`.
+    -   Same in `python`, which integrates very well with ArcGIS [Python wiki GIS](http://www.wiki.gis.com/wiki/index.php/Python)
+
+## Types of geographical data
+
+There are three types of geographical data:
+
+-   **Raster**: is a geographical data type where data is stored as a grid of regularly sized pixels along attribute data. Those pixels typically represent a grid cell in specific geographical coordinates.
+
+![Raster data - ©ArcGIS](./img/raster.png)
+
+-   Typical geographical data in raster format comes from continuous models, satellite images, etc. For example, pollution, nightlights, etc.
+
+-   The most used format for raster data is GeoTIFF.
+
+-   More information about raster data [here](https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/what-is-raster-data.htm)
+
+-   **Basemaps**: a particular case of raster images is images of maps used as a background display for other feature layers.
+
+-   Main source of basemaps are satellite images, aerial photography, scanned maps, or composed maps. For example, the maps you see in [Google Maps](https://maps.google.com), \[Open Street Maps\], \[Carto\], \[MapBox\].
+
+::: {layout-ncol="2"}
+![Google Maps (Default view)](./img/map1.jpg)
+
+![Google Maps (Satellite view)](./img/map2.jpg)
+:::
+
+-   **Vector data**: is a representation of data using points, lines, curves, or polygons. The data is created by defining points at specific spatial coordinates. For example, lines that define a route on a map, polygons that define an administrative area, or points that geolocate a specific store entrance.
+
+![Vector data - Roads around Boston](./img/vectordata.png)
+
+-   Vector data is stored and share in many different formats. The most used is the ESRI Shapefile (.shp), GeoJSON, KML (Keyhole Markup Language).
+
+-   The Shapefile format, which consists on multiple files (e.g., .shp, .shx, .dbf) is one of the oldest and most widely recognized standards, supported by most GIS software and libraries in `R` and `python`.
+
+-   GeoJSON is a text-based format derived from JSON, making it easy to integrate in web mapping libraries and APIs.
+
+## Libraries to work with raster data
+
+-   **Raster data**. The most prominent and powerful library to work with raster data in `R` is [`terra`](https://rspatial.github.io/terra/). It can also work with vector data, but his main strength is raster data.
+
+-   Let's see an example. [WorldPop](https://hub.worldpop.org) is an organization that provides spatial high-resolution demographic datasets, like population. It is widely used specially in areas where the census data is not very good. Estimations of population are done using official data, satellite images, and other data.
+
+-   Get the raster for the estimated total number of people at a resolution of 30 arc seconds (approximatelly 1km at the equator). Link [here](https://hub.worldpop.org/geodata/summary?id=34879)
+
+```{r}
+#| messages: false
+require(terra)
+url <- "https://data.worldpop.org/GIS/Population/Global_2000_2020_1km_UNadj/2020/CHN/chn_ppp_2020_1km_Aggregated_UNadj.tif"
+```
+
+-   Load the data
+
+```{r}
+#| messages: false
+#| eval: false
+r <- rast(url)
+```
+
+In case of a slow connection, the data is also in the `/data/CUS` directory
+
+```{r}
+fname <- paste0("/data/CUS/labs/1/",basename(url))
+if (!file.exists(fname)) download.file(url, fname, mode="wb")
+r <- rast(fname)
+```
+
+-   Let's see what is in it
+
+```{r}
+r
+```
+
+-   And visualize it. To do that we need the package `tidyterra` to work with rasters in `ggplot`
+
+```{r}
+#| messages: false
+#| warnings: false
+require(tidyverse)
+require(tidyterra)
+ggplot() +
+  geom_spatraster(data=r+1) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    breaks = c(0,10,100,1000,10000,100000,1000000),
+    guide = guide_legend(reverse = TRUE),
+    trans = "log"
+  ) +
+  labs(fill="Population") 
+```
+
+### Exercise 1
+
+The Atmostpheric Composition Analysis Group at WashU publishes different measures of pollution at one of the smallest resolutions available (0.01º $\times$ 0.01º) using different chemical, atmospheric models together with satellite image and ground datasets (see @van2024north).
+
+-   Navigate to the webpage from the group [WashU Satellite-derived PM2.5](https://sites.wustl.edu/acag/datasets/surface-pm2-5/)
+-   Find the Monthly mean total component PM$_{2.5}$ at 0.01º $\times$ 0.01º in the US in NetCDF format. Use the V5.NA.04.02 version.
+-   Download the data for the months of February, March and April 2020. Do you see any difference?
+
+The data is already downloaded in the `/data/CUS` folder
+
+```{r}
+r2020Feb <- rast("/data/CUS/labs/1/V5NA04.02.HybridPM25.NorthAmerica.2020-2020-FEB.nc")
+r2020Mar <- rast("/data/CUS/labs/1/V5NA04.02.HybridPM25.NorthAmerica.2020-2020-MAR.nc")
+r2020Apr <- rast("/data/CUS/labs/1/V5NA04.02.HybridPM25.NorthAmerica.2020-2020-APR.nc")
+```
+
+## Libraries to work with vector data
+
+In `R` the library [`sf`](https://r-spatial.github.io/sf/) is the most widely adopted package for handling, manipulating, and visualizing vector data. It offers a modern, "tidyverse-friendly" interface, making it straightforward to integrate spatial data operations within standard R workflows.
+
+The older `sp` package also supports vector data, but `sf` has become the go-to solution due to its more intuitive syntax and built-in functions.
+
+Let's see an example. The U.S. Census Bureau provides county boundaries in a zipped shapefile format. We’ll download that file, unzip it to a temporary directory, and then read it into R as an sf object.
+
+-   Download the 20m resolution of county boundaries for 2020 on a temporal directory and unzip in the data directory
+
+```{r}
+#| eval: False
+url <- "https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_us_county_20m.zip"
+temp_dir <- tempdir()
+zip_file <- file.path(temp_dir, "us_counties.zip")
+download.file(url, zip_file, mode = "wb")
+unzipdir <- "./temp"
+unzip(zip_file, exdir = unzipdir)
+```
+
+Again, in case of slow connection we have already the data in the course directory
+
+```{r}
+unzipdir <- "/data/CUS/labs/1/cb_2020_us_county_20m/"
+```
+
+-   Have a look a the files in the directory
+
+```{r}
+list.files(unzipdir)
+```
+
+-   Load the data in `R` using `sf`
+
+```{r}
+require(sf)
+counties <- st_read(dsn = unzipdir)
+```
+
+-   What's in the object we have just read?
+
+```{r}
+counties |> head()
+```
+
+-   The `sf` object in `counties` looks like a table. Each row contains a *feature* that can be a point, line, polygon, multi-line or multipolygon.
+    -   The geometry (vector) of each feature is in the `geometry` column.
+    -   The rest of the columns are metadata for each of the features. In our case, we have the name of the county, the State where the county is, or the U.S. Census internal ID (`GEOID`) and many other.
+-   We can work with `sf` objects like with any other table in `R`. For example, here is the map of the counties in mainland US
+
+```{r}
+counties |> filter(!(STUSPS %in% c("AK","PR","HI"))) |> ggplot() + geom_sf()
+```
+
+-   Another way to get these vector data from the census is the amazing [`tidycensus` library](https://walker-data.com/tidycensus/) which not only give us the geometry of each county but also some demographic information about them. For example, let's get the median household income and population by county and their geometry. Note the `geometry = TRUE` at the end to get the shape of the counties.
+
+```{r}
+require(tidycensus)
+vars <- c(medincome = "B19013_001", pop = "B01003_001")
+counties_income <- get_acs(geography = "county", 
+                           variables = vars, 
+                           year = 2021,
+                           output = "wide",
+                           geometry = TRUE,
+                           progress_bar = FALSE)
+```
+
+We will come back to the use of `tidycensus` in the next labs.
+
+### Exercise 2
+
+Another source of vector data is Open Street Map (OSM). OSM is a collection of APIs where we can download roads, Points-of-Interests, buildings polygons, routes, and many more. In `R` we can download data from OSM using the fantastic `osmdata` package.
+
+For example, let's download the highways around the Boston area
+
+-   First we define a bounding box around Boston
+
+```{r}
+library(osmdata)
+bbx <- getbb("Boston, MA")
+```
+
+-   Or if you have the coordinates of any specific area, you can use:
+
+```{r}
+bbx <- st_bbox(c(xmin=-71.28735,xmax=-70.900578,ymin=42.24583,ymax=42.453673))
+```
+
+-   OSM contains many layers (look at their maps!), like rivers, highways, Points-of-interest, etc. You can find a comprehensive list of them [here](https://wiki.openstreetmap.org/wiki/Map_features) or by using
+
+```{r}
+available_features() |> head()
+```
+
+-   Let’s see how many of them are related to highway.
+
+```{r}
+available_tags("highway") |> head()
+```
+
+-   They are a lot of them, but the main ones are `motorway`, `trunk`, `primary`, `secondary`, `tertiary` that distinguish between highways and other roads connecting cities or small towns. Let’s collect them:
+
+```{r}
+highways <- bbx |>
+  opq()|>
+  add_osm_feature(key = "highway", 
+                  value=c("motorway", "trunk",
+                          "primary","secondary", 
+                          "tertiary","motorway_link",
+                          "trunk_link","primary_link",
+                          "secondary_link",
+                          "tertiary_link")) |>
+  osmdata_sf()
+```
+
+-   Because vector data about highways might come as points, polygons or lines we have the three tables in the `highways` object:
+
+```{r}
+highways |> print()
+```
+
+-   Let's select the `lines` and plot them by type of road
+
+```{r}
+ggplot() +
+  geom_sf(data = highways$osm_lines,
+          aes(color=highway),
+          size = .4,
+          alpha = .65)+
+  theme_void()
+```
+
+## Libraries to work with basemaps
+
+-   Finally, the other type of important of geographical information are basemaps. Basemaps are usual in raster or image format and compile information about geographical area as a picture. Main source of basemaps are satellite images, aerial photography, scanned maps, or composed maps. For example, the maps you see in [Google Maps](https://maps.google.com).
+
+-   There are many APIs to retrieve those maps, including \[Google Maps\], [OSM](), [Stadia Maps](), Carto, \[Mapbox\], and many others. Those APIs return *tiles* which are static images of those maps at different zoom (resolutions). Most of those services require an API Key.
+
+-   There are many libraries to download those basemaps/tiles from different APIs, like the library `ggmap`. However, since we typically will need basemaps to show data on top we are going to show a more dynamical way to access them through libraries like `leaflet`, `mapview` or `deck.gl`. Also those libraries do not require to set a API key.
+
+-   In those libraries, corresponding basemaps will be automatically download from one of those API to match our geographical data.
+
+-   For example, let's visualize our counties data set on top of a map. Let's start with the library `leaflet`, which is also "tidyverse-friendly", but without basemap.
+
+```{r}
+counties_MA <- counties |> filter(STUSPS=="MA")
+require(leaflet)
+counties_MA |> leaflet() |> addPolygons()
+```
+
+-   Note that the map is interactive. Let's add the basemap by default (OSM)
+
+```{r}
+counties_MA <- counties |> filter(STUSPS=="MA")
+require(leaflet)
+counties_MA |> leaflet() |> addTiles() |> addPolygons()
+```
+
+-   We can also use other providers. For example, this is the *famous* Positron basemap
+
+```{r}
+counties_MA <- counties |> filter(STUSPS=="MA")
+require(leaflet)
+counties_MA |> leaflet() |> addProviderTiles(provider=providers$CartoDB.Positron) |> addPolygons()
+```
+
+-   Another, similar, library to visualize dynamical geographical information + basemaps is `mapview`
+
+```{r}
+require(mapview)
+mapview(counties_MA)
+```
+
+-   Those libraries allow to visualize many different layers on top of each other. We will come back to these libraries and their visualizations options at the end of the lab.
+
+## Geographical projections
+
+The values in geographical data refer to geographical coordinates. To do that we need a **geographical projection**, that is, a method for transforming Earth's 3d surface onto a two-dimensional 2d plane. Each projection involves compromises since no flat map can perfectly preserve all geographical properties (area, distance, shape, direction) at one.
+
+Projections are defined by the Coordinate Reference Systems (CRS) which specify how latitute and longitude relate to a particular mathematical model of the Earth. And yes, there are many mathematical models of the Earth, because it is not a sphere, but rather a ellipsoid
+
+-   The most used CRS is the standard WGS84 (EPSG:4326) based on a referenced ellipsoid
+
+![WGS84 ellipsoid](./img/wgs84.png)
+
+-   Other popular projections are
+
+    -   Web Mercator (EPSG:3857) used for online maps like in Google Maps, OSM and others.
+    -   North American Datum (NAD 83, EPSG: 4269).
+
+-   The [EPSG Geodetic Parameter Dataset](https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset) contains a registry of thos spatial reference systems, earth ellipsoids. Funny story, it was initiated by the European Petroleum Survey Group (EPSG) in 1985. Each coordinate system has a number (4326, 3857).
+
+-   **Important**: Using different map projections can produce varying coordinate values for the same location on Earth. Thus, it is important to know what is the projection of our data. Most errors in using geographical information comes from using different geographical projections.
+
+-   We can use `sf` library to get the geographical projection in which our datasets are given. For example, `counties` from the U.S. Census comes in the NAD83 format
+
+```{r}
+st_crs(counties)
+```
+
+while data from OSM and pollution is in the WGS84 standard:
+
+```{r}
+st_crs(r)
+```
+
+```{r}
+st_crs(highways$osm_lines)
+```
+
+We can transform the reference system using `sf`
+
+```{r}
+counties_wgs84 <- st_transform(counties,4326)
+counties_income <- st_transform(counties_income,4326)
+```
+
+## Processing geographical information
+
+-   Since the `sf` objects are tables, we can use `R` and `tidyverse` to work with them. To exemplify, let's get all the McDonald's locations in the US using the recently released [Foursquare Open Source Places](https://location.foursquare.com/resources/blog/products/foursquare-open-source-places-a-new-foundational-dataset-for-the-geospatial-community/). This is a huge dataset of 100mm+ global places of interest.
+
+-   Given its size, we are going to use `arrow` to query the data files (in `parquet` format) before *collecting* them to `R`
+
+```{r}
+require(arrow)
+files_path <- Sys.glob("/data/CUS/FSQ_OS_Places/places/*.parquet")
+pois_FSQ <- open_dataset(files_path,format="parquet")
+```
+
+-   Here is how it looks like. Note that we pull the data into `R` by using `collect()`
+
+```{r}
+pois_FSQ |> head() |> collect()
+```
+
+-   We select only McDonald's in the US and exclude those without location
+
+```{r}
+pois_mac <- pois_FSQ |> 
+  filter(country=="US" & name=="McDonald's") |> 
+  collect() |>
+  filter(!is.na(latitude))
+```
+
+-   Note that our table is not yet an `sf` object (it has no geometry). To transform it we use
+
+```{r}
+pois_mac <- st_as_sf(pois_mac,coords = c("longitude","latitude"), crs = 4326)
+```
+
+-   Again, we can treat this `sf` object as a table. For example, let's select those in Massachusetts and visualize them
+
+```{r}
+pois_mac |> filter(region=="MA") |> mapview()
+```
+
+-   One of the most fundamental operations with geographical data is to intersect or join them. For example, we might want to see if a point is within a polygon, or a line intersect another one.
+
+-   For example, how many McDonald's do we have by county? To do that we need to intersect our dataset of POIs with the polygons for each county. For that we can use a number of geographical *join* functions, with different predicates `st_within`, `st_intersects`, `st_overlaps` and many others. We can also use the typical subsetting `[` function in `R`. Find more information in the `sf` [spatial join, spatial filter reference webpage](https://r-spatial.github.io/sf/reference/st_join.html).
+
+-   For example, here is the subset of McDonald's in the Middlesex County in Massachusetts. Note that we have to change the geographical projection of `counties_MA` to the same projection in `pois_mac`
+
+```{r}
+counties_MA_Middlesex <- st_transform(counties_MA |> filter(NAME=="Middlesex"),4326)
+pois_mac_Middlesex <- pois_mac[counties_MA_Middlesex,]
+```
+
+-   This is just subsetting `pois_mac` to those POIs in a set of counties. A more extended way of doing that is `st_join` which will also merge the tables. `st_join` uses many different predicates. Here we will use `st_within` which checks if the each feature in the first argument `pois_mac_Middlesex` is **within** one of features of the second argument `counties_MA_Middlesex`. We also use `left = FALSE` to perform a inner join.
+
+```{r}
+pois_mac_Middlesex <- st_join(pois_mac, 
+                              counties_MA_Middlesex, 
+                              join = st_within,
+                              left = FALSE)
+```
+
+-   Let's visualize them and the polygon defining Middlesex county
+
+```{r}
+mapview(counties_MA_Middlesex) + 
+mapview(pois_mac_Middlesex)
+```
+
+### Exercise 3
+
+Objective: Investigate whether there is an economic bias in where McDonald’s locations are situated and identify which communities (by income) they predominantly serve.
+
+-   Use `st_join` to indenty the county for each of the McDonald's in the US.
+
+-   Spatial join of the points and counties
+
+```{r}
+pois_mac_county <- st_join(pois_mac,counties_income,
+                           join = st_within)
+```
+
+-   Count the number of McDonald's by county. Note that we drop the geometry before to speed up the calculation
+
+```{r}
+pois_mac_county |> 
+  st_drop_geometry() |> 
+  count(GEOID,NAME,medincomeE,popE) |>
+  arrange(-n) |> head()
+```
+
+-   Of course, counties with more population have more restaurants. Let's normalize by population, by 100000 people
+
+```{r}
+pois_mac_county |> 
+  st_drop_geometry() |> 
+  count(GEOID,NAME,medincomeE,popE) |>
+  mutate(proportion = n/popE*100000) |>
+  arrange(-proportion) |> head()
+```
+
+-   Is there any correlation with income?
+
+```{r}
+pois_mac_county |> 
+  st_drop_geometry() |> 
+  count(GEOID,NAME,medincomeE,popE) |>
+  mutate(proportion = n/popE*100000) |>
+  summarize(cor(proportion,medincomeE,use="na")) 
+```
+
+## Processing geographical information
+
+There are other usual operations with geographical data.
+
+-   We can calculate distances between points, lines, polygons using `st_distance`. For example, what is the distance between all McDonald's in the Middlesex county?
+
+```{r}
+dist_matrix <- st_distance(pois_mac_Middlesex)
+```
+
+This calculates the matrix of distances between all pairs of McDonald's. With that we can calculate the distance to the closest McDonald's for each of them
+
+```{r}
+diag(dist_matrix) <- Inf
+min_dist <- apply(dist_matrix,1,min)
+median(min_dist)
+```
+
+Which means we have, in median, one McDonald's each 2.6km in the Middlesex county.
+
+-   Other operations involve calculating areas of polygons with `st_area`. For example, here are the largests counties in the US.
+
+```{r}
+counties_wgs84 |> mutate(area = st_area(geometry)) |> 
+  arrange(-area) |> st_drop_geometry() |> 
+  select(NAME,STATE_NAME,area) |> head()
+```
+
+-   Another transformation is to find the centroids of geographical features. This is useful to calculate distances, because distances between points is much less costly than with lines or polygons.
+
+```{r}
+counties_mainland <- counties_wgs84 |> filter(!(STUSPS %in% c("AK","PR","HI")))
+centroids <- st_centroid(counties_mainland)
+ggplot() + 
+  geom_sf(data=counties_mainland)+
+  geom_sf(data=centroids,size=0.5)
+```
+
+-   Finally, we can also operate together with vector and raster files. The most common operation is to project the raster values on a particular administrative division of the space. For example, calculate the average pollution by county in February 2020. Although `terra` has a function to do that (`extract`) it is typically slow for large data. Instead, we are going to use the `exactextractr` package
+
+```{r}
+require(exactextractr)
+pollution_agg <- exact_extract(r2020Feb,counties_wgs84,fun="mean",progress=FALSE)
+counties_wgs84 <- counties_wgs84 |> mutate(pollution_avg=pollution_agg)
+counties_wgs84 |> st_drop_geometry() |> 
+  select(NAME,STATE_NAME,pollution_avg) |> 
+  arrange(-pollution_avg) |> head()
+```
+
+## Visualization of geographical information
+
+We saw before some libraries to visualize geographical information: `ggplot` to produce static visualizations and `leaflet` and `mapview` for interactive visualizations with automatic basemaps. The latter ones typically are better but they require more computational resources, so they are slow for big data. map
+
+There are many options in those libraries to customize our visualization. For example, we can change the colors, add different layers, legends, etc. Here we are going to exemplify this by creating a `choropleth` visualization. A choropleth is an easy way to visualize how a variable varies across geographical area by changing the color or transparency of those geographical areas. You can see them everywhere, in newspapers, reports. Here are the 2016 elections by district
+
+![2016 Election results by district, © New York Times](./img/2016elections.jpg) Caution should be taken when using this kind of visualization. Choropleths are prone to misinterpretation when areas are not uniform in size (the "Alaska effect") given more importance to larger areas which typically are less populated (see a good example above!).
+
+Let's use a choropleth to show the median household income by county in Massachusetts.
+
+```{r}
+GEOID_MA <- counties_wgs84 |> filter(STUSPS=="MA") |> pull(GEOID)
+counties_MA <- counties_income |> filter(GEOID %in% GEOID_MA)
+```
+
+To do that in `leaflet` we have to define a palette of colors proportional to income and use it to fill the polygons
+
+```{r}
+pal <- colorNumeric("YlOrRd",domain=counties_MA$medincomeE)
+leaflet(counties_MA) |>
+  addPolygons(fillColor = ~ pal(medincomeE),
+              weight=2,
+              opacity=0.5,
+              color="white",
+              fillOpacity = 0.5)
+```
+
+Let's add some interaction
+
+```{r}
+leaflet(counties_MA) |>
+  addPolygons(fillColor = ~ pal(medincomeE),
+              weight=2,
+              opacity=0.5,
+              color="white",
+              fillOpacity = 0.5,
+              label = ~ paste0(NAME," - $",medincomeE)
+  )
+```
+
+Some basemaps and a legend
+
+```{r}
+leaflet(counties_MA) |>
+  addProviderTiles(provider=providers$CartoDB.DarkMatter) |>
+  addPolygons(fillColor = ~ pal(medincomeE),
+              weight=2,
+              opacity=0.5,
+              color="white",
+              fillOpacity = 0.5,
+              label = ~ paste0(NAME," - $",medincomeE)
+  ) |>
+  addLegend(pal = pal, values = ~medincomeE, opacity = 0.7, title = NULL,
+  position = "bottomright")
+```
+
+In `mapview` is a little bit easier. We just have to specify a `zcol`
+
+```{r}
+mapview(counties_MA, zcol="medincomeE")
+```

@@ -6,7 +6,7 @@ bibliography: ../references.bib
 csl: ../nature-communications.csl
 ---
 
-Welcome to the course! In this week we will introduce the course, ourselves, and how to access the computing resources. We will also present a brief introduction to *Computational Urban Science* and a Crash Course on GIS with `R`.
+Welcome to the course! This week we will introduce the course, ourselves, and how to access the computing resources. We will also present a brief introduction to *Computational Urban Science* and a Crash Course on GIS with `R`.
 
 ## Prepare
 
@@ -19,27 +19,26 @@ Welcome to the course! In this week we will introduce the course, ourselves, and
 
 📖 Read some general bibliography about Computational Social Science and Urban Science
 
--   [Computational Social Science, Lazer et al 2009](/pdfs/ComputationalSocialScience.pdf) @lazer2009computational
+-   [Computational Social Science, Lazer et al 2009](/pdfs/ComputationalSocialScience.pdf) [@lazer2009computational]
 
 -   [Computational Social Science: obstacles and opportunities](/pdfs/ComputationalSocialScience2.pdf) @lazer_computational_2020
 
+-   [Chapter 2 of *Bit by Bit* book by Salganik](/pdfs/BitbyBit.pdf) @salganik2019bit
+
 -   [Cities as Complex Systems - Batty](/pdfs/Cities_Complex_Systems_Batty_2008.pdf) @batty2009cities
 
--   [Chapter 2 of *Bit by Bit* book by Salganik](/pdfs/BitbyBit.pdf) @salganik2019bit
+-   [The city is not a static tree - Moro](/pdfs/city-not-a-static-tree.pdf) @moro2022city
 
 ## Participate
 
-🖥️ [Lab 0 -](/_slides/lab-0.html)[Meet](/slides/lab-0.html)[+ greet](/_slides/lab-0.html)
+🖥️ [Lecture 1-1 : Welcome to CUS 2025!](/slides/lec-1-1.html)
 
-🖥️ [Lecture 1 - Welcome to STA 210](/slides/lec-1.html)
+🖥️ [Lecture 1-2 : Introduction to Computational Urban Science](/slides/lec-1-2.html)
 
-## Practice
+🖥️ [Lab 1-1 : Crash course on GIS with R](/labs/lab-1-1.html)
 
-📋 [AE 0 - Movies](/ae/ae-0-movies.html)
+🖥️ [Lab 1-2 : Collect and analyze you own mobility data](/labs/lab-1-2.html)
 
-## Perform
-
-⌨️ [Lab 0 - Meet + greet](/labs/lab-0.html)
 
 <br><br>
 

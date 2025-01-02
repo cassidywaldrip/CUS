@@ -30,6 +30,9 @@ website:
       - icon: github
         href: https://github.com/SUNLab-NetSI/CUS
         text: "Course Github Repo"
+      - icon: home
+        href: https://github.com/SUNLab-NetSI/CUS
+        text: "Home"
         
     style: "docked"
     search: true

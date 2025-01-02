@@ -1,0 +1,32 @@
+---
+title: "Intro to Computational Urban Science"
+bibliography: references.bib
+---
+
+# What
+
+Computational Urban Science (or its other names) is an emerging interdisciplinary field that applies computational methods to study and address urban challenges. It combines insights and techniques from many disciplines, ranging from social sciences, economics, physics, urban planning, data science, computer science to explore generally speaking the dynamics of cities, the effect of urban environments, the lifestyles and decision-making of city dwellers, and the effect of policies and interventions.
+
+The capacity to collect and analyze massive amounts of data has transformed fields like social sciences, political sciences, economics, and of course, urban science. To date, understanding of human behavior in cities relied mainly on static and small datasets like the census, travel surveys, or personal surveys. The development of new digital techonologies, specially the mobile phone, offer a detailed description of people's activities, movements, interactions over extended periods of time and at population scale. This has transformed the way to look at urban challenges given the ability to understand accurately "micro" individual's decision-making and the possibility to learn how "macro" urban dynamics evolve in time. As in many other fields, massively-collected data has allowed to map out intricated connections between urban environments, policies and interventions, individual's and group's decision to understand and predict better urban challenges.
+
+In this brief essay we will explore the key concepts, methods, and applications of Computational Urban Science. We will also discuss the interdisciplinary nature of the field, highlighting the role of data science, causal and network analysis, simulation modeling, and machine learning in uncovering patterns and insights that were previously inaccessible. Finally, we will touch on the ethical considerations and challenges in using large-scale data, particularly in ensuring privacy, fairness, and inclusivity in urban research and decision-making.
+
+We will emphasize using data and computational methods to uncover the "why" behind urban challenges, rather than focusing solely on the "how, who, where, and when." By digging into the root causes and mechanisms driving these issues, we aim to reveal deeper insights that can lead to more impactful and sustainable solutions.
+
+Through this discussion, we hope to make evident the transformative power of Computational Urban Science and the need to adopt data-driven approaches to understand the complex dynamics of model urban life.
+
+# Urban
+
+Cities and the epicenters of human activity, driving economic growth, innovation, and cultural exchanges @betancourt. Around 54% of the world's population now lives in cities and projections indicate that by 2050, cities are expected to house 68% of the total population @un2018world. In some areas, like North Amercian or Europe, around 80% of people already lives in urban areas.
+
+![Growth of population in Urban areas](images/urbanization_chart.jpg){fig-align="left" width="400"}
+
+Urban areas are not only attracting more people, but also increasingly concentrating more resources and outcomes. For example, cities generate over 80 percent of the world's GPD
+
+economies of scale
+
+
+
+# Computational
+
+# Science

@@ -40,7 +40,7 @@ This course is, by definition, designed to study our diverse communities in urba
 
 ### Communication
 
-All lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website at [course.com](course/website).
+All lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website at [socialurban.net/CUS](socialurban.net/CUS).
 
 We will use Canvas and Slack to communicate. Canvas is for official announcements and private communications with the instructor/students. We will use Slack for daily information, Q&As, team discussions, and casual conversations. Although it is optional to complete the course, using Slack is encouraged to get the most helpful information. The address for the course’s Slack workspace is
 
@@ -52,7 +52,7 @@ Join using the following link:
 
 Anyone with a northeastern.edu email address can join. Contact the instructor if you have any issues or restrictions regarding using Slack or other email domains.
 
-All lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website at [sta210-s22.github.io/website](https://sta210-s22.github.io/website).
+All lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website at [socialurban.net/CUS](https://socialurban.net/CUS).
 
 ## Class structure
 
@@ -74,13 +74,13 @@ Attendance and Participation: 20%. Homework assignments: 20% each. Final project
 
 There are no required materials for this course. Here is the most relevant and general. More specific materials will be given/introduced for each class.
 
--   Salganik, Matthew J. Bit by bit: Social research in the digital age. Princeton University Press, 2019.
+-   Salganik, Matthew J. Bit by bit: Social research in the digital age. Princeton University Press, 2019. [@salganik2019bit]
 -   Bettencourt, Luís MA. Introduction to urban science: evidence and theory of cities as complex systems. MIT Press (2021). [@bettencourt_introduction_2021]
 -   O'Brien, Daniel T. Urban informatics: using big data to understand and serve communities. Chapman and Hall/CRC, 2022. [@obrien2022urban]
 -   Rey, Sergio, Dani Arribas-Bel, and Levi John Wolf. Geographic data science with Python. Chapman and Hall/CRC, 2023. [@rey2023geographic]
 -   Pebesma, Edzer, and Roger Bivand. Spatial data science: With applications in R. Chapman and Hall/CRC, 2023. [@pebesma2023spatial]
 -   Lovelace, Robin, Jakub Nowosad, and Jannes Muenchow. Geocomputation with R. Chapman and Hall/CRC, 2019. [@lovelace2019geocomputation]
--   Cunningham, Scott. Causal inference: The mixtape. Yale University Press, 2021.
--   Facure, Matheus. Causal Inference in Python. " O'Reilly Media, Inc.", 2023.
--   Barthélemy, Marc. "Spatial networks." Physics reports 499.1-3 (2011): 1-101.
+-   Cunningham, Scott. Causal inference: The mixtape. Yale University Press, 2021. [@cunningham2021causal]
+-   Facure, Matheus. Causal Inference in Python. O'Reilly Media, Inc., 2023. [@facure2023causal]
+-   Barthélemy, Marc. "Spatial networks." Physics reports 499.1-3 (2011): 1-101. [@barthelemy2011spatial]
 -   Barbosa, Hugo, et al. "Human mobility: Models and applications." Physics Reports 734 (2018): 1-74. [@barbosa_human_2018]
