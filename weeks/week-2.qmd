@@ -14,7 +14,9 @@ Welcome back! This week, we will dive deeper into the use of administrative data
 
 📖 Check out this dashboard: [Exploring local income deprivation](https://www.ons.gov.uk/visualisations/dvc1371/#/E07000223)
 
-📖 Inspiration for our practical: [London, reimagined: alternative tube maps – in pictures](https://www.theguardian.com/cities/2016/may/04/london-tube-maps-underground-reimagined-alternative-in-pictures)
+📖 Inspiration for our practical #1: [London, reimagined: alternative tube maps – in pictures](https://www.theguardian.com/cities/2016/may/04/london-tube-maps-underground-reimagined-alternative-in-pictures)
+
+📖 Inspiration for our practical #2: [Health Inequalities in Boston by T-Stops: A Pictorial Essay](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/)
 
 ## Participate
 

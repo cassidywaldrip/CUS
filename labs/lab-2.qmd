@@ -26,4 +26,23 @@ bibliography: references.bib
 
 ```{r}
 library(tidycensus)
+ 
 ```
+
+## Mapping Census Data
+
+## Mapping OSM data
+
+## Combining census data with OSM
+
+## Practical: Viewing health inequalities through the lens of the transit network
+
+## Challenge: Extend 
+
+-   Extend your analysis to other census variables
+
+-   Extend your analysis to another city (try to write code that will work for both cities / any city)
+
+-   What factors in the census explain differences in health outcomes by tube stations? What factors might play a role but are missing from the census?
+
+## Closing thoughts

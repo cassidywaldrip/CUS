@@ -48,7 +48,7 @@ TODO: US Census variable explorer
 
 # Sidenote: units of analysis
 
-not all census data is individual - it depends on the feature
+not all census data is individual - it depends on the variable
 
 # Census: a 'Gold Standard' Survey
 
@@ -58,7 +58,7 @@ Systematically difficult groups
 
 Small population subsets
 
-Think about it like fishing: \[ONS fish example\]
+Think about it like fishing: \[ONS fishing example\]
 
 # Accessing census data
 
@@ -70,9 +70,11 @@ Think about it like fishing: \[ONS fish example\]
 
 -   Hierarchy of US admin geographies
 
--   GEOID conventions
+-   (optional) hierarchy of UK geographies
 
-*beware boundary changes*
+-   GEOID naming convention
+
+*take note of boundary changes*
 
 # Combining census data
 
@@ -85,5 +87,9 @@ Special case: individual level data
 # Ecological fallacy & MAUP
 
 # Sidenote: Privacy and the census
+
+K-anonymity (old model) vs. differential privacy (new model)
+
+Controversy about count accuracy when DP was introduced
 
 #
