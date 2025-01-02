@@ -21,7 +21,7 @@ footer: "CUS 2025, ©SUNLab group <a href=\"https://socialurban.net/CUS\">social
 link-external-icon: true
 link-external-newwindow: true
 title-slide-attributes:
-  data-background-image: ../images/logo.png
+  data-background-image: images/logo.png
   data-background-size: 30%
   data-background-position: right
 ---
