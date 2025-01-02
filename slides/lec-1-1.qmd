@@ -16,13 +16,12 @@ code-line-numbers: false
 execute:
   echo: true
 editor: visual
-logo: ./images/logo_bw.png
+logo: images/logo_bw.png
 footer: "CUS 2025, ©SUNLab group <a href=\"https://socialurban.net/CUS\">socialurban.net/CUS</a>"
 link-external-icon: true
 link-external-newwindow: true
-keep-md: true
 title-slide-attributes:
-  data-background-image: ../images/logo.png
+  data-background-image: images/logo.png
   data-background-size: 30%
   data-background-position: right
 ---
