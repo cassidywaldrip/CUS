@@ -1,0 +1,89 @@
+---
+title: "Lecture 2 - Maps + Census Data"
+author: "Esteban Moro"
+institute:
+  - Network Science Institute | Northeastern University
+  - NETS 7983 Computational Urban Science 
+  - Last updated `r Sys.Date()`
+format: 
+  revealjs:
+    theme: mytheme.scss
+    multiplex: true
+    code-overflow: wrap
+#    embed-resources: true
+    chalkboard: true
+    slide-number: true
+code-line-numbers: false
+execute:
+  echo: true
+editor: visual
+logo: ./img/afi.png
+footer: "CUS 2025, SUNLab group"
+link-external-icon: true
+link-external-newwindow: true
+---
+
+```{r}
+#| include: false
+library(countdown)
+```
+
+# Welcome!
+
+Recap from last week
+
+This week: Urban Data - Maps + Census
+
+# Census
+
+What is the census
+
+# Census release timeline
+
+# Sidenote: ACS vs. Census
+
+# What is in the census?
+
+TODO: US Census variable explorer
+
+# Sidenote: units of analysis
+
+not all census data is individual - it depends on the feature
+
+# Census: a 'Gold Standard' Survey
+
+The census is a "gold standard" survey, but it still has limitations
+
+Systematically difficult groups
+
+Small population subsets
+
+Think about it like fishing: \[ONS fish example\]
+
+# Accessing census data
+
+-   API
+
+-   Tidycensus
+
+# Geospatial references for census data
+
+-   Hierarchy of US admin geographies
+
+-   GEOID conventions
+
+*beware boundary changes*
+
+# Combining census data
+
+Spatial overlap, resolution mismatch
+
+aggregation vs. re-projection
+
+Special case: individual level data
+
+# Ecological fallacy & MAUP
+
+# Sidenote: Privacy and the census
+
+#

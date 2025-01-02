@@ -1,0 +1,29 @@
+---
+title: "Lab 2 - Maps & Census Data"
+author: "Hamish Gibbs"
+institute:
+  - Network Science Institute, Northeastern University
+  - NETS 7983 Computational Urban Science
+  - Last updated `r Sys.Date()`
+format: html
+code-line-numbers: false
+execute:
+  echo: true
+#  cache: true
+  warning: false
+  messages: false
+editor: visual
+logo: ./img/sunlab.png
+footer: "CUS, Northeastern Spring 2025"
+link-external-icon: true
+link-external-newwindow: true
+bibliography: references.bib
+---
+
+## Objective
+
+## Loading Census Data
+
+```{r}
+library(tidycensus)
+```
