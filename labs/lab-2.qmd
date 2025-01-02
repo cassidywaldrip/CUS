@@ -22,6 +22,30 @@ bibliography: references.bib
 
 ## Objective
 
+In this lab, we will learn to:
+
+-   Retrieve, process, and analyze census data.
+-   Combine census data with geographical boundaries.
+-   Combine geo-referenced census data with other spatial features (from Open Street Map) for analysis.
+-   Create a meaningful visualization that conveys insights from the combination of census and built environment features.
+
+## Before starting:
+
+1.  **Ensure you have access to the `stella` server:**
+    -   Data for this lab can be found in `/data/CUS/labs/2/`.
+2.  [**Request a U.S. Census Data API Key**](https://api.census.gov/data/key_signup.html)
+3.  Configure the API key in your R environment
+
+``` r
+    Sys.setenv(CENSUS_API_KEY = "YOUR_API_KEY")
+```
+
+-   Then call the `tidycensus::census_api_key` function:
+
+    ```{r}
+    census_api_key(Sys.getenv("CENSUS_API_KEY"), install = TRUE)
+    ```
+
 ## Loading Census Data
 
 ```{r}
@@ -37,12 +61,12 @@ library(tidycensus)
 
 ## Practical: Viewing health inequalities through the lens of the transit network
 
-## Challenge: Extend 
+## Challenge: Extend this analysis
 
 -   Extend your analysis to other census variables
 
 -   Extend your analysis to another city (try to write code that will work for both cities / any city)
 
--   What factors in the census explain differences in health outcomes by tube stations? What factors might play a role but are missing from the census?
-
 ## Closing thoughts
+
+-   What factors in the census explain differences in health outcomes by tube stations? What factors might play a role but are missing from the census?

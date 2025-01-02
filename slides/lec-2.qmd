@@ -17,7 +17,6 @@ code-line-numbers: false
 execute:
   echo: true
 editor: visual
-logo: ./img/afi.png
 footer: "CUS 2025, SUNLab group"
 link-external-icon: true
 link-external-newwindow: true
@@ -30,9 +29,11 @@ library(countdown)
 
 # Welcome!
 
-Recap from last week
-
 This week: Urban Data - Maps + Census
+
+# Recap
+
+Recap from last week
 
 # Census
 
