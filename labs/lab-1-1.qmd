@@ -55,7 +55,10 @@ There are many platforms to analyze geographical data. They are commonly known a
 
 There are three types of geographical data:
 
--   **Raster**: is a geographical data type where data is stored as a grid of regularly sized pixels along attribute data. Those pixels typically represent a grid cell in specific geographical coordinates.
+
+### Raster data 
+
+**Raster data** is a geographical data type where data is stored as a grid of regularly sized pixels along attribute data. Those pixels typically represent a grid cell in specific geographical coordinates.
 
 ![Raster data - ©ArcGIS](./img/raster.png)
 
@@ -65,7 +68,9 @@ There are three types of geographical data:
 
 -   More information about raster data [here](https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/what-is-raster-data.htm)
 
--   **Basemaps**: a particular case of raster images is images of maps used as a background display for other feature layers.
+### Basemaps 
+
+**Basemaps** a particular case of raster images is images of maps used as a background display for other feature layers.
 
 -   Main source of basemaps are satellite images, aerial photography, scanned maps, or composed maps. For example, the maps you see in [Google Maps](https://maps.google.com), \[Open Street Maps\], \[Carto\], \[MapBox\].
 
@@ -75,7 +80,9 @@ There are three types of geographical data:
 ![Google Maps (Satellite view)](./img/map2.jpg)
 :::
 
--   **Vector data**: is a representation of data using points, lines, curves, or polygons. The data is created by defining points at specific spatial coordinates. For example, lines that define a route on a map, polygons that define an administrative area, or points that geolocate a specific store entrance.
+### Vector data
+
+**Vector data** is a representation of data using points, lines, curves, or polygons. The data is created by defining points at specific spatial coordinates. For example, lines that define a route on a map, polygons that define an administrative area, or points that geolocate a specific store entrance.
 
 ![Vector data - Roads around Boston](./img/vectordata.png)
 
@@ -139,7 +146,7 @@ ggplot() +
   labs(fill="Population") 
 ```
 
-### Exercise 1
+## Exercise 1
 
 The Atmostpheric Composition Analysis Group at WashU publishes different measures of pollution at one of the smallest resolutions available (0.01º $\times$ 0.01º) using different chemical, atmospheric models together with satellite image and ground datasets (see @van2024north).
 
@@ -221,10 +228,9 @@ counties_income <- get_acs(geography = "county",
                            geometry = TRUE,
                            progress_bar = FALSE)
 ```
-
 We will come back to the use of `tidycensus` in the next labs.
 
-### Exercise 2
+## Exercise 2
 
 Another source of vector data is Open Street Map (OSM). OSM is a collection of APIs where we can download roads, Points-of-Interests, buildings polygons, routes, and many more. In `R` we can download data from OSM using the fantastic `osmdata` package.
 
@@ -287,17 +293,24 @@ ggplot() +
   theme_void()
 ```
 
+With that information:
+
+- Use `osmdata` to download also some POIs (restaurants) from OSM in the Boston area and visualize them (only the points).
+
+- Use `osmdata` to download the parks from OSM in the Boston area and visualize them (only the polygons).
+
+
 ## Libraries to work with basemaps
 
--   Finally, the other type of important of geographical information are basemaps. Basemaps are usual in raster or image format and compile information about geographical area as a picture. Main source of basemaps are satellite images, aerial photography, scanned maps, or composed maps. For example, the maps you see in [Google Maps](https://maps.google.com).
+Finally, the other type of important of geographical information are basemaps. Basemaps are usual in raster or image format and compile information about geographical area as a picture. Main source of basemaps are satellite images, aerial photography, scanned maps, or composed maps. For example, the maps you see in [Google Maps](https://maps.google.com).
 
--   There are many APIs to retrieve those maps, including \[Google Maps\], [OSM](), [Stadia Maps](), Carto, \[Mapbox\], and many others. Those APIs return *tiles* which are static images of those maps at different zoom (resolutions). Most of those services require an API Key.
+-   There are many APIs to retrieve those maps, including \[Google Maps\], [OSM](https://www.openstreetmap.org/), [Stadia Maps](https://stadiamaps.com), [Carto](https://carto.com), [Mapbox](https://www.mapbox.com), and many others. Those APIs return *tiles* which are static images of those maps at different zoom (resolutions). Most of those services require an API Key.
 
--   There are many libraries to download those basemaps/tiles from different APIs, like the library `ggmap`. However, since we typically will need basemaps to show data on top we are going to show a more dynamical way to access them through libraries like `leaflet`, `mapview` or `deck.gl`. Also those libraries do not require to set a API key.
+-   There are many libraries to download those basemaps/tiles from different APIs, like the library `ggmap`. However, since we typically will need basemaps to show data on top we are going to show a more dynamical way to access them through libraries like `leaflet` or `mapview`. Also those libraries do not require to set a API key.
 
--   In those libraries, corresponding basemaps will be automatically download from one of those API to match our geographical data.
+-   In those libraries, corresponding basemaps will be automatically download from one of those APIs to match our geographical data.
 
--   For example, let's visualize our counties data set on top of a map. Let's start with the library `leaflet`, which is also "tidyverse-friendly", but without basemap.
+-   For example, let's visualize our counties data set on top of a basemap. Let's start with the library `leaflet`, which is also "tidyverse-friendly", but without basemap. Note that only the polygons are shown
 
 ```{r}
 counties_MA <- counties |> filter(STUSPS=="MA")
@@ -305,7 +318,7 @@ require(leaflet)
 counties_MA |> leaflet() |> addPolygons()
 ```
 
--   Note that the map is interactive. Let's add the basemap by default (OSM)
+-   Also note that the map is interactive: you can zoom in, move around. Let's add the basemap by default (OSM):
 
 ```{r}
 counties_MA <- counties |> filter(STUSPS=="MA")
@@ -313,7 +326,7 @@ require(leaflet)
 counties_MA |> leaflet() |> addTiles() |> addPolygons()
 ```
 
--   We can also use other providers. For example, this is the *famous* Positron basemap
+-   We can also use other providers. For example, this is the *famous* Positron basemap:
 
 ```{r}
 counties_MA <- counties |> filter(STUSPS=="MA")
@@ -438,7 +451,7 @@ mapview(counties_MA_Middlesex) +
 mapview(pois_mac_Middlesex)
 ```
 
-### Exercise 3
+## Exercise 3
 
 Objective: Investigate whether there is an economic bias in where McDonald’s locations are situated and identify which communities (by income) they predominantly serve.
 
@@ -479,6 +492,9 @@ pois_mac_county |>
   mutate(proportion = n/popE*100000) |>
   summarize(cor(proportion,medincomeE,use="na")) 
 ```
+
+- Use other fast-food restaurants for this analysis. Do you see the same correlation?
+- What about grocery or super-center stores like Walmart?
 
 ## Processing geographical information
 
@@ -590,3 +606,15 @@ In `mapview` is a little bit easier. We just have to specify a `zcol`
 ```{r}
 mapview(counties_MA, zcol="medincomeE")
 ```
+
+## More information
+
+We just scratched the surface of using `R` to use geographical information. Here are more resources:
+
+- [Geocomputation with R](https://r.geocompx.org) book by Lovelace et al.
+- [Spatial Data Science with applications in R](https://r-spatial.org/book/) book by Pebesma and Vivand.
+- [Geospatial Analysis Made Easy: A Beginner’s Guide to RStudio](https://ohm-np.github.io/R_tutorial/index.html) by Bhandari
+- [`sf` package webpage](https://r-spatial.github.io/sf/index.html)
+- [Spatial manipulation with `sf`](https://rstudio.github.io/cheatsheets/sf.pdf), cheat sheet.
+
+![](https://user-images.githubusercontent.com/520851/50280460-e35c1880-044c-11e9-9ed7-cc46754e49db.jpg)
