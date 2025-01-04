@@ -1,5 +1,11 @@
 ---
 title: "Intro to Computational Urban Science"
+author: "Esteban Moro" 
+institute:
+  - Network Science Institute, Northeastern University
+  - NETS 7983 Computational Urban Science
+date: last-modified
+format: html
 bibliography: references.bib
 csl: ieee.csl
 ---
