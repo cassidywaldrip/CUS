@@ -24,6 +24,8 @@ title-slide-attributes:
   data-background-image: images/logo.png
   data-background-size: 30%
   data-background-position: right
+bibliography: ../references.bib
+csl: ../ieee.csl
 ---
 
 ```{r}
@@ -31,7 +33,663 @@ title-slide-attributes:
 library(countdown)
 ```
 
-
 ## Intro to Computational Social Science
 
-TBD
+In this lecture, we will present the main concepts of Computational Social Science (CUS) and its applications to Urban Science. Here is the summary
+
+-   **Introduction**
+-   **Urban**
+    -   Opportunities
+    -   Challenges
+-   **Computational**
+    -   Sources of large-scale data
+    -   AI and Machine Learning for Urban Science
+    -   Advantages of large-scale data in Urban Science
+    -   Challenges of large-scale data
+-   **Science**
+    -   Urban Science vs Computational Urban Science
+    -   "Soft" vs "hard" problems in CUS
+    -   Cities as complex systems
+
+# Introduction
+
+## What is Computational Urban Science?
+
+-   Interdisciplinary, emerging field that combines:
+
+::: r-fit-text
+**Large-scale datasets** + **computational methods/models** + **in urban contexts**
+:::
+
+to explore the dynamics of cities and urban challenges.
+
+-   A branch of **Computational Social Science** and related to **Urban Science**
+
+-   Integrate many disciplines like sociology, geography, economics, urban planning, computer science, mathematics and many more.
+
+-   Interested on the "why" rather than the "what" of urban phenomena.
+
+# \[URBAN\]
+
+## Why urban?
+
+Urban areas are the epicenter of human activity. Living in cities has many advantages, but also many challenges.
+
+::: columns
+::: {.column width="60%"}
+*People*
+
+-   54% of the world's population now lives in cities.
+-   In North America or Europe, around 80% people in urban areas, compared to just 40% in 1900.
+
+Resources
+
+-   cities generate over 80% of the world's GDP
+-   NYC = 12$^{th}$ largest economy.
+-   63% of all U.S. patents in just 20 metro areas
+:::
+
+::: {.column width="40%"}
+![Growth of population in Urban areas](images/urbanization_chart.jpg){fig-align="left" width="600"}
+:::
+:::
+
+## Why urban?
+
+::: columns
+::: {.column width="50%"}
+*Resources*
+
+-   Higher productivity, higher waves.
+-   Higher innovation, higher patents.
+:::
+
+::: {.column width="50%"}
+*Social*
+
+-   Higher number of friends
+-   Higher social capital
+:::
+:::
+
+![Distribution of social interconnectivity, Productivity and Innovation in small vs large cities. From @arvidsson_urban_2023](images/41562_2022_1509_Fig1_HTML.jpeg){fig-align="center"}
+
+## Why urban?
+
+But cities are also home to most critical problems in our society
+
+-   **Pollution**: Urban areas are responsible for 70% of global CO2 emissions (transport + buildings)
+-   **Inequality**: Even the most prosperous cities have high levels of inequality. In the US, roughly one in 6 urban residents live in property.
+-   **Crime**: Urban areas have higher crime rates than rural areas. In the US, 80% of violent crimes occur in urban areas.
+-   **Traffic**: Urban areas have higher traffic congestion. In the US, the average urban commuter spends 42 hours a year in traffic.
+
+![Carbon Footprint and population of different cities. From @moran_carbon_2018](images/top500chart_ggmcf_2013.png){fig-align="center"}
+
+## Why urban?
+
+But cities are also home to most critical problems in our society
+
+-   **Housing**: Urban areas have higher housing costs. In the US, the average urban resident spends 30% of their income on housing.
+-   **Health**: Urban areas have higher rates of obesity and mental health problems and death rates by leading causes.
+
+![Death rates by leading causes in urban vs rural areas. From @curtin1921trends](images/urbanRuralMortality_graphic_d2.jpeg){fig-align="center"}
+
+## Why urban?
+
+But cities are also home to most critical problems in our society
+
+-   **Pandemic** Urban areas have higher rates of infectious diseases. In the US, 80% of COVID-19 cases occurred in urban areas. Death rates were also higher in urban areas.
+
+![Extracted from @curtin2022covid](images/covid_cities.jpg){fig-align="center"}
+
+## Why urban?
+
+Cities are also interesting to study because these challenges are pervasive across nations, transcending cultural, economic and political boundaries.
+
+For example, income inequality is rising in cities across the world, from the US to China to Brazil.
+
+![Extracted from @curtin2022covid](images/inequality_world.png)
+
+## Why urban?
+
+Spatial (residential) segregation happens in all major cities.
+
+::: columns
+::: {.column width="50%"}
+![Johannesburg, Southafrica from [Unequalscenes.com](https://unequalscenes.com/south-africa)](images/southafrica.jpg){height="300px"}
+:::
+
+::: {.column width="50%"}
+![Santa Fe, Mexico. From [Unequalscenes.com](https://unequalscenes.com/)](images/mexico.jpg){height="300px"}
+:::
+:::
+
+## Why urban?
+
+::: r-fit-text
+-   This universality across time, geography and cultures makes cities a great laboratory to study human behavior and urban phenomena.
+
+-   Solutions found in a particular city can be applied to other cities, making computationa urban science a powerful tool for policy making and urban planning.
+
+-   By studying them we also gain a better understanding of most of our society.
+:::
+
+# \[COMPUTATIONAL\]
+
+## Why computational?
+
+-   Understanding urban challenge requires good understanding of human behavior.
+
+-   Traditional methods (surveys, interviews) to do that are:
+
+    -   Limited in scope and scale.
+    -   Infrequent and expensive.
+    -   Biased and subjective.
+    -   Not scalable.
+
+-   More importantly the behavior extracted from traditional methods is based on two key ideas:
+
+    -   **Residential anchoring**: "you are were you live", emphasizing static residential patterns.
+    -   **Proximity-based accessibility**: your behavior is described by the resources at short distance from a person's residence.
+
+-   Incredibly those two ideas are the basis for most of the urban planning and policy making.
+
+## Why computational?
+
+-   However, the explosion of data from smartphones, sensors, and online platforms has transformed our ability to study human behavior and its intertwined dependence with urban areas beyond our residence.
+
+-   This complemented with advances in machine learning, causal inference, computer vision, and in data science, has opened new opportunities to study urban phenomena.
+
+-   This data is:
+
+    -   **Continuous**: it is collected in real-time.
+    -   **Comprehensive**: it covers a wide range of activities.
+    -   **Objective**: it is not subject to recall bias.
+    -   **Scalable**: it can be collected from millions of people.
+    -   **Dynamic**: it captures changes in behavior over time.
+
+-   But it also has many challenges.
+
+## Sources of large-scale data
+
+-   **Mobile phone data**: Call Detail Records (CDRs) provide information on the location and communication patterns of millions of people. Location Based Services (LBS) from apps provide more detailed information on mobility patterns through GPS geolocation.
+
+-   **Social media data**: Twitter, Facebook, Instagram, and other platforms provide information on social interactions, opinions, and activities but can also geolocalize those activities.
+
+-   **Transaction data**: Credit card transactions, e-commerce, and other financial data provide information on consumption patterns and economic activity within urban areas.
+
+-   **Sensors**: IoT devices, cameras, and other sensors provide information on environmental conditions, traffic, and other urban phenomena.
+
+-   **Satellite data**: Remote sensing data provides information on urban use, vegetation, and other environmental factors.
+
+-   **Open data**: Data from government agencies, companies, and other organizations provide information on urban infrastructure, services, and other aspects of urban life.
+
+## Sources of large-scale data
+
+Sources of large-scale data have different temporal and spatial resolutions, and different levels of detail and coverage
+
+| Feature       | Census | Social Media | Bank | CDR | GPS | Sensors & Cameras |
+|---------------|--------|--------------|------|-----|-----|-------------------|
+| High Accuracy |        | ✔️           | ✔️   |     | ✔️  | ✔️                |
+| Availability  | ✔️     | ✔️\[?\]      |      |     | ️    |                   |
+| Pop. Coverage |        |              | ✔️   | ✔️  |     | ✔️                |
+| Real-time     |        | ✔️           | ✔️   | ✔️  | ✔️  | ✔️                |
+| Cost          |        |              | ✔️   | ✔️  | ✔️  | ✔️                |
+| Privacy       | ✔️     |              |      |     |     |                   |
+
+-   Because of that, different datasets are used to study different aspects of urban life.
+
+## Mobile phone data to understand human behavior
+
+-   Mobile phone data is one of the most important sources of data for studying human behavior in urban areas. Different sources and at different temporal and spatial resolutions.
+
+![Sources of geolocalized activity from mobile phones](images/mobilephonedata.png)
+
+## Mobile phone data to understand human behavior
+
+Example, Location Base Services (LBS) data.
+
+![](images/lbs.jpg)
+
+## Transactional data to understand human behavior in cities
+
+-   Transactional data (credit card transactions, transport cards) is another important source of data for studying human behavior in urban areas.
+
+-   It provides information on consumption patterns, mobility patterns, and other economic activities.
+
+-   Example: Urban lifestyles extracted from credit card transactions. From @di_clemente_sequences_2018
+
+![](images/41467_2018_5690_Fig4_HTML.png){fig-align="center"}
+
+## Transactional data to understand human behavior in cities
+
+-   Example: recovery of urban consumption patterns after COVID-19 lockdowns in Mexico. By analyzing credit card transactions, we can see how consumption patterns changed during the lockdown and how they recovered after the lockdown was lifted.
+
+![Urban consumption patterns before, during, and after COVID-19 lockdowns in Mexico. From Moro et al](images/ccmexico.jpg)
+
+## Social media data to understand human behavior in cities
+
+-   Social media data is/was another way to understand human behavior in urban areas.
+
+-   Apart from geolocalization, it also provider information about social interactions, opinions, and activities.
+
+-   However, since 2015 and for privacy reasons, many social media platforms started to deprecate the use of geolocation of activities in their APIs.
+
+-   Still some social media platforms provide some geographical information at aggregated (zip code) level.
+
+## Social media data to understand human behavior in cities
+
+Example: using geographical mobility, activity, and content analysis from Twitter to understand patterns of unemployment in Spain @llorente_social_2015
+
+![Geographical Mobility in Spain using tweets. From @llorente_social_2015](images/pone.0128692.g001.PNG_L.png)
+
+## Imagery datasets to understand urban dynamics
+
+Advances in satellite technology and aerial and street imaging have provided new opportunities to study urban areas.
+
+For example, Low-Earth orbit (LEO) constellations capture detailed (up to 1-meter resolution) and frequent (daily/hourly intervals) urban environments.
+
+::: {layout-ncol="2"}
+![Low-Earth Orbit satellites visualization from [LeoLabs](https://platform.leolabs.space/visualizations/leo#view=originCountry)](images/leovisualization.jpg){height="410px"}
+
+![Super-resolution (15cm) imagery from the [WorldView-3 Maxar mission](https://earth.esa.int/eogateway/missions/worldview-3)](images/worldview-3.jpg){height="410px"}
+:::
+
+## Imagery datasets to understand urban dynamics
+
+Most of the satellite high-resolution imagery is commercial, but some of them are availble for scientific use like
+
+-   The European's Union [Sentinel](https://www.sentinel-hub.com/)
+-   or [Copernicus](https://scihub.copernicus.eu/) services, or
+-   the [U.S. Geological Survey](https://earthexplorer.usgs.gov) hub.
+
+![European's Union Sentinel Browser](images/sentinel.png){fig-align="center"}
+
+## Imagery datasets to understand urban dynamics
+
+Example: Wealth estimation from satellite imagery in African cities. From @blumenstock2021using
+
+![Wealth estimation from satellite imagery in Nigeria cities. From @blumenstock2021using](images/satellite_wealth.png){fig-align="center"}
+
+## Imagery datasets to understand urban dynamics
+
+Example: change in industrial and economic areas, nights at light to estimate GDP. Offical GDP vs estimated.
+
+![Change in industrial and economic areas, nights at light to estimate GPD. From [The Economist](https://www.economist.com/graphic-detail/2022/09/29/a-study-of-lights-at-night-suggests-dictators-lie-about-economic-growth)](images/change_in_GDP.png){fig-align="center"}
+
+## Imagery datasets to understand urban dynamics
+
+Advances in computer vision and machine learning have allowed the automatic extraction of information from street imagery. That allows tranforming street imagery or video into structured data about urban areas and period's behavior.
+
+![AI Visual recognition of a street image](images/AI-Visual-Recognition.jpg){fig-align="center"}
+
+## Imagery datasets to understand urban dynamics
+
+For example, large-scale datasets from Google Street View have been used to estimate hidden neighborhood characteristics like socioeconomic status, crime rates, or even political preferences @gebru_using_2017 @fan_urban_2023
+
+::: {layout-ncol="2"}
+![Detecting cars to detect political preferences. From @gebru_using_2017](images/car_streetview){height="410px"}
+
+![Feature extraction from Google Street view. From @fan_urban_2023](images/poi_streetview.jpg){height="410px"}
+:::
+
+## Sensor datasets
+
+Finally, the rise of sensors and the "smart city" revolution has provided new sources of continuous data streams about city operations and resident activities. Embedded in infrastructure like traffic lights, public transportation systems, waste management facilities, and utility grids, these sensors provide real-time information about urban phenomena.
+
+::: columns
+::: {.column width="60%"}
+For example we have:
+
+-   Sensors about Air Quality in our cities, like official ones from the [EPA](https://www.epa.gov/outdoor-air-quality-data) or community science efforts like [PurpleAir](https://www2.purpleair.com/) in the US.
+
+-   Noise measurements like the [Noise-Map](https://noise-map.com/) project.
+
+-   Traffic sensors like the [INRIX](https://www.inrix.com/) project.
+:::
+
+::: {.column width="40%"}
+![Air Quality Data from Purpleair](images/purpleair.jpg)
+:::
+:::
+
+## Open datasets
+
+Apart from the Census, there are many open datasets that can be used to study urban phenomena. In particular, many city authorities, and government agencies provide open data about urban infrastructure, services, and other aspects of urban life.
+
+For example, the [Open Data Portal](https://data.cityofnewyork.us/) of New York City or the [Analyze Boston Portal](https://data.boston.gov/) provide data on a wide range of topics, from crime rates to building permits to restaurant inspections.
+
+![Canopy Change Assesment Project in the Boston Open data Portal](images/canopy.jpg)
+
+## AI and Machine Learning for Urban Science
+
+At the same time large-datasets become available advances in AI and machine learning have revolutionized the way we analyze and extract information from those datasets.
+
+-   Traditional methods fall short to handle the scale, variety, and dynamic of large-scale datasets. We need advance methods to extract information from them.
+
+-   For example
+
+    -   **Deep-learning computer vision** can easily classify and extract information from street imagery @fan_urban_2023.
+    -   **Modern causal inference** methods like propensity matching, synthetic control can help find relationships between urban interventions and outcomes @abadie_econometric_2018.
+    -   **Network science** can help us understand the structure and dynamics of urban dependency networks in urban areas @yabe_behaviour-based_2024.
+    -   **Advance machine learning** can help us predict urban phenomena like pandemic breakouts @stolerman_using_2023.
+
+## AI and Machine Learning for Urban Science
+
+-   Spatial or geographical information is "different". Its structure is different than tabular data or imagery datasets. In general spatial data is characterized by:
+
+    -   **Spatial autocorrelation**: nearby locations are more similar than distant locations.
+    -   **Spatial heterogeneity**: different locations have different characteristics.
+    -   **Spatial dependence**: the value of a location depends on the values of nearby locations.
+
+-   Thus, algorithms need to be adapted to handle that data structure, like for example spatial regressions, spatial clustering, spatial machine learning, spatial causal inference or spatial networks. Failure to use those methods can lead to biased results.
+
+![Spatial Network of frienships between cities](images/facebook.png)
+
+## Advantages of large-scale data in Urban Science
+
+Why large-scale data has revolutionize Urban Science?
+
+1.  **Granularity**
+2.  **Addressing the causal question**
+3.  **Detecting small effects**
+4.  **Uncovering complex urban interdependencies**
+
+## Advantages of large-scale data in Urban Science
+
+1.  **Granularity**: Large-scale data provides more detailed temporal and spatial information about individual behavior and urban phenomena. For example analyzing mobile phone data during the COVID-19 pandemic allowed us to track the spread of the virus and the effectiveness of interventions.
+
+![Average distance travelled by residents in NYC before and after social distance measures. From mobile phone mobility data](images/covidmobility.jpg)
+
+## Advantages of large-scale data in Urban Science
+
+2.  **Addressing the causal question:** Large-scale data is the appropriate data for causal inference because:
+
+-   Causal inference requires more statistical power and complicated analysis designs than descriptive methods
+-   It might contain a wide range of natural experiments or individual experiments that can be used to identify causal relationships.
+-   Large-scale data is more likely to contain the necessary variation to identify different groups of people or areas to help in the design of quasi-experiments using conterfactual machine learning techniques like Synthetic Control or propensity matching.
+
+## Advantages of large-scale data in Urban Science
+
+2.  **Addressing the causal question:**
+
+-   Example: causal effect of food environments on the consumption of fast food using individual experiments --change of work context-- within large-scale datasets. From @garcia_bulle_bueno_effect_2024
+
+![Change in visits to Fast Food Outlets after changing workplaces and their food environments](images/foodcausal.png){fig-align="center"}
+
+## Advantages of large-scale data in Urban Science
+
+3.  **Detecting small effects:**
+
+-   Surveys often **lack the statistical power to detect small effects** (e.g., NYC DOT mobility survey: \~3,000 participants).
+-   Small impacts, like a bike lane increasing cycling rates, may go unnoticed in surveys but can be captured through large-scale mobile phone data.
+-   Unlike large-scale behavior changes (e.g., COVID-19 lockdowns or natural disasters), **most urban interventions produce small effects** that are harder to detect.
+-   Example: During the 2014 London Underground strikes, travel card data revealed that only 5% of commuters permanently adopted better routes post-strike (@larcom2017).
+
+## Advantages of large-scale data in Urban Science
+
+4.  **Uncovering complex urban interdependencies**:
+
+-   Unlike traditional data collection methods, which often operate in silos, large-scale datasets (especially those coming from human activity) **reflect how disparate systems in urban areas –like public transit, housing affordability, and air quality- are intricately linked.**
+-   For example, high-resolution mobility data can show how changes in public transportation routes influence ridership first, but also experience segregation, housing demand, or local air pollution levels.
+-   **Cities are complex systems**, with interconnected components—people, infrastructure, businesses, and the environment—interacting across spatial and temporal scales.
+-   Understanding these interactions through large-scale data is essential for addressing urban challenges holistically.
+
+## Challenges of large-scale data in Urban Science
+
+However, large-scale data also has many challenges:
+
+1.  **Large scale Data** $\neq$ Truth.
+2.  **Data Accessibility**.
+3.  **Privacy and Ethical Concerns**.
+4.  **Complexity**.
+
+## Challenges of large-scale data in Urban Science
+
+1.  **Large scale Data** $\neq$ Truth.
+
+-   No matter how large the dataset, it is shaped by the method and biases inherent in its collection, pre-processing, and interpretation.
+-   **Designed data** (census) vs. **repurposed data** (mobile phone data). Repurposed data is not collected and designed for research purposes.
+-   Most critical challenges of repurposed data (see @salganik2019bit):
+    -   **Bias / representativity:** not all people, activity, areas are included in the data. Demographic, temporal, and geographical biases can distort our understanding of urban challenges.
+    -   **Drifting:** the data might change over time because technological, legal, or social changes.
+    -   **Algorithmically counfounded:** the data might be biased because of the algorithms used to collect it.
+    -   **Dirty:** the data might be noisy, incomplete, or have errors.
+
+## Challenges of large-scale data in Urban Science
+
+1.  **Large scale Data** $\neq$ Truth
+
+-   Example of algorithmically confounded:
+    -   Very recent large-scale study on Facebook found that its algorithm plays little role in driving political polarization @guess2023.
+    -   However, some researchers argue the paper is flawed because, during the study, Facebook instituted a series of emergency changes to its algorithm to reduce the spread of misinformation. However, some researchers [argue](https://www.science.org/doi/10.1126/science.abp9364#elettersSection) the paper is flawed because, during the study, Facebook instituted a series of emergency changes to its algorithm to reduce the spread of misinformation
+-   Example of dirty large-scale datasets:
+    -   A German performance artist carried a [cart full of smartphones](https://www.pcmag.com/news/artist-manipulates-google-maps-traffic-view-with-cart-full-of-smartphones) in different streets of Berlin to trick Google Maps into indicating that traffic was terrible in those areas.
+
+## Challenges of large-scale data in Urban Science
+
+1.  **Large scale Data** $\neq$ Truth
+
+::: callout-important
+How can we adress these problems:
+
+-   To alleviate biases, we can use techniques like pre- or post- stratification, weighting, or matching to make the data more representative of the population.
+-   Always try to compare large-scale data or aggregates of them to other datasets.
+-   Implement robustness methods to check how results depend on these alleviation methods.
+-   If your study is longitudinal, implement these alleviations methods in time to control for potential drifting.
+-   Learn how the data is collected, the original purpose of the data, the algorithms used to collect it, and even the technologies used to collect it and process it. :::
+:::
+
+## Challenges of large-scale data in Urban Science
+
+2.  **Data Accessibility**.
+
+-   Many large-scale datasets are controlled by private corporations or require significant financial resources
+-   This can limit the ability of researchers to access and analyze the data, and can exclude some low-resource communities and groups to participate in the analysis and potential value of the data.
+-   Regulated access or data public releases can help alleviate this problem.
+-   Initatives like data challenges, data-for-good programs, or data collaboratives exemplify these efforts.
+
+## Challenges of large-scale data in Urban Science
+
+3.  **Privacy and Ethical Concerns**.
+
+-   Large-scale data often contains sensitive information about individuals, such as their location, social interactions, or financial transactions.
+-   This raises concerns about privacy, consent, and data security.
+-   Given the complexity of large-scale data, privacy might be even harder. For example, it is possible to uniquely identify individuals in highly anonymized mobility datasets by only knowing a small set of places visited by them @demontjoye2013.
+-   Researchers must take steps to protect the privacy of individuals in the data, such as aggregating or anonymizing the data, obtaining informed consent, and following ethical guidelines.
+
+## Challenges of large-scale data in Urban Science
+
+4.  **Complexity**.
+
+-   Large-scale data is often complex, noisy, and unstructured, making it difficult to analyze and interpret.
+-   Using and understanding large-scale data requires advanced computational and statistical methods, as well as domain-specific knowledge.
+-   This can be a barrier for researchers without the necessary expertise or resources.
+-   Misinterpretations of large-scale data can lead to incorrect conclusions and misguided policy recommendations.
+-   For example, because we are dealing with massive amounts of data, there is always the possibility of finding spurious correlations that are not meaningful or do not reflect causal relationships, like the famous Google Flu Trends disaster @lazer2014parable or correlations in explaining economic growth @sala-i-martin_i_1997.
+
+# \[SCIENCE\]
+
+## Urban Science vs Computational Urban Science
+
+-   Urban Science is the study of cities and urban areas, focusing on their structure, dynamics, and challenges.
+
+-   Integrates disciplines like sociology, geography, economics, urban planning, and computer science.
+
+-   Computational Urban Science can be viewed as an extension of Urban Science, studying old problems with:
+
+    -   More emphasis on the use of large-scale datasets and computational models to study urban challenges.
+    -   More focus on the "why" rather than the "what" of urban phenomena.
+    -   More emphasis on the use of AI, machine learning, and other computational methods to analyze urban data.
+
+## Urban Science vs Computational Urban Science
+
+But the use of large-scale data and computational methods has permitted to study new problems that were not possible before and transformed the way we study old problems
+
+Let's see some examples:
+
+-   From descriptive observations to predictive and prescriptive models.
+-   Cities as a complex systems
+-   Unveiling the universal laws of human behiavor in cities.
+
+## From descriptive observations to predictive and prescriptive models.
+
+-   One crucial characteristic of Computational Urban Science is the different dimensions and nature of the problem under study.
+
+-   Here is a list of typical problems under study in Urban Science
+
+::: callout-note
+::: columns
+::: {.column width="50%"}
+-   Urban Planning
+-   Transportation
+-   Urbanization
+-   Housing
+-   Environmental sustainability
+:::
+
+::: {.column width="50%"}
+-   Public health
+-   Resilience
+-   Inequality and Segregation
+-   Governance
+-   Epidemics
+-   Economic Growth
+-   ...
+:::
+:::
+:::
+
+Most of this problems involve the study of the relationship between human behavior, urban environment and societal outcomes.
+
+## From descriptive observations to predictive and prescriptive models.
+
+But are different in the level of predictability of human behavior.
+
+**Hard problems**
+
+-   For example, transportation or environmental sustainability problems can be well-framed using computational optimization tools, atmospheric models, and simultation models because they are based on physical laws and highly predictible human behavior.
+
+-   In transportation, for example, poeple try to optimize their routes and thus, we can predict the traffic congestion in a city using the number of cars, the road network, and the traffic lights.
+
+-   Hard problems in urban areas are highly predictable and can be solved using computational models.
+
+## From descriptive observations to predictive and prescriptive models.
+
+Example: traffic simulation using agent-based-simulations in Berlin using the [MATSim](https://matsim.org) open source software.
+
+{{< video https://www.youtube.com/embed/rWTFg1UkZTc width="600" height="400" title="MATSim simulation of traffic" >}}
+
+## From descriptive observations to predictive and prescriptive models.
+
+But are different in the level of predictability of human behavior.
+
+**Soft problems**
+
+-   But other problems like urban planning, housing, inequality, or governance are based on **less predictable and more complex human behavior** subject to highly variable social, economic, and political factors.
+
+-   Even the same problem can have both hard and soft components. For example, predicting what individuals are going to do at lunch time is very easy (hard problem), but the place they choose might be more difficult to predict.
+
+-   Large-scale data is changing also the nature of some problems. For example, decades ago, it was very hard to predict store patronage, the segregation of people in their daily moves, the risk of getting infected by attending an event, or the impact of transportation policies on business
+
+-   **Computational Urban Science is transforming these problems from descriptive observations to predictive and prescriptive models.**
+
+## From descriptive observations to predictive and prescriptive models.
+
+Detecting income segregation at individual places in urban areas @moro_mobility_2021
+
+```{=html}
+<iframe width="780" height="500" src="https://inequality.media.mit.edu/" title="The Atlas of Inequality"></iframe>
+```
+## Cities as complex systems
+
+Another characteristic of Computational Urban Science is the study of cities as complex systems, challenging the prevailing urban science paradigm that the "City is a Tree" @alexander2017city
+
+-   Traditional studies in urban science were based on the hierarchical "Environment-Behavior-Outcome" paradigm (solid lines)
+
+![Traditional (solid) versus current (solid + dashed) view of urban challenges](images/traditional.jpg){fig-align="center" width="600"}
+
+-   For example: new bus route (environment) $\rightarrow$ more people using the bus (behavior) $\rightarrow$ less traffic congestion (outcome).
+
+## Cities as complex systems
+
+This view is being challenged by the "City is a Network" paradigm (solid + dashed lines) specially by the works of Jane Jacobs @jacobs_death_1993, Christopher Alexander @alexander2017city and more recently Mike Batty @batty2009cities.
+
+-   Cities are complex networks (or systems of systems) where environments, individual and collective behaviors, and outcomes are interconnected in intricate ways (solid + dashed lines )
+
+![Traditional (solid) versus current (solid + dashed) view of urban challenges](images/traditional.jpg){fig-align="center" width="600"}
+
+-   Small surveys cannot map or detect these complex interdependencies, but large-scale data can. This is the core of Computational Urban Science: **the study of urban challenges as complex system of systems**.
+
+## Cities as complex systems
+
+For example. Here is the manually annotated causal map of how environmental health socio and economic systems were intertwined during the COVID-19 pandemic
+
+![A preliminary causal diagram demonstrating the complexity of the COVID-19 pandemic environmental–health–socio–economic system. From](images/systems-08-00020-g001.png){fig-align="center" width="600"}
+
+## Unveiling the universal laws of human behavior in cities.
+
+Finally, access to more granular data about people's behavior has permitted establishing a set of scientific rules of laws that define the core principles of human behavior in cities.
+
+Before Computational Social Science, some of these principles were known but not quantified or generalized. For example, here are the "Three Laws of Geography" @zhu2024 @leitner2018laws
+
+-   **Tobler's First Law**: "Everything is related to everything else, but near things are more related than distant things."
+-   **Second Law**: "Geographical variables can vary in an uncontrolled way."
+-   **Third Law**: Geographical variables of similar geographical configurations and more similar.
+
+or the "Law of Gravity" @zipf1946 of aggregated flow of movements $T_{ij}$ between places $i$ and $j$ $$
+T_{ij} = \frac{P_i O_j}{d_{ij}^\beta}
+$$ where $O_j$ is the attractiveness of area $j$ and $P_i$ is the population of place $i$.
+
+## Unveiling the universal laws of human behavior in cities.
+
+Computational Urban Science has permitted to quantify and generalize these laws, and even to find new ones. For example, here are some of the most recent ones:
+
+-   Radiation model: attractiveness of areas can be modified by the presence of other areas, which builds on the concept of "intervening opportunities" @simini_universal_2012
+
+![Universal distance-frequency distribution of population flows, from @schlapfer_universal_2021](images/radiation.jpeg){fig-align="center" width="600"}
+
+## Unveiling the universal laws of human behavior in cities.
+
+Computational Urban Science has permitted to quantify and generalize these laws, and even to find new ones. For example, here are some of the most recent ones:
+
+-   Universal visitation Law of human mobility, which generalizes the gravity law by including also the and frequency of visits to a place @schlapfer_universal_2021
+
+![Universal distance-frequency distribution of population flows, from @schlapfer_universal_2021](images/41586_2021_3480_Fig1_HTML.png.jpeg){fig-align="center" width="600"}
+
+## Unveiling the universal laws of human behavior in cities.
+
+Computational Urban Science has permitted to quantify and generalize these laws, and even to find new ones. For example, here are some of the most recent ones:
+
+-   The universal law of urban scaling, which stablishes that many urban quantities scale with the population of the city with a power-law exponent @bettencourt_origins_2013
+
+![Scaling of urban infrastructure and socio-economic output, from @bettencourt_origins_2013](images/bettencourt2013.png){fig-align="center" width="600"}
+
+## Unveiling the universal laws of human behavior in cities.
+
+Computational Urban Science has allowed also to understand the emergence of those laws by finding the microscopic rules that generate them.
+
+-   For example, the radiation model can be derived from the concept of "intervening opportunities" and the "universal vistitation law" from the concept of "preferential attachment" in the Exploration and Preferential mobility models.
+
+-   This "emergence" of macroscopic universal laws from very simple microscopic description of human behavior might explain whay those laws are universal across different geographical, cultural, and societal context.
+
+-   This is also at the core of Computational Urban Science: **how local interactions between individuals, environments, and societal outcomes create universal laws to understand, predict, and address urban challenges globally.**
+
+## Computational Urban Science
+
+In summary, we can define Computational Urban Science as:
+
+-   Urban: focused on Urban Challenges
+-   Computational: Large-scale datasets + computational methods
+-   Science: Cities as highly predictable and prescriptive complex emergent systems.
+
+More reading:
+
+-   Bit by Bit, by Salganik @salganik2019bit
+-   The City is not a tree @alexander2017city
+-   The City is not a static tree @moro2022city
+-   Understanding Urban Economies, Land Use, and Social Dynamics in the City: Big Data and Measurement @saiz_understanding_2023
+
+
+
+## References {.scrollable}
