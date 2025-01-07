@@ -1,5 +1,6 @@
 ---
 title: "Access to the Server"
+date: last-modified
 ---
 
 ## Course server
@@ -16,7 +17,7 @@ Here are the instructions to access the server:
 
 ## Working with the server
 
-Please, check the instructions to work remotely on the server using Jupyter Notebooks, RStudio or VSCode.
+Please, check the [instructions to work](computing-working.qmd) remotely on the server using Jupyter Notebooks, RStudio or VSCode.
 
 ## Rules of access and use of the course server
 

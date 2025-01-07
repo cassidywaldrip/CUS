@@ -1,74 +1,78 @@
 ---
 title: "Working on the server"
+date: last-modified
 ---
 
-Our course server, `stella.northeastern.edu` is an ubuntu machine. The following instructions will help you set up and use Rstudio, VSCode or Jupyter Notebooks to work on the server and access the data.
-
+Our course server, `stella.northeastern.edu` is an Ubuntu machine. The following instructions will help you set up and use Rstudio, VSCode, or Jupyter Notebooks to work on the server and access the data.
 
 ## Data
-All data for the course will be in the 
 
-```bash
+All data for the course will be in the
+
+``` bash
 /data/CUS
 ```
 
-folder. You will have permissions to access the data but not to write on that directory. If that is needed, please contact the instructors.
+folder. You will have permissions to access the data but not to write on that directory. If that is needed, please get in touch with the instructors.
 
+## Home Directory
 
-## Home directory
-You can write your scripts, other data, and final anlysis and plots in your home directory which will be 
+You can write your scripts, other data, and final analysis and plots in your home director,y which will be
 
-```bash
+``` bash
 /home/student1
 ```
+
+Your home directory contains the folder `labs` where you can find the Quarto notebooks for each of the labs.
 
 ## Coding
 
 ### Using Rstudio
 
-You can work **on** the server using RStudio Server. Open a browser on your local machine and navitage to:
+You can work **on** the server using RStudio Server. Open a browser on your local machine and navigate to:
 
-```bash
+``` bash
 http://stella.northeastern.edu:8787
 ```
-- Your login and password are the same as your credentials to access the server 
-- You will we working from your home directory in the server. You can export final analysis and plot using the "Files" tab or use a SFTP tool to connect to your 
 
-![Example of connection to the RStudio Server at stella](./images/rstudio_stella.png)
+-   Your login and password are the same as your credentials to access the server
+-   You will we working from your home directory in the server. You can export the final analysis and plot using the "Files" tab or use a SFTP tool to connect to your account in `stella`
 
+![Example of connection to the RStudio Server at `stella`](./images/rstudio_stella.png)
 
 ### Using Visual Studio Code
 
-1. Verify that you can connect to `stella` using SSH by running the following command from a terminal in your computer. Change the `studentX` login as appropriate.
-```bash
+1.  Verify that you can connect to `stella` using SSH by running the following command from a terminal in your computer. Change the `studentX` login as appropriate.
+
+``` bash
 ssh studentX@stella.northeastern.edu
 ```
-2. **Optional:** While password-based authentication to access `stella` using ssh is supported, we recommend setting up **key base authentication** for `stella`. See the the [Tips and Tricks](https://code.visualstudio.com/docs/remote/troubleshooting#_configuring-key-based-authentication) at the VSCode homepage.
 
-3. Open `vscode` and click on the Extensions panel button. Install the [Remote - SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+2.  **Optional:** While password-based authentication to access `stella` using SSH is supported, we recommend setting up **key base authentication** for `stella`. See the [Tips and Tricks](https://code.visualstudio.com/docs/remote/troubleshooting#_configuring-key-based-authentication) at the VSCode homepage.
 
-4. In `vscode` select **Remote-SSH: Conect to Host..** or use the **Remote Explorer* on the left sidebar
+3.  Open `vscode` and click on the Extensions panel button. Install the [Remote - SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
 
-5. Add a new connection using the same `studentX@stella.northeastern.edu` as in step 1.
+4.  In `vscode` select **Remote-SSH: Connect to Host..** or use the \*\*Remote Explorer\* on the left sidebar
 
-6. After a moment, VS Code will connect to the SSH server and set itself up.
+5.  Add a new connection using the same `studentX@stella.northeastern.edu` as in step 1.
 
-7. Once connected you will see an empty window. Open any folder or workspace in the remote machine using the usual *File* menu.
+6.  After a moment, VS Code will connect to the SSH server and set itself up.
+
+7.  Once connected, you will see an empty window. Open any folder or workspace in the remote machine using the usual *File* menu.
 
 See more instructions in the [VS Code Remote Development using SSH page](https://code.visualstudio.com/docs/remote/ssh)
 
 ![Example of connection to stella using VSCode](./images/vscode_stella.jpg)
 
-
 ### Using Jupyter Notebooks
 
-PythonHub is available in `stella`. Open a browser window and navigate to 
+JupyterLab is available in `stella`. Open a browser window and navigate to
 
-```bash
+``` bash
 https://stella.northeastern.edu:8000
 ```
 
-- Again, your login and password are the same as your credentials to access the server 
-- You will we working from your home directory in the server. 
+-   Again, your login and password are the same as your server access credentials.
+-   You will be working from your home directory on the server.
 
-![Example of connection to stella using PythonHub](./images/python_stella.png)
+![Example of connection to stella using JupyterLab](./images/python_stella.png)
