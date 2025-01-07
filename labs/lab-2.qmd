@@ -59,13 +59,17 @@ library(tidycensus)
 
 ## Combining census data with OSM
 
-## Practical: Viewing health inequalities through the lens of the transit network
+## Transit accessibility and inequality
+
+In future weeks: controlling for socioeconomic variables to understand this relationship
 
 ## Challenge: Extend this analysis
 
 -   Extend your analysis to other census variables
 
 -   Extend your analysis to another city (try to write code that will work for both cities / any city)
+
+-   Extend / compare other transit infrastructure
 
 ## Closing thoughts
 
