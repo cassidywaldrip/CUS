@@ -63,6 +63,8 @@ library(tidycensus)
 
 In future weeks: controlling for socioeconomic variables to understand this relationship
 
+In future weeks: What is the actual effect of behavioral data beyond census?
+
 ## Challenge: Extend this analysis
 
 -   Extend your analysis to other census variables
