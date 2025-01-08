@@ -30,9 +30,6 @@ website:
       - icon: github
         href: https://github.com/SUNLab-NetSI/CUS
         text: "Course Github Repo"
-      - icon: home
-        href: https://github.com/SUNLab-NetSI/CUS
-        text: "Home"
         
     style: "docked"
     search: true
@@ -58,6 +55,8 @@ website:
             text: Access to the server
           - href: computing-working.qmd
             text: Working with the server
+          - href: computing-toolkit.qmd
+            text: Meet the toolkit
       - section: "Project"
         contents:
           - href: project-description.qmd

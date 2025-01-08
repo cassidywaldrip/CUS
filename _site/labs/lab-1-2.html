@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Esteban Moro">
-<meta name="dcterms.date" content="2025-01-02">
+<meta name="dcterms.date" content="2025-01-04">
 
 <title>CUS - Spring 2025 - Lab 1-2 - Collect and analyze you own mobility data</title>
 <style>
@@ -107,9 +107,8 @@ ul.task-list li input[type="checkbox"] {
       <a href="../index.html" class="sidebar-logo-link">
       <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
-      <div class="sidebar-tools-main tools-wide">
+      <div class="sidebar-tools-main">
     <a href="https://github.com/SUNLab-NetSI/CUS" title="Course Github Repo" class="quarto-navigation-tool px-1" aria-label="Course Github Repo"><i class="bi bi-github"></i></a>
-    <a href="https://github.com/SUNLab-NetSI/CUS" title="Home" class="quarto-navigation-tool px-1" aria-label="Home"><i class="bi bi-home"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div>
@@ -182,6 +181,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Working with the server</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing-toolkit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Meet the toolkit</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -251,7 +256,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives">Objectives</a></li>
   <li><a href="#mobile-phone-and-google-maps-set-up" id="toc-mobile-phone-and-google-maps-set-up" class="nav-link" data-scroll-target="#mobile-phone-and-google-maps-set-up">Mobile Phone and Google Maps set up</a></li>
   <li><a href="#location-settings-and-google-timeline" id="toc-location-settings-and-google-timeline" class="nav-link" data-scroll-target="#location-settings-and-google-timeline">Location settings and Google Timeline</a></li>
   <li><a href="#download-your-personal-data" id="toc-download-your-personal-data" class="nav-link" data-scroll-target="#download-your-personal-data">Download your personal data</a></li>
@@ -290,7 +295,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 2, 2025</p>
+      <p class="date">January 4, 2025</p>
     </div>
   </div>
   
@@ -302,9 +307,16 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>In this lab, we will walk through how to setup <a href="google.com/maps/timeline">Google Timeline</a> (previously known as Google Location History) to enable you mobile phone to collect your mobility data. Once we collect enough data, we will analyze it in future sesssions.</p>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">Objectives</h2>
+<p>In this lab we will get familiar with mobility data by collecting, storing and analyzing our own mobility data. Specifically we will learn how</p>
+<ul>
+<li>To enable <a href="google.com/maps/timeline">Google Timeline</a> on our mobile phones</li>
+<li>To collect our own mobility data</li>
+<li>Familiarize ourselves with tris and visits mobility data</li>
+<li>Prepare the data for analysis</li>
+<li>Once we have enough data, we will analyze it in future labs.</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -321,7 +333,7 @@ Note
 </section>
 <section id="mobile-phone-and-google-maps-set-up" class="level2">
 <h2 class="anchored" data-anchor-id="mobile-phone-and-google-maps-set-up">Mobile Phone and Google Maps set up</h2>
-<p>You will need:</p>
+<p><a href="google.com/maps/timeline">Google Timeline</a> (previously known as Google Location History) enables to collect and visualize your location history using your mobile phone. To set it up you will need:</p>
 <ul>
 <li><p>A smartphone with Google Maps App installed: <a href="https://apps.apple.com/us/app/google-maps/id585027354">iphone</a> or <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.maps&amp;hl=en_US&amp;pli=1">android</a></p></li>
 <li><p>A Google account and you need to set up Google Maps to <a href="https://support.google.com/maps/answer/2803351?hl=en&amp;co=GENIE.Platform%3DAndroid">login in to</a> your account.</p></li>
@@ -614,13 +626,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
-          // target, if specified
-          link.setAttribute("target", "_blank");
-          if (link.getAttribute("rel") === null) {
-            link.setAttribute("rel", "noopener");
-          }
-          // default icon
-          link.classList.add("external");
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {

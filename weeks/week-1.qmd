@@ -3,7 +3,7 @@ title: "Week 1"
 subtitle: "Welcome to CUS 2025"
 editor: visual
 bibliography: ../references.bib
-csl: ../nature-communications.csl
+csl: ../ieee.csl
 ---
 
 Welcome to the course! This week we will introduce the course, ourselves, and how to access the computing resources. We will also present a brief introduction to *Computational Urban Science* and a Crash Course on GIS with `R`.
@@ -38,7 +38,6 @@ Welcome to the course! This week we will introduce the course, ourselves, and ho
 🖥️ [Lab 1-1 : Crash course on GIS with R](/labs/lab-1-1.html)
 
 🖥️ [Lab 1-2 : Collect and analyze you own mobility data](/labs/lab-1-2.html)
-
 
 <br><br>
 

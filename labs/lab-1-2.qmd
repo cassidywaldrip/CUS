@@ -15,13 +15,19 @@ execute:
 editor: visual
 logo: ./img/logo.png
 footer: "CUS, Northeastern Spring 2025"
-link-external-icon: true
-link-external-newwindow: true
+#link-external-icon: true
+#link-external-newwindow: true
 ---
 
-## Introduction
+## Objectives
 
-In this lab, we will walk through how to setup [Google Timeline](google.com/maps/timeline) (previously known as Google Location History) to enable you mobile phone to collect your mobility data. Once we collect enough data, we will analyze it in future sesssions.
+In this lab we will get familiar with mobility data by collecting, storing and analyzing our own mobility data. Specifically we will learn how
+
+- To enable [Google Timeline](google.com/maps/timeline) on our mobile phones
+- To collect our own mobility data
+- Familiarize ourselves with tris and visits mobility data
+- Prepare the data for analysis
+- Once we have enough data, we will analyze it in future labs.
 
 ::: callout-note
 Participation in this lab is completely voluntary. If you have any concerns about sharing or collecting your mobility data with Google or other providers, please don’t hesitate to reach out to the lab coordinator or instructor. We’re happy to explore alternative ways for you to participate. Your privacy matters, and we want to ensure that your involvement aligns with your preferences and comfort level.
@@ -29,7 +35,7 @@ Participation in this lab is completely voluntary. If you have any concerns abou
 
 ## Mobile Phone and Google Maps set up
 
-You will need:
+[Google Timeline](google.com/maps/timeline) (previously known as Google Location History) enables to collect and visualize your location history using your mobile phone. To set it up you will need:
 
 -   A smartphone with Google Maps App installed: [iphone](https://apps.apple.com/us/app/google-maps/id585027354) or [android](https://play.google.com/store/apps/details?id=com.google.android.apps.maps&hl=en_US&pli=1)
 
