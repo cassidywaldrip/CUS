@@ -131,3 +131,4 @@ which will be rendered like
 -   [Quarto Examples](https://quarto.org/examples/): Examples of Quarto documents.
 -   [Quarto Community](https://community.rstudio.com/c/quarto/): A forum for Quarto users to ask questions and share knowledge.
 -   [Quarto Blog](https://blog.quarto.org/): Blog posts on using Quarto for data science and research.
+-

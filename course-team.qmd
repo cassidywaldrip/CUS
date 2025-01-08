@@ -12,13 +12,9 @@ title: "Teaching team"
 
 [**Dr. Hamish Gibbs**](https://hamishgibbs.net) is is a Postdoctoral Researcher in the Social and Urban Networks Group. His research focuses on identifying and mitigating biases in large-scale mobile phone data to enhance their reliability and effectiveness for monitoring human mobility. His work aims to improve the accuracy of mobility data as a tool for informing public policy decisions, with a focus on public health emergencies. During the COVID-19 pandemic, Hamish worked as a research assistant at the London School of Hygiene and Tropical Medicine. He received his PhD from University College London where his thesis focused on addressing bias in large-scale mobility datasets, using mobility data for infectious disease modeling, and improving the privacy of mobility data used in public health emergencies.
 
-+---------------+------------------------------------------------------+
-| Office hours  | Location                                             |
-+===============+======================================================+
-| TBD           | TBD                                                  |
-+---------------+------------------------------------------------------+
-| TBD           | TBD                                                  |
-+---------------+------------------------------------------------------+
+| Office hours      | Location                         |
+|-------------------|----------------------------------|
+| 1pm-3pm, Tuesdays | 208 office at 177 Huntington Ave |
+| 1pm-3pm, Tuesdays | 208 office at 177 Huntington Ave |
 
-If these times don't work for you or you'd like to schedule a one-on-one meeting, send me an email to XXX.
-
+If these times don't work for you or you'd like to schedule a one-on-one meeting, send me an email to the instructors.

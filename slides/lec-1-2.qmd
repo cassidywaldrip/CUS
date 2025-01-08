@@ -100,7 +100,7 @@ Resources
 ::: {.column width="50%"}
 *Resources*
 
--   Higher productivity, higher waves.
+-   Higher productivity, higher wages.
 -   Higher innovation, higher patents.
 :::
 
@@ -119,7 +119,7 @@ Resources
 But cities are also home to most critical problems in our society
 
 -   **Pollution**: Urban areas are responsible for 70% of global CO2 emissions (transport + buildings)
--   **Inequality**: Even the most prosperous cities have high levels of inequality. In the US, roughly one in 6 urban residents live in property.
+-   **Inequality**: Even the most prosperous cities have high levels of inequality. In the US, roughly one in 6 urban residents live in proverty.
 -   **Crime**: Urban areas have higher crime rates than rural areas. In the US, 80% of violent crimes occur in urban areas.
 -   **Traffic**: Urban areas have higher traffic congestion. In the US, the average urban commuter spends 42 hours a year in traffic.
 
@@ -290,9 +290,9 @@ Advances in satellite technology and aerial and street imaging have provided new
 For example, Low-Earth orbit (LEO) constellations capture detailed (up to 1-meter resolution) and frequent (daily/hourly intervals) urban environments.
 
 ::: {layout-ncol="2"}
-![Low-Earth Orbit satellites visualization from [LeoLabs](https://platform.leolabs.space/visualizations/leo#view=originCountry)](images/leovisualization.jpg){height="410px"}
+![Low-Earth Orbit satellites visualization from [LeoLabs](https://platform.leolabs.space/visualizations/leo#view=originCountry)](images/leovisualization.jpg){height="350px"}
 
-![Super-resolution (15cm) imagery from the [WorldView-3 Maxar mission](https://earth.esa.int/eogateway/missions/worldview-3)](images/worldview-3.jpg){height="410px"}
+![Super-resolution (15cm) imagery from the [WorldView-3 Maxar mission](https://earth.esa.int/eogateway/missions/worldview-3)](images/worldview-3.jpg){height="350px"}
 :::
 
 ## Imagery datasets to understand urban dynamics
@@ -627,11 +627,13 @@ For example. Here is the manually annotated causal map of how environmental heal
 
 ![A preliminary causal diagram demonstrating the complexity of the COVID-19 pandemic environmental–health–socio–economic system. From](images/systems-08-00020-g001.png){fig-align="center" width="600"}
 
-## Unveiling the universal laws of human behavior in cities.
+## Unveiling the universal laws of human behavior in cities. 
 
-Finally, access to more granular data about people's behavior has permitted establishing a set of scientific rules of laws that define the core principles of human behavior in cities.
+::: {style="font-size: 92%;"}
 
-Before Computational Social Science, some of these principles were known but not quantified or generalized. For example, here are the "Three Laws of Geography" @zhu2024 @leitner2018laws
+More granular data about people's behavior has permitted establishing a set of scientific rules of laws that define the core principles of human behavior in cities.
+
+Before Computational Urban Science, some of these principles were known but not quantified or generalized. For example, here are the "Three Laws of Geography" @zhu2024 @leitner2018laws
 
 -   **Tobler's First Law**: "Everything is related to everything else, but near things are more related than distant things."
 -   **Second Law**: "Geographical variables can vary in an uncontrolled way."
@@ -640,6 +642,8 @@ Before Computational Social Science, some of these principles were known but not
 or the "Law of Gravity" @zipf1946 of aggregated flow of movements $T_{ij}$ between places $i$ and $j$ $$
 T_{ij} = \frac{P_i O_j}{d_{ij}^\beta}
 $$ where $O_j$ is the attractiveness of area $j$ and $P_i$ is the population of place $i$.
+
+:::
 
 ## Unveiling the universal laws of human behavior in cities.
 
@@ -689,7 +693,5 @@ More reading:
 -   The City is not a tree @alexander2017city
 -   The City is not a static tree @moro2022city
 -   Understanding Urban Economies, Land Use, and Social Dynamics in the City: Big Data and Measurement @saiz_understanding_2023
-
-
 
 ## References {.scrollable}
