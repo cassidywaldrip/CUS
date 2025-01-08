@@ -1,14 +1,13 @@
 ---
-title: "Lecture 2 - Maps + Census Data"
-author: "Esteban Moro"
+title: "Lecture 2 <br> Urban Data <br> Maps + Census"
+author: "Hamish Gibbs"
 institute:
   - Network Science Institute | Northeastern University
   - NETS 7983 Computational Urban Science 
-  - Last updated `r Sys.Date()`
+date: last-modified
 format: 
   revealjs:
     theme: mytheme.scss
-    multiplex: true
     code-overflow: wrap
 #    embed-resources: true
     chalkboard: true
@@ -17,9 +16,16 @@ code-line-numbers: false
 execute:
   echo: true
 editor: visual
-footer: "CUS 2025, SUNLab group"
+logo: ./images/logo_bw.png
+footer: "CUS 2025, ©SUNLab group <a href=\"https://socialurban.net/CUS\">socialurban.net/CUS</a>"
 link-external-icon: true
 link-external-newwindow: true
+title-slide-attributes:
+  data-background-image: images/logo.png
+  data-background-size: 30%
+  data-background-position: right
+bibliography: ../references.bib
+csl: ../ieee.csl
 ---
 
 ```{r}
@@ -29,37 +35,121 @@ library(countdown)
 
 # Welcome!
 
-This week: Urban Data - Maps + Census
+This week: Introduction to Urban Data - Using Census data as a tool for understanding urban systems
 
-# Recap
+\[TODO Image\]
 
-Recap from last week
+# Aims
 
-# Census
+- Understand the uses of census data in Computational Urban Science
+- Understand how data from the census can complement large-scale behavioral data
+- Understand the strengths and limitations of census data
+- Understand special considerations when combining census data with individual-level behavioral data (i.e. Ecological Fallacy and the Modifiable Areal Unit Problem)
 
-What is the census
+# Practical
 
-# Census release timeline
+-   Use the [`tidycensus`](https://walker-data.com/tidycensus/) and [`osmdata`](https://docs.ropensci.org/osmdata/) R packages to load and combine urban data in R 
+- Reproduce and extend this analysis: [*Health Inequalities in Boston by T-Stops: A Pictorial Essay*](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/)
 
-# Sidenote: ACS vs. Census
 
-# What is in the census?
+![](images/boston_health_t_stop_example.png){fig-align="center"}
 
-TODO: US Census variable explorer
+# What is the census
 
-# Sidenote: units of analysis
+Comprehensive survey measuring population characteristics. 
 
-not all census data is individual - it depends on the variable
+Around the world: 
+
+Census data collection varies in terms of frequency and data accuracy. 
+
+Some countries rely on very old censuses (DRC 1984, Iraq 1987, Afghanistan 1979).
+
+Different variables are collected by different countries. For example, *Censuses of race and ethnic origin were banned by the French government in 1978*.
+
+# The US Census 
+
+A population census is required by the constitution every 10 years
+
+The census determines electoral representation, electoral re-districting, billions of dollars in federal and state funding
+
+Collects basic information:
+  * Number of people living in a household
+  * Age, sex, race, hispanic origin, relationship to householder, housing tenure
+
+The comprehensive survey was formerly called the "short form" census
+
+The 2020 US Census cost a total of $13.7 Billion
+
+# American Community Survey (ACS)
+
+Annual survey mearuing detailed population characteristics in 4 domains: **Demographic**, **Economic**, **Housing**, **Social** characteristics.
+
+See: [ACS Subjects Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html)
+
+Sample of US households (3.5 Million in 2015). 
+
+Responses are: re-weighted to adjust for sampling bias, modelled to impute responses for small areas and analyse variance of different population characteristics.
+
+Because of the need to collect sufficient data for modelling detailed population characteristics, ACS estimates are released in rolling 5-year windows (i.e. 2020 release uses data from 2016 to 2020).
+
+# The Census is a form of "big data" 
+
+First UK census was the basis for E. G. Ravenstein's "Laws of Migration" [TODO cite]
+
+Census data was tabulated by hand and revealed regularities in migration behavior. 
+
+Intuition is the basis for the Gravity and Intervening Opportunities models. 
+
+# Fast vs. Slow data
+
+Traditional urban studies research is heavily reliant on Census data
+
+Ideas like residential anchoring, proximity-based accessibility produce scientific questions which are tractable using census data alone.
+
+"Fast" behavioral data has expanded the questions that we can ask about urban systems. 
+
+[TODO Table comparing fast and slow data]
+
+# Combining census and behavioral data
+
+Census data only represent some aspects of human behavior. Luckily, these are often complementary to 
+
+Variables such as education, race, gender, and income, independently explain approximately 50–55% of the variation in economic outcomes (e.g., median household income or property values) [cite - moro infrequent]
+
+Similar finding: Exposure—driven by demographic distributions like SES—accounts for half of the variance in cross-class friendships [cite - chetty II]
+
+[TODO Figure here]
+
+# Sidenote: Units of analysis
+
+Census variables can refer to: 
+* Individuals (Age, Gender, Race/Ethnicity, Educational Attainment, Employment Status) 
+* Households (Income, Household Size, Housing Tenure)
+
+Different variables refer to different population demonimators (i.e. employment statistics are meaningful for the working-age population).
+
+
+# Sidenote: Geographic references
+
+-   Hierarchy of US admin geographies 
+
+[TODO image of hierarchy from tidycensus]
+
+- TODO GEOID naming convention
+
+*take note of boundary changes*
 
 # Census: a 'Gold Standard' Survey
 
-The census is a "gold standard" survey, but it still has limitations
+The census is a "gold standard" survey, but it still has limitations: 
 
-Systematically difficult groups
+- Systematically difficult groups
 
-Small population subsets
+- Small population subsets
 
-Think about it like fishing: \[ONS fishing example\]
+- Think about it like fishing: \[ONS fishing example\]
+
+[TODO Image here]
 
 # Accessing census data
 
@@ -67,30 +157,32 @@ Think about it like fishing: \[ONS fishing example\]
 
 -   Tidycensus
 
-# Geospatial references for census data
-
--   Hierarchy of US admin geographies
-
--   (optional) hierarchy of UK geographies
-
--   GEOID naming convention
-
-*take note of boundary changes*
-
-# Combining census data
+# Managing spatial references of census data
 
 Spatial overlap, resolution mismatch
 
 aggregation vs. re-projection
 
-Special case: individual level data
+See: World Pop Re-weighted data
+
+# Combining census data with behavioral data
+
+TODO How census data is used (demographic characteristics are attributed to individuals by home / work location)
+
+By majority? By random choice? By repeated random choices?
+
+This raises the **ecological fallacy**
 
 # Ecological fallacy & MAUP
+
+Classic example of MAUP: you can change the results of a regression analysis by re-districting your data
+
+In geostatistics: a *support* is the fundamental unit of geostatistical analysis
+
+In satellite imagery data: a support would be a specific pixel resolution. In census data, it is the chosen spatial tesselation.  
 
 # Sidenote: Privacy and the census
 
 K-anonymity (old model) vs. differential privacy (new model)
 
 Controversy about count accuracy when DP was introduced
-
-#
