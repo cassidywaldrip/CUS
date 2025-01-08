@@ -137,7 +137,7 @@ Different variables refer to different population demonimators (i.e. employment 
 
 - TODO GEOID naming convention
 
-*take note of boundary changes*
+*Take note of boundary changes. GEOIDs are re-defined every 10 years, meaning that additional work is required to compare data between censuses.*
 
 # Census: a 'Gold Standard' Survey
 

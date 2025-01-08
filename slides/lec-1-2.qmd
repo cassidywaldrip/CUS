@@ -75,7 +75,7 @@ to explore the dynamics of cities and urban challenges.
 
 Urban areas are the epicenter of human activity. Living in cities has many advantages, but also many challenges.
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 *People*
 
@@ -92,11 +92,11 @@ Resources
 ::: {.column width="40%"}
 ![Growth of population in Urban areas](images/urbanization_chart.jpg){fig-align="left" width="600"}
 :::
-:::
+:::::
 
 ## Why urban?
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 *Resources*
 
@@ -110,7 +110,7 @@ Resources
 -   Higher number of friends
 -   Higher social capital
 :::
-:::
+:::::
 
 ![Distribution of social interconnectivity, Productivity and Innovation in small vs large cities. From @arvidsson_urban_2023](images/41562_2022_1509_Fig1_HTML.jpeg){fig-align="center"}
 
@@ -154,7 +154,7 @@ For example, income inequality is rising in cities across the world, from the US
 
 Spatial (residential) segregation happens in all major cities.
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ![Johannesburg, Southafrica from [Unequalscenes.com](https://unequalscenes.com/south-africa)](images/southafrica.jpg){height="300px"}
 :::
@@ -162,7 +162,7 @@ Spatial (residential) segregation happens in all major cities.
 ::: {.column width="50%"}
 ![Santa Fe, Mexico. From [Unequalscenes.com](https://unequalscenes.com/)](images/mexico.jpg){height="300px"}
 :::
-:::
+:::::
 
 ## Why urban?
 
@@ -337,7 +337,7 @@ For example, large-scale datasets from Google Street View have been used to esti
 
 Finally, the rise of sensors and the "smart city" revolution has provided new sources of continuous data streams about city operations and resident activities. Embedded in infrastructure like traffic lights, public transportation systems, waste management facilities, and utility grids, these sensors provide real-time information about urban phenomena.
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 For example we have:
 
@@ -351,7 +351,7 @@ For example we have:
 ::: {.column width="40%"}
 ![Air Quality Data from Purpleair](images/purpleair.jpg)
 :::
-:::
+:::::
 
 ## Open datasets
 
@@ -538,8 +538,8 @@ Let's see some examples:
 
 -   Here is a list of typical problems under study in Urban Science
 
-::: callout-note
-::: columns
+:::::: callout-note
+::::: columns
 ::: {.column width="50%"}
 -   Urban Planning
 -   Transportation
@@ -557,8 +557,8 @@ Let's see some examples:
 -   Economic Growth
 -   ...
 :::
-:::
-:::
+:::::
+::::::
 
 Most of this problems involve the study of the relationship between human behavior, urban environment and societal outcomes.
 
@@ -601,6 +601,7 @@ Detecting income segregation at individual places in urban areas @moro_mobility_
 ```{=html}
 <iframe width="780" height="500" src="https://inequality.media.mit.edu/" title="The Atlas of Inequality"></iframe>
 ```
+
 ## Cities as complex systems
 
 Another characteristic of Computational Urban Science is the study of cities as complex systems, challenging the prevailing urban science paradigm that the "City is a Tree" @alexander2017city
@@ -689,7 +690,5 @@ More reading:
 -   The City is not a tree @alexander2017city
 -   The City is not a static tree @moro2022city
 -   Understanding Urban Economies, Land Use, and Social Dynamics in the City: Big Data and Measurement @saiz_understanding_2023
-
-
 
 ## References {.scrollable}

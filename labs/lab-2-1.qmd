@@ -1,0 +1,310 @@
+---
+title: "Lab 2-1 - Visualizing socioeconomic outcomes by T station"
+author: "Hamish Gibbs"
+institute:
+  - Network Science Institute, Northeastern University
+  - NETS 7983 Computational Urban Science
+  - Last updated `r Sys.Date()`
+format: html
+code-line-numbers: false
+execute:
+  echo: true
+#  cache: true
+  warning: false
+  messages: false
+editor: visual
+logo: ./img/sunlab.png
+footer: "CUS, Northeastern Spring 2025"
+link-external-icon: true
+link-external-newwindow: true
+bibliography: references.bib
+---
+
+## Objective
+
+In this practical, we will re-create and extend an analysis of variation in census variables by T stations in Boston: [*Health Inequalities in Boston by T-Stops: A Pictorial Essay*](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/). This follows another analysis of life expectancy at tube stations in London (by my PhD supervisor). The idea of these types of visualizations is to connect relatively abstract statistics from the census with the more familiar public transit network, making it easier to understand how greatly health or socioeconomic outcomes can vary across a relatively short distances within a city.
+
+In this practical, we will learn to:
+
+-   Retrieve, process, and analyze census data for different geographies / variables.
+-   Combine geo-referenced census data with other spatial features (from Open Street Map) for analysis.
+-   Refine visualizations to effectively communicate urban dynamics.
+
+## Before starting:
+
+1.  Ensure you have access to the `stella` server:
+2.  [Request a U.S. Census Data API Key](https://api.census.gov/data/key_signup.html)
+3.  Load required packages
+
+    ``` {r}
+    library(tidycensus)
+    library(tidyverse)
+    library(tigris)
+    library(sf)
+    library(osmdata)
+    library(leaflet)
+    ```
+
+4.  Configure the API key in your R environment
+
+    ``` r
+    Sys.setenv(CENSUS_API_KEY = "YOUR_API_KEY")
+    ```
+
+5. Then call the `tidycensus::census_api_key` function:
+
+    ```{r}
+    census_api_key(Sys.getenv("CENSUS_API_KEY"), install = TRUE, overwrite=TRUE)
+    ```
+
+## Loading Census Data
+
+To recap, the `tidycensus` package gives us a simple way to retrieve census data for a given variable and set of geographic units.
+
+*Note: in this practical, we will use data from the American Community Survey (ACS) because of the greater number of variables. To do this, we will use the `tidyverse::get_acs` function. For future reference, the decennial census is also available with `tidyverse::get_decennial`.*
+
+Lets start by retrieving median household income in US states. For a list of the different variables available from the ACS, a good place to start is the [ACS Subjects Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html). If you know what you are looking for, you can use the search bar to find the variable code(s).
+
+```{r}
+medincome <- get_acs(geography = "state", 
+                           variables = "B19013_001", 
+                           year = 2020)
+
+head(medincome)
+```
+
+## Mapping Census Data
+
+`tidycensus` integrates with `sf` to return spatial boundaries for geographic units. We can add spatial .
+
+Remember the hierarchy of US statistical geographies? You can download data for any of these geographies with `tidycensus`.
+
+![](https://walker-data.com/umich-workshop-2022/intro-2020-census/img/census_diagram.png)
+
+See the list of available geographies [here](https://walker-data.com/tidycensus/articles/basic-usage.html#geography-in-tidycensus).
+
+We can also filter for some higher-level geographies. Lets get median household income for Census Block Groups in Massachusetts.
+
+```{r}
+medincome_ma <- get_acs(
+  geography = "cbg",
+  variables = "B19013_001",
+  survey = "acs5",
+  year = 2020,
+  state = "MA",
+  geometry = TRUE
+)
+
+head(medincome_ma)
+```
+
+We only want data for Boston proper, so we will have to filter for CBGs within the boundary of Boston. We can get this boundary from the `tigris` R package.
+
+```{r}
+boston_boundary <- places(state = "MA", cb = TRUE, year=2020) %>%
+  filter(NAME == "Boston")
+
+ggplot() + 
+  geom_sf(data=boston_boundary)
+```
+
+Now, we can filter our CBG data within Boston. 
+
+```{r}
+medincome_boston <- medincome_ma %>%
+  st_filter(boston_boundary)
+
+head(medincome_boston)
+```
+
+Now, we can make a Choropleth map of income in CBGs.
+
+```{r}
+ggplot(medincome_boston) +
+  geom_sf(aes(fill = estimate), color = NA)
+```
+
+## Sidenote: using data visualizations to communicate your findings
+
+Data visualizations are the best tool you have for conveying the results of your analysis. When done right, they are interesting, compelling, and can contain much more information that you could write down concisely. When they are done wrong, that can confuse your audience or distract from the important message you are trying to convey. It is well worth spending a bit of effort to (1) **think through how to best display your data**, (2) **take a extra time to polish your visualization**, (3) **be prepared to make and re-make your visualization as things change**. Making a compelling data visualization if often a question of choosing which dimensions in your data that are most important for the message you are trying to convey, then finding a type of plot that can represent them clearly. There is some inspiration in the [R Graph Gallery](https://r-graph-gallery.com/).
+
+Things to keep in mind:
+
+-   Are your axis labels human readable?
+
+-   Are you maximizing the "ink to information" ratio?
+
+-   Does your plot have an appropriate theme? Grid-lines (in default ggplot theme) are often not relevant.
+
+-   Have you considered how you are using color? Common mistakes include: colors emphasizing minor variations, diverging color scales used for non-divergent data, color-blind accessibility.
+
+-   (Sometimes) Do you have a **declarative title** with the main message of your visualization?
+
+To fix up the choropleth map, we can use the rnaturalearth package to add a basemap, reduce the line width for my CBG boundaries, change my plot theme, color scale, and titles.
+
+\[TODO - adjustments above\]
+```{r}
+ggplot() +
+  geom_sf(data = medincome_boston, aes(fill = estimate), color = NA, alpha = 0.8) +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "MHI", label = function(x){paste0("$", scales::comma(x))}) + 
+  theme_void() +
+  labs(
+
+    title = "Median Household Income (2020)",
+    subtitle = "Block Groups in Boston"
+  )
+```
+
+## Combining census data with OSM
+
+Now, lets start combining our census data with data from open street map. I like to think of data processing methodologies in a DAG:
+
+```{mermaid} 
+flowchart LR 
+A(ACS Data - Income) --> C(Join by proximity)
+B(OSM Data - T-stops) --> C 
+C --> D(Extract census data)
+D --> E(Visualize)
+```
+
+We will follow this methodology:
+
+1.  Download Income data from ACS
+2.  Download Public Transit Stops in Boston from Open Street Map
+3.  Combine OSM and ACS data with a 200m buffer around transit stations
+4.  Map Income at transit stations
+
+## Retrieving OSM data
+
+We have already loaded ACS data for CBGs in Boston. Now we need to retrieve public transit stations from OSM. We can do this using the `osmdata` R package (as we did in last week's practical).
+
+```{r}
+boston_bb <- getbb("Boston, Massachusetts")
+public_transit_pts <- opq(bbox = boston_bb) %>%
+  add_osm_feature(key = "public_transport", value = "station") %>%
+  osmdata_sf()
+
+public_transit_pts <- public_transit_pts$osm_points
+head(public_transit_pts)
+```
+
+Lets display the data in an interactive map that will let us check that we have downloaded the correct features.
+
+\[TODO Make an interactive map with that nice annotatable library\]
+```{r}
+leaflet(public_transit_pts) %>%
+  addTiles() %>%
+  addCircleMarkers(
+    label = ~name,
+    radius = 3,
+    stroke = FALSE,
+    fillOpacity = 0.8,
+    color = "blue"
+  )
+```
+
+It looks like this data has some duplicated stations, and isn't restricted to T-stops. This is a common problem in OSM data, which is crowd-sourced from volunteers.
+
+Let's see if we can filter the data to select only T stops. First, we can check the unique values in the station column. 
+
+```{r}
+public_transit_pts %>% pull(station) %>% unique()
+```
+
+Then, lets filter for "subway" and "light_rail" stations. 
+
+```{r}
+t_stops <- public_transit_pts %>%
+  filter(station %in% c("subway", "light_rail"))
+
+leaflet(t_stops) %>%
+  addTiles() %>%
+  addCircleMarkers(
+    label = ~name,
+    radius = 3,
+    stroke = FALSE,
+    fillOpacity = 0.8,
+    color = "blue"
+  )
+```
+
+## Combine OSM and ACS data
+
+Now, we can extract values from the ACS at each of the T-stations we have downloaded. Because a station may lay on the boundary of the multiple CBGs, we can create a buffer around each station and get compute the average income of any CBGs intersecting this boundary.
+
+First, we need to convert our geographic data into a coordinate system in meters.
+
+```{r}
+crs_ma <- 26986
+
+t_stops_proj <- st_transform(t_stops, crs = crs_ma)
+medincome_boston_proj <- st_transform(medincome_boston, crs = crs_ma)
+```
+
+\[TODO: sidenote on projected coordinate systems\]
+
+Next, we need to create buffers around our transit stations.
+
+```{r}
+t_stops_buff <- st_buffer(t_stops_proj, dist = 200)
+
+leaflet(t_stops_buff %>% st_transform(4326)) %>%
+  addTiles() %>%
+  addPolygons(
+    data = medincome_boston %>% st_transform(4326),
+    label = ~as.character(estimate),
+    fillOpacity = 0.6,
+    color = "blue",
+    stroke = FALSE
+  ) %>%
+  addPolygons(
+    label = ~name,
+    stroke = FALSE,
+    fillOpacity = 0.8,
+    color = "blue"
+  )
+```
+
+Now we can join our ACS data with our transit stations.
+
+```{r}
+t_stops_income <- st_join(t_stops_buff, medincome_ma_proj, join = st_intersects) %>%
+  group_by(osm_id, name) %>%
+  summarize(mean_income = mean(estimate, na.rm = TRUE), .groups="drop")
+
+head(t_stops_income)
+```
+
+*Tip: for a set of processing steps like this, I always recommend breaking each step down one-at-a-time so that you understand exactly what is happening.*
+
+## Visualising income by T-stop
+
+Now that we have a median income value for each T-stop, we can display these on a map. We are trying to re-create a static map, so lets use `ggplot` to plot our points, labeled with the median income of surrounding CBGs.
+
+```{r}
+ggplot() +
+  geom_sf(data = t_stops_income, aes(fill = mean_income), size = 2) +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "Income") +
+  labs(
+    title = "Boston T-stops by Average Household Income",
+    subtitle = "Using 200m buffer around each T-stop"
+  )
+```
+
+This looks OK, but we can add more data to make the visualization more compelling. Lets retrieve the path of the metro lines from Open Street Map and display them on the map, add a basemap and choose a minimal theme.
+
+\[TODO\]
+
+## Closing thoughts
+
+-   What factors in the census explain differences in health outcomes by tube stations? What factors might play a role but are missing from the census?
+
+## Challenge: Extend this analysis
+
+-   Extend your analysis to other census variables
+
+-   Extend your analysis to another city (try to write code that will work for any other city)
+
+-   Make an interactive map, instead of a static map
+
+-   Compare other types of transit infrastructure (Bus, Train)
