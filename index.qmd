@@ -8,30 +8,28 @@ Welcome to the homepage of *Computational Urban Science*, NETS 7983 course in th
 This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses, with all changes documented here.
 
 ::: column-screen-inset-right
-|           Week           | Date        | Topic                                                |                  Prepare                  |                 Slides                  |                     Lab                     |         HW          |                  Project                   |     |     |
+| Week | Date | Topic | Prepare | Slides | Lab | HW | Project |   |   |
 |:------:|--------|--------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| [1](/weeks/week-1.html)  | Tue Jan 7   | Introduction to the course                    | [📖](/weeks/week-1.html "Week 1 Summary") |                                       |                                           |                     |             |
-|                          |             | Lecture 1-1 - Welcome to CUS 2025               |                                         | [🖥️](/slides/lec-1-1.html "Lab slides") |                                           |                     |             |
-|                          |             | Lecture 1-2 - Intro to Computational Social Science |                                     | [🖥️](/slides/lec-1-2.html "Lab slides") |                                           |                     |             |
-|                          |             | Lab 1-1 - Crash course on GIS using R         |                                           |                                       | [💻](/labs/lab-1-1.html "Lab instructions") |                   |             |
-|                          |             | Lab 1-2 - Collect your own mobility data      |                                           |                                       | [💻](/labs/lab-1-2.html "Lab instructions") |                   |             |
-| [2](/weeks/week-2.html)  | Tue Jan 14  | Urban Data - Maps + Census                    |                                           |                                       |                                           |                     |             |      
-| [3](/weeks/week-3.html)  | Tue Jan 21  | Urban Data - Activity: Mobile Phone           |                                           |                                       |                                           |                     |             |                                                        
-| [4](/weeks/week-4.html)  | Tue Jan 28  | Urban Data - Activity: Social Media + Ethics  |                                           |                                       |                                           |                     |             |                                                           
-| [5](/weeks/week-5.html)  | Tue Mar 4   | NU Spring Break                               |                                           |                                       |                                           |                     |             |           
-| [6](/weeks/week-6.html)  | Tue Mar 11  | Analysis of Urban Data                        |                                           |                                       |                                           |                     |             |    
-| [7](/weeks/week-1.html)  | Tue Mar 18  | Statistical/Causal Inference for Urban Data   |                                           |                                       |                                           |                     |             |   
-|                          | Wed Mar 19  | Released: HW 1                                |                                           |                                       |                                           | [✍️](/hw/hw-1.html) |             |
-| [8](/weeks/week-1.html)  | Tue Mar 25  | Causal Inference for Urban Data               |                                           |                                       |                                           |                     |             |
-| [9](/weeks/week-1.html)  | Tue Apr 1   | Mobility models for Urban Systems             |                                           |                                       |                                           |                     |             |
-| [10](/weeks/week-1.html) | Tue Apr 8   | Social/network models for Urban Systems       |                                           |                                       |                                           |                     |             |
-|                          | Wed Apr 9   | Released: HW 2                                |                                           |                                       |                                           | [✍️](/hw/hw-2.html) |             |
-| [11](/weeks/week-1.html) | Tue Apr 15  | Agent-based models / Hypothesis testing       |                                           |                                       |                                           |                     |             |
-| [12](/weeks/week-1.html) | Tue Apr 22  | Applications: Recommendation/Geomarketing     |                                           |                                       |                                           |                     |             |
-|                          | Fri, Apr 25 | Project topic ideas                           |                                           |                                       |                                           |                     | [📂](project-description.html#topic-ideas)            |  
-| [13](/weeks/week-1.html) | Tue Apr 29  | Sustainability / Environmental justice / Segregation  |                                           |                                       |                                           |                     |             |
-| [14](/weeks/week-1.html) | Tue May 6   | Epidemics / Natural Disasters / Policy interventions  |                                           |                                       |                                           |                     |             |                                 |
-|                          | Fri, May 7  | Project presentations                         |                                           |                                       |                                           |                     | [📂](project-description.html#topic-ideas)            |  
-
+| [1](/weeks/week-1.html) | Tue Jan 7 | Introduction to the course | [📖](/weeks/week-1.html "Week 1 Summary") |  |  |  |  |  |  |
+|  |  | Lecture 1-1 - Welcome to CUS 2025 |  | [🖥️](/slides/lec-1-1.html "Lab slides") |  |  |  |  |  |
+|  |  | Lecture 1-2 - Intro to Computational Social Science |  | [🖥️](/slides/lec-1-2.html "Lab slides") |  |  |  |  |  |
+|  |  | Lab 1-1 - Crash course on GIS using R |  |  | [💻](/labs/lab-1-1.html "Lab instructions") |  |  |  |  |
+|  |  | Lab 1-2 - Collect your own mobility data |  |  | [💻](/labs/lab-1-2.html "Lab instructions") |  |  |  |  |
+| [2](/weeks/week-2.html) | Tue Jan 14 | Urban Data - Maps + Census |  | [🖥️](/slides/lec-2.html "Lab slides") |  [💻](/labs/lab-2-1.html "Lab instructions") |  |  |  |  |
+| [3](/weeks/week-3.html) | Tue Jan 21 | Urban Data - Activity: Mobile Phone |  |  |  |  |  |  |  |
+| [4](/weeks/week-4.html) | Tue Jan 28 | Urban Data - Activity: Social Media + Ethics |  |  |  |  |  |  |  |
+| [5](/weeks/week-5.html) | Tue Mar 4 | NU Spring Break |  |  |  |  |  |  |  |
+| [6](/weeks/week-6.html) | Tue Mar 11 | Analysis of Urban Data |  |  |  |  |  |  |  |
+| [7](/weeks/week-1.html) | Tue Mar 18 | Statistical/Causal Inference for Urban Data |  |  |  |  |  |  |  |
+|  | Wed Mar 19 | Released: HW 1 |  |  |  | [✍️](/hw/hw-1.html) |  |  |  |
+| [8](/weeks/week-1.html) | Tue Mar 25 | Causal Inference for Urban Data |  |  |  |  |  |  |  |
+| [9](/weeks/week-1.html) | Tue Apr 1 | Mobility models for Urban Systems |  |  |  |  |  |  |  |
+| [10](/weeks/week-1.html) | Tue Apr 8 | Social/network models for Urban Systems |  |  |  |  |  |  |  |
+|  | Wed Apr 9 | Released: HW 2 |  |  |  | [✍️](/hw/hw-2.html) |  |  |  |
+| [11](/weeks/week-1.html) | Tue Apr 15 | Agent-based models / Hypothesis testing |  |  |  |  |  |  |  |
+| [12](/weeks/week-1.html) | Tue Apr 22 | Applications: Recommendation/Geomarketing |  |  |  |  |  |  |  |
+|  | Fri, Apr 25 | Project topic ideas |  |  |  |  | [📂](project-description.html#topic-ideas) |  |  |
+| [13](/weeks/week-1.html) | Tue Apr 29 | Sustainability / Environmental justice / Segregation |  |  |  |  |  |  |  |
+| [14](/weeks/week-1.html) | Tue May 6 | Epidemics / Natural Disasters / Policy interventions |  |  |  |  |  |  |  |
+|  | Fri, May 7 | Project presentations |  |  |  |  | [📂](project-description.html#topic-ideas) |  |  |
 :::
-
