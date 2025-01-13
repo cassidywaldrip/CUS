@@ -45,6 +45,9 @@ In this practical, we will learn to:
     library(sf)
     library(osmdata)
     library(leaflet)
+    library(arrow)
+    library(corrplot)
+    library(factoextra)
     ```
 
 4.  Configure the API key in your R environment
@@ -79,7 +82,7 @@ head(medincome)
 
 -   Try downloading other variables using codes you find with the [ACS Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html). Are cross-tabulations of multiple variables in the same format as univariate tables?
 
--   Inspect all of the variables available in the 2020 ACS. `tidycensus` has a helpful function for this: `load_variables(2020, "acs5", cache = TRUE)` .
+-   Inspect all of the variables available in the 2021 ACS. `tidycensus` has a helpful function for this: `load_variables(2021, "acs5", cache = TRUE)` .
 
 -   The beginning of the variable code indicates the table. What does the suffix `_001` in the code block above indicate?
 
@@ -90,7 +93,7 @@ head(medincome)
 ```{r}
 medincome <- get_acs(geography = "state", 
                      variables = "B19013_001", 
-                     year = 2020,
+                     year = 2021,
                      geometry=TRUE)
 
 ggplot(medincome) + 
@@ -120,7 +123,7 @@ medincome_ma <- get_acs(
   geography = "cbg",
   variables = "B19013_001",
   survey = "acs5",
-  year = 2020,
+  year = 2021,
   state = "MA",
   geometry = TRUE
 )
@@ -132,17 +135,17 @@ We only want data for Boston, so we will have to filter for CBGs within the boun
 
 ```{r}
 boston_area_towns <- c("Boston", "Somerville", "Cambridge", "Brookline", "Revere", "Malden", "Everett", "Medford", "Chelsea", "Winthrop Town")
-boston_boundary <- places(state = "MA", cb = TRUE, year=2020) %>%
+boston_boundary <- places(state = "MA", cb = TRUE, year=2021) %>%
   filter(NAME %in% boston_area_towns)
 ```
 
 ## Exercise 2
 
--   Using what you learned in lab-1-1, check that the Boston boundary is correct by plotting it in an interactive map using `leaflet`.
+-   Using what you learned in lab-1-1, check that the Boston boundary is correct by plotting it on an interactive map using `leaflet`.
 
 ## Restricting Census data to our area of interest
 
-Now, using tools for spatial data from the `sf` package, we can filter for CBGs within Boston.
+Now, using `st_filter` from the `sf` package, we can filter for CBGs within Boston.
 
 ```{r}
 medincome_boston <- medincome_ma %>%
@@ -151,7 +154,7 @@ medincome_boston <- medincome_ma %>%
 head(medincome_boston)
 ```
 
-Now, we can make a Choropleth map of income in CBGs.
+We can then make a Choropleth map of the income in CBGs.
 
 ```{r}
 ggplot(medincome_boston) +
@@ -160,7 +163,7 @@ ggplot(medincome_boston) +
 
 ## Exercise 3
 
--   What is causing the missing values for some of these areas? Removing CBGs with `NA` values and plotting with `leaflet` may give some indication.
+-   What is causing the missing values for some of these areas? *Tip: Removing CBGs with `NA` values and plotting with `leaflet` may give some indication.*
 
 ## Sidenote: using data visualizations to communicate your findings
 
@@ -174,7 +177,7 @@ Things to keep in mind:
 
 -   Have you considered how you are using color? Common mistakes include: colors over-emphasizing minor variations in your data, diverging color scales used for non-diverging data, forgetting accessibility for color blind people.
 
--   (Sometimes) Do you have a **declarative title** with the main message of your visualization?
+-   (Sometimes) Do you have a **declarative title** conveying the main message of your visualization?
 
 More generally, consider Edward Tufte's data visualization design principles:
 
@@ -186,7 +189,9 @@ More generally, consider Edward Tufte's data visualization design principles:
 
 4.  Erase redundant data-ink.
 
-5.  Revise and edit
+5.  Revise and edit.
+
+Here is a cleaned up version of the map.
 
 ```{r}
 ggplot() +
@@ -194,32 +199,53 @@ ggplot() +
   scale_fill_viridis_c(option = "magma", direction = 1, name = "MHI", label = function(x){paste0("$", scales::comma(x))}) + 
   theme_void() +
   labs(
-    title = "Median Household Income (2020)",
+    title = "Median Household Income (2021)",
     subtitle = "Block Groups in Boston"
   ) + 
 theme(legend.position = c(0.8, 0.2))
 ```
 
+## Exercise 4
+
+-   List a few additions that could make this map more compelling.
+
 ## Combining census data with OSM
 
-Now, lets start combining our census data with data from open street map. I like to think of data processing methodologies in a DAG:
-
-```{mermaid}
-flowchart LR 
-A(ACS Data - Income) --> C(Join by proximity)
-B(OSM Data - T-stops) --> C 
-C --> D(Extract census data)
-D --> E(Visualize)
-```
+Now, lets start combining our census data with data from open street map.
 
 We will follow this methodology:
 
-1.  Download Income data from ACS
-2.  Download Public Transit Stops in Boston from Open Street Map
-3.  Combine OSM and ACS data with a 200m buffer around transit stations
-4.  Map Income at transit stations
+1.  Download a range of ACS variables.
+2.  Download Public Transit Stops in Boston from Open Street Map.
+3.  Compute the "accessibility" of transit stations from CBGs.
+4.  Explore which census variables predict transit station accessibility.
+
+## Retrieving ACS Variables
+
+Now, lets retrieve a few more variables from the ACS. Because combining ACS variables can be complicated (for example, we might want broad age categories, not one year bands), we have pre-processed a few key variables into an easier-to-use format. You can find this in the file `/data/CUS/labs/2/14460_acs_2021_filtered.parquet`.
+
+```{r}
+census <- read_parquet("/data/CUS/labs/2/14460_acs_2021_filtered_boston.parquet")
+colnames(census)
+```
+
+## Exercise 5
+
+-   Take a moment to re-construct one of the variables (like `age.u1825`) in this data frame using `tidycensus` and the [ACS Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html).
+
+Because the `census` variable doesn't have any associated geography, we need to download and attach geographies using the `tigris` package.
+
+```{r}
+block_groups <- block_groups(state = "25", year = 2021, class = "sf")
+census <- census %>% 
+    left_join(block_groups %>% select(GEOID, geometry), by = c("GEOID")) %>% 
+    st_as_sf()
+census
+```
 
 ## Retrieving OSM data
+
+Now that we have some nicely formatted census data, we can move on to downloading our transit stations from OSM.
 
 We have already loaded ACS data for CBGs in Boston. Now we need to retrieve public transit stations from OSM. We can do this using the `osmdata` R package (as we did in last week's practical).
 
@@ -272,85 +298,147 @@ leaflet(t_stops) %>%
   )
 ```
 
-## Combine OSM and ACS data
+This looks pretty good!
 
-Now, we can extract values from the ACS at each of the T-stations we have downloaded. Because a station may lay on the boundary of the multiple CBGs, we can create a buffer around each station and get compute the average income of any CBGs intersecting this boundary.
+## Exercise 6
 
-First, we need to convert our geographic data into a coordinate system with units in meters.
+-   Take a moment to explore OSM data. What other features are accessible? Can you find features for other forms of public transit? Can you identify any limitations cause by the crowd-sourced nature of the data?
 
-```{r}
-crs_ma <- 26986
-t_stops_proj <- st_transform(t_stops, crs = crs_ma)
-medincome_boston_proj <- st_transform(medincome_boston, crs = crs_ma)
-```
+    -   For a list of all of the features available from Open Street Map, see [here](https://wiki.openstreetmap.org/wiki/Map_features).
 
-## **Sidenote: Projected vs. Geographic coordinate systems**
+## Measuring transit accessibility
 
-Geographic coordinate systems (like WGS84, commonly used for latitude/longitude data) represent locations on the Earth's surface using angular measurements. While suitable for global mapping, they aren't ideal for precise distance or area calculations because the Earth is curved.
+Now that we have data on census variables in geographic areas and the location of public transit stations, we can move on to calculating a measure of public transit accessibility.
 
-**Projected coordinate systems**, such as the one we're using (`EPSG:26986` for Massachusetts State Plane), transform geographic data onto a flat surface. This projection preserves specific properties, such as distance or area, making it more accurate for spatial operations like buffering or intersection analysis within a localized region.
+Our measure will be based on the assumption of *proximity-based accessibility* and *residential anchoring*. This means that the proximity of an individual's home to a transit station (in terms of geometric distance) is indicative of higher / lower public transit accessibility.
 
-By reprojecting our data to a system measured in meters, we ensure more accurate combination of ACS-reported income at T-stations.
+## Exercise 7
 
-## Buffering transit stations
+-   Take a moment to consider the assumptions underlying the ideas of *proximity-based accessibility* and *residential anchoring.* Could large-scale behavioral data shed more light on people's true patterns of behavior in the city?
 
-Next, we need to create buffers around our transit stations.
+-   Why do you think that these ideas have been widely adopted in traditional urban studies (in transit accessibility studies like this one, as well as concepts such as urban food deserts)?
 
-```{r}
-t_stops_buff <- st_buffer(t_stops_proj, dist = 200)
+## Computing a measure of transit accessibility
 
-leaflet(t_stops_buff %>% st_transform(4326)) %>% # We need to convert back to geographic coordinates for leaflet
-  addProviderTiles(provider=providers$CartoDB.Positron) %>%
-  addPolygons(
-    label = ~name,
-    stroke = FALSE,
-    fillOpacity = 0.8,
-    color = "blue"
-  )
-```
+In order to compute the proximity of Census Block Groups to transit stations, we can use the `st_distance` function to calculate the distance from each Block Group to the nearest transit station.
 
-Now we can join our ACS data with our transit stations.
+To make sure our distance calculation is accurate, we need to transform our data into a projected coordinate system (which preserves distance). Because of our study area, we can use the
 
 ```{r}
-t_stops_income <- st_join(t_stops_buff, medincome_boston_proj, join = st_intersects) %>%
-  group_by(osm_id, name) %>%
-  summarize(mean_income = mean(estimate, na.rm = TRUE), .groups="drop") %>%
-  drop_na(mean_income)
-
-head(t_stops_income)
+t_stops <- t_stops %>% st_transform(26986)
+census <- census %>% st_transform(26986) %>% drop_na()
 ```
 
-*Tip: for a set of processing steps like this, I always recommend breaking each step down one-at-a-time so that you understand exactly what is happening.*
-
-## Visualising income by T-stop
-
-Now that we have a median income value for each T-stop, we can display these on a map. We are trying to re-create a static map, so lets use `ggplot` to plot our points, labeled with the median income of surrounding CBGs.
+Now we can compute the distance from each CBG to the nearest transit station.
 
 ```{r}
-ggplot() +
-  geom_sf(data = t_stops_income, aes(fill = mean_income), size = 2) +
-  scale_fill_viridis_c(option = "magma", direction = -1, name = "Income") +
-  labs(
-    title = "Boston T-stops by Average Household Income",
-    subtitle = "Using 200m buffer around each T-stop"
-  ) + 
-theme_void()
+distances <- st_distance(census, t_stops)
+census$nearest_t_stop_dist <- apply(distances, 1, min)
+census %>% select(GEOID, nearest_t_stop_dist)
 ```
 
-This looks OK, but we can add more data to make the visualization more compelling. Lets retrieve the path of the metro lines from Open Street Map and display them on the map, add a basemap and choose a minimal theme.
+*Tip: if you don't understand an expression like this, take a moment to break it down one by one. For example, try inspecting the `distances`* variable, or running only the expression `apply(distances, 1, min)`.
 
-## Exercise 4
+## Exercise 8
+
+-   Make a map of the `nearest_t_stop_dist` distance variable, with the `t_stops` variable overlaid on top.
+
+## Predicting transit accessibility
+
+Now that we have prepared our data, we can ask the question: *what census variables predict the accessibility of transit stations?*
+
+We can start with a simple approach: a linear regression of: `accessibility measure ~ block group characteristics`. To do this efficiently, I'm using the `as.formula` function from base R. Again, if you are new to R, take a moment to break down this expression piece-by-piece to understand how each component works.
+
+```{r}
+predictors <- setdiff(names(census %>% select(-GEOID) %>% st_drop_geometry()), "nearest_t_stop_dist")
+lm_formula <- as.formula(paste("nearest_t_stop_dist ~", paste(predictors, collapse = " + ")))
+print(lm_formula)
+```
+
+Now that we have the formula for our regression, we can create our model and inspect the results.
+
+```{r}
+model <- lm(lm_formula, data = census %>% select(-GEOID) %>% st_drop_geometry())
+summary(model)
+```
+
+## Exercise 9
+
+-   Try to interpret these model results.
+
+    -   Which variables are *positively* associated with `nearest_t_stop_dist`?
+
+    -   Which variables are *negatively* associated?
+
+    -   Why are some estimates `NA`?
+
+    -   What does this indicate about the quantity of information contained in certain census variables?
+
+    -   How many variables have any statistical significance?
+
+    -   What is the overall power of these variables to predict `nearest_t_stop_dist`?
+
+## Multicollinearity of census variables
+
+```{r}
+corrplot(cor(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry()), method="number")
+```
+
+## Dimensionality reduction of census variables
+
+```{r}
+pca <- prcomp(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry(), scale. = TRUE)
+```
+
+scree plot
+
+```{r}
+fviz_eig(pca, addlabels = TRUE, ylim = c(0, 50))
+```
+
+## Exercise
+
+-   What proportion of variance is explained by the top 3 components?
+
+biplot
+
+```{r}
+fviz_pca_biplot(pca, repel = TRUE, col.var = "blue", col.ind = "red")
+```
+
+variable contributions
+
+```{r}
+fviz_pca_var(pca, col.var = "contrib", gradient.cols = c("blue", "green", "red"))
+```
+
+Individual contributions
+
+```{r}
+fviz_pca_ind(pca, col.ind = "cos2", gradient.cols = c("blue", "green", "red"))
+```
+
+```{r}
+cor_matrix <- cor(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry(), pca$x)
+corrplot(cor_matrix, method = "color", is.corr = FALSE, addCoef.col = "black")
+```
+
+## Visualizing key social factors
+
+TODO Make maps of each of the key variables
+
+```{r}
+top_3_components <- as.data.frame(pca$x[, 1:3])
+
+pca_with_geoid <- cbind(census$GEOID, top_3_components)
+colnames(pca_with_geoid)[1] <- "GEOID"
+census_pca <- census %>%
+  left_join(pca_with_geoid, by = "GEOID") 
+```
+
+```{r}
+ggplot() + 
+    geom_sf(data=census_pca, aes(fill=PC3))
+```
 
 ## Closing thoughts
-
--   What factors in the census explain differences in health outcomes by tube stations? What factors might play a role but are missing from the census?
-
-## Challenge: Extend this analysis
-
--   Extend your analysis to other census variables
-
--   Extend your analysis to another city (try to write code that will work for any other city)
-
--   Make an interactive map, instead of a static map
-
--   Compare other types of transit infrastructure (Bus, Train)
