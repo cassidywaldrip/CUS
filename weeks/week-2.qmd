@@ -6,25 +6,27 @@ bibliography: ../references.bib
 csl: ../nature-communications.csl
 ---
 
-Welcome back! This week, we will dive deeper into the use of administrative data from the census and look at how we can generate insights about urban dynamics by combining census data with other spatial features. Our lecture will walk through the availability of census data, how to reference census data spatially, and common considerations when using census data. In our practical exercise, we will explore census data in Boston. Then, we will combine census data with urban features from Open Street Map.
+Welcome back! This week, we will dive deeper into the use of administrative data from the census and look at how we can generate insights about urban dynamics by combining census data with other spatial features. Our lecture will walk through the availability of census data, how to reference census data spatially, and common considerations when using census data. In our practical exercise, we will conduct look at accessibility of public transit stations in Boston and conduct a *Social Area Analysis* to identify the key social factors measured by the census.
 
 ## Prepare
 
-📖 TBD
+📖 Check out available census variables with the [American Community Survey Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html)
 
-📖 Check out this dashboard: [Exploring local income deprivation](https://www.ons.gov.uk/visualisations/dvc1371/#/E07000223)
+📖 Check out this interactive dashboard which provides an interesting look at the role of spatial scale in defining income deprivation in the UK: [Exploring local income deprivation](https://www.ons.gov.uk/visualisations/dvc1371/#/E07000223)
 
-📖 Inspiration for our practical #1: [London, reimagined: alternative tube maps – in pictures](https://www.theguardian.com/cities/2016/may/04/london-tube-maps-underground-reimagined-alternative-in-pictures)
+📖 Read this (slightly funny) introduction to census population estimation: [Trout, Catfish and Roach: The beginner’s guide to census population estimates](http://www.statlit.org/pdf/2010Benton-CensusUK-Trout_Catfish_And_Roach.pdf)
 
-📖 Inspiration for our practical #2: [Health Inequalities in Boston by T-Stops: A Pictorial Essay](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/)
+📖 Read sections 1 and 2 of this paper on Social Area Analysis: [Social area analysis, data mining, and GIS](./pdfs/social_area_analysis_data_mining_and_gis.pdf)
+
+📖 Read (or at least familiarize yourself with) the foundational paper on ecological fallacy and the modifiable areal unit problem: [Ecological Fallacies and the Analysis of Areal Census Data](./pdfs/Openshaw%20-%201984%20-%20Ecological%20Fallacies%20and%20the%20Analysis%20of%20Areal%20Cen.pdf)
 
 ## Participate
 
-🖥️ [Lecture 2 - Maps + Census](/slides/lec-2.html)
+🖥️ TBD
 
 ## Perform
 
-⌨️ [Lab 2 - Maps + Census](/labs/lab-2.html)
+⌨️ TBD
 
 <br><br>
 
