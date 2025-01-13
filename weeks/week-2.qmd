@@ -12,7 +12,7 @@ Welcome back! This week, we will dive deeper into the use of administrative data
 
 📖 Check out available census variables with the [American Community Survey Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html)
 
-📖 Check out this interactive dashboard which provides an interesting look at the role of spatial scale in defining income deprivation in the UK: [Exploring local income deprivation](https://www.ons.gov.uk/visualisations/dvc1371/#/E07000223)
+📖 Check out this interactive dashboard which provides an interesting look income deprivation at different spatial scales in the UK: [Exploring local income deprivation](https://www.ons.gov.uk/visualisations/dvc1371/#/E07000223)
 
 📖 Read this (slightly funny) introduction to census population estimation: [Trout, Catfish and Roach: The beginner’s guide to census population estimates](http://www.statlit.org/pdf/2010Benton-CensusUK-Trout_Catfish_And_Roach.pdf)
 
