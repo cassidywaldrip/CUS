@@ -22,7 +22,7 @@ bibliography: references.bib
 
 ## Objective
 
-In this practical, we will re-create and extend an analysis of variation in census variables by T stations in Boston: [*Health Inequalities in Boston by T-Stops: A Pictorial Essay*](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/). This follows another analysis of life expectancy at tube stations in London (by my PhD supervisor). The idea of these types of visualizations is to connect relatively abstract statistics from the census with the more familiar public transit network, making it easier to understand how greatly health or socioeconomic outcomes can vary across a relatively short distances within a city.
+In this practical, we will re-create and extend an analysis of variation in census variables by T stations in Boston: [*Health Inequalities in Boston by T-Stops: A Pictorial Essay*](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/). This follows another analysis of life expectancy at tube stations in London. The idea of these types of visualizations is to connect relatively abstract statistics from the census with the more familiar public transit network, making it easier to understand how greatly health or socioeconomic outcomes can vary across a relatively short distances within a city.
 
 In this practical, we will learn to:
 
@@ -33,10 +33,12 @@ In this practical, we will learn to:
 ## Before starting:
 
 1.  Ensure you have access to the `stella` server:
+
 2.  [Request a U.S. Census Data API Key](https://api.census.gov/data/key_signup.html)
+
 3.  Load required packages
 
-    ``` {r}
+    ```{r}
     library(tidycensus)
     library(tidyverse)
     library(tigris)
@@ -51,7 +53,7 @@ In this practical, we will learn to:
     Sys.setenv(CENSUS_API_KEY = "YOUR_API_KEY")
     ```
 
-5. Then call the `tidycensus::census_api_key` function:
+5.  Then call the `tidycensus::census_api_key` function:
 
     ```{r}
     census_api_key(Sys.getenv("CENSUS_API_KEY"), install = TRUE, overwrite=TRUE)
@@ -61,21 +63,49 @@ In this practical, we will learn to:
 
 To recap, the `tidycensus` package gives us a simple way to retrieve census data for a given variable and set of geographic units.
 
-*Note: in this practical, we will use data from the American Community Survey (ACS) because of the greater number of variables. To do this, we will use the `tidyverse::get_acs` function. For future reference, the decennial census is also available with `tidyverse::get_decennial`.*
+*Note: in this practical, we will use data from the American Community Survey (ACS) because of the greater number of variables. To do this, we will use the `tidyverse::get_acs` function. The decennial census is also available with `tidyverse::get_decennial`.*
 
-Lets start by retrieving median household income in US states. For a list of the different variables available from the ACS, a good place to start is the [ACS Subjects Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html). If you know what you are looking for, you can use the search bar to find the variable code(s).
+Lets start by retrieving median household income in US states. For a list of the different variables available from the ACS, a good place to start is the [ACS Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html). If you know what you are looking for, you can use the search bar to find the variable code(s).
 
 ```{r}
 medincome <- get_acs(geography = "state", 
-                           variables = "B19013_001", 
-                           year = 2020)
+                   variables = "B19013_001", 
+                   year = 2020)
 
 head(medincome)
 ```
 
+## Exercise 1
+
+-   Try downloading other variables using codes you find with the [ACS Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html). Are cross-tabulations of multiple variables in the same format as univariate tables?
+
+-   Inspect all of the variables available in the 2020 ACS. `tidycensus` has a helpful function for this: `load_variables(2020, "acs5", cache = TRUE)` .
+
+-   The beginning of the variable code indicates the table. What does the suffix `_001` in the code block above indicate?
+
 ## Mapping Census Data
 
-`tidycensus` integrates with `sf` to return spatial boundaries for geographic units. We can add spatial .
+`tidycensus` integrates with `sf` to return spatial boundaries for geographic units. We can add spatial boundaries using `geometry = TRUE`.
+
+```{r}
+medincome <- get_acs(geography = "state", 
+                     variables = "B19013_001", 
+                     year = 2020,
+                     geometry=TRUE)
+
+ggplot(medincome) + 
+    geom_sf(aes(fill=estimate))
+```
+
+We can simplify the plot by restricting to states in the continental US.
+
+```{r}
+medincome_continental_usa <- medincome %>% 
+    filter(!NAME %in% c("Alaska", "Hawaii", "Guam", "Puerto Rico"))
+
+ggplot(medincome_continental_usa) + 
+    geom_sf(aes(fill=estimate))
+```
 
 Remember the hierarchy of US statistical geographies? You can download data for any of these geographies with `tidycensus`.
 
@@ -98,17 +128,21 @@ medincome_ma <- get_acs(
 head(medincome_ma)
 ```
 
-We only want data for Boston proper, so we will have to filter for CBGs within the boundary of Boston. We can get this boundary from the `tigris` R package.
+We only want data for Boston, so we will have to filter for CBGs within the boundary of Boston. We can get this boundary from `tigris`, an R package that provides access to Census geographic boundaries and is closely coupled to `tidycensus`. See [Census geographic data and applications in R](https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html) for more information.
 
 ```{r}
+boston_area_towns <- c("Boston", "Somerville", "Cambridge", "Brookline", "Revere", "Malden", "Everett", "Medford", "Chelsea", "Winthrop Town")
 boston_boundary <- places(state = "MA", cb = TRUE, year=2020) %>%
-  filter(NAME == "Boston")
-
-ggplot() + 
-  geom_sf(data=boston_boundary)
+  filter(NAME %in% boston_area_towns)
 ```
 
-Now, we can filter our CBG data within Boston. 
+## Exercise 2
+
+-   Using what you learned in lab-1-1, check that the Boston boundary is correct by plotting it in an interactive map using `leaflet`.
+
+## Restricting Census data to our area of interest
+
+Now, using tools for spatial data from the `sf` package, we can filter for CBGs within Boston.
 
 ```{r}
 medincome_boston <- medincome_ma %>%
@@ -124,6 +158,10 @@ ggplot(medincome_boston) +
   geom_sf(aes(fill = estimate), color = NA)
 ```
 
+## Exercise 3
+
+-   What is causing the missing values for some of these areas? Removing CBGs with `NA` values and plotting with `leaflet` may give some indication.
+
 ## Sidenote: using data visualizations to communicate your findings
 
 Data visualizations are the best tool you have for conveying the results of your analysis. When done right, they are interesting, compelling, and can contain much more information that you could write down concisely. When they are done wrong, that can confuse your audience or distract from the important message you are trying to convey. It is well worth spending a bit of effort to (1) **think through how to best display your data**, (2) **take a extra time to polish your visualization**, (3) **be prepared to make and re-make your visualization as things change**. Making a compelling data visualization if often a question of choosing which dimensions in your data that are most important for the message you are trying to convey, then finding a type of plot that can represent them clearly. There is some inspiration in the [R Graph Gallery](https://r-graph-gallery.com/).
@@ -132,34 +170,41 @@ Things to keep in mind:
 
 -   Are your axis labels human readable?
 
--   Are you maximizing the "ink to information" ratio?
+-   Does your plot have an appropriate theme? Grid-lines (in default ggplot theme) are often not relevant or need to be reduced.
 
--   Does your plot have an appropriate theme? Grid-lines (in default ggplot theme) are often not relevant.
-
--   Have you considered how you are using color? Common mistakes include: colors emphasizing minor variations, diverging color scales used for non-divergent data, color-blind accessibility.
+-   Have you considered how you are using color? Common mistakes include: colors over-emphasizing minor variations in your data, diverging color scales used for non-diverging data, forgetting accessibility for color blind people.
 
 -   (Sometimes) Do you have a **declarative title** with the main message of your visualization?
 
-To fix up the choropleth map, we can use the rnaturalearth package to add a basemap, reduce the line width for my CBG boundaries, change my plot theme, color scale, and titles.
+More generally, consider Edward Tufte's data visualization design principles:
 
-\[TODO - adjustments above\]
+1.  Above all else show data.
+
+2.  Maximize the data-ink ratio.
+
+3.  Erase non-data-ink.
+
+4.  Erase redundant data-ink.
+
+5.  Revise and edit
+
 ```{r}
 ggplot() +
   geom_sf(data = medincome_boston, aes(fill = estimate), color = NA, alpha = 0.8) +
-  scale_fill_viridis_c(option = "magma", direction = -1, name = "MHI", label = function(x){paste0("$", scales::comma(x))}) + 
+  scale_fill_viridis_c(option = "magma", direction = 1, name = "MHI", label = function(x){paste0("$", scales::comma(x))}) + 
   theme_void() +
   labs(
-
     title = "Median Household Income (2020)",
     subtitle = "Block Groups in Boston"
-  )
+  ) + 
+theme(legend.position = c(0.8, 0.2))
 ```
 
 ## Combining census data with OSM
 
 Now, lets start combining our census data with data from open street map. I like to think of data processing methodologies in a DAG:
 
-```{mermaid} 
+```{mermaid}
 flowchart LR 
 A(ACS Data - Income) --> C(Join by proximity)
 B(OSM Data - T-stops) --> C 
@@ -190,10 +235,9 @@ head(public_transit_pts)
 
 Lets display the data in an interactive map that will let us check that we have downloaded the correct features.
 
-\[TODO Make an interactive map with that nice annotatable library\]
 ```{r}
 leaflet(public_transit_pts) %>%
-  addTiles() %>%
+  addProviderTiles(provider=providers$CartoDB.Positron) %>%
   addCircleMarkers(
     label = ~name,
     radius = 3,
@@ -205,20 +249,20 @@ leaflet(public_transit_pts) %>%
 
 It looks like this data has some duplicated stations, and isn't restricted to T-stops. This is a common problem in OSM data, which is crowd-sourced from volunteers.
 
-Let's see if we can filter the data to select only T stops. First, we can check the unique values in the station column. 
+Let's see if we can filter the data to select only T stops. First, we can check the unique values in the station column.
 
 ```{r}
 public_transit_pts %>% pull(station) %>% unique()
 ```
 
-Then, lets filter for "subway" and "light_rail" stations. 
+Then, lets filter for "subway" and "light_rail" stations.
 
 ```{r}
 t_stops <- public_transit_pts %>%
   filter(station %in% c("subway", "light_rail"))
 
 leaflet(t_stops) %>%
-  addTiles() %>%
+  addProviderTiles(provider=providers$CartoDB.Positron) %>%
   addCircleMarkers(
     label = ~name,
     radius = 3,
@@ -232,31 +276,31 @@ leaflet(t_stops) %>%
 
 Now, we can extract values from the ACS at each of the T-stations we have downloaded. Because a station may lay on the boundary of the multiple CBGs, we can create a buffer around each station and get compute the average income of any CBGs intersecting this boundary.
 
-First, we need to convert our geographic data into a coordinate system in meters.
+First, we need to convert our geographic data into a coordinate system with units in meters.
 
 ```{r}
 crs_ma <- 26986
-
 t_stops_proj <- st_transform(t_stops, crs = crs_ma)
 medincome_boston_proj <- st_transform(medincome_boston, crs = crs_ma)
 ```
 
-\[TODO: sidenote on projected coordinate systems\]
+## **Sidenote: Projected vs. Geographic coordinate systems**
+
+Geographic coordinate systems (like WGS84, commonly used for latitude/longitude data) represent locations on the Earth's surface using angular measurements. While suitable for global mapping, they aren't ideal for precise distance or area calculations because the Earth is curved.
+
+**Projected coordinate systems**, such as the one we're using (`EPSG:26986` for Massachusetts State Plane), transform geographic data onto a flat surface. This projection preserves specific properties, such as distance or area, making it more accurate for spatial operations like buffering or intersection analysis within a localized region.
+
+By reprojecting our data to a system measured in meters, we ensure more accurate combination of ACS-reported income at T-stations.
+
+## Buffering transit stations
 
 Next, we need to create buffers around our transit stations.
 
 ```{r}
 t_stops_buff <- st_buffer(t_stops_proj, dist = 200)
 
-leaflet(t_stops_buff %>% st_transform(4326)) %>%
-  addTiles() %>%
-  addPolygons(
-    data = medincome_boston %>% st_transform(4326),
-    label = ~as.character(estimate),
-    fillOpacity = 0.6,
-    color = "blue",
-    stroke = FALSE
-  ) %>%
+leaflet(t_stops_buff %>% st_transform(4326)) %>% # We need to convert back to geographic coordinates for leaflet
+  addProviderTiles(provider=providers$CartoDB.Positron) %>%
   addPolygons(
     label = ~name,
     stroke = FALSE,
@@ -268,9 +312,10 @@ leaflet(t_stops_buff %>% st_transform(4326)) %>%
 Now we can join our ACS data with our transit stations.
 
 ```{r}
-t_stops_income <- st_join(t_stops_buff, medincome_ma_proj, join = st_intersects) %>%
+t_stops_income <- st_join(t_stops_buff, medincome_boston_proj, join = st_intersects) %>%
   group_by(osm_id, name) %>%
-  summarize(mean_income = mean(estimate, na.rm = TRUE), .groups="drop")
+  summarize(mean_income = mean(estimate, na.rm = TRUE), .groups="drop") %>%
+  drop_na(mean_income)
 
 head(t_stops_income)
 ```
@@ -288,12 +333,13 @@ ggplot() +
   labs(
     title = "Boston T-stops by Average Household Income",
     subtitle = "Using 200m buffer around each T-stop"
-  )
+  ) + 
+theme_void()
 ```
 
 This looks OK, but we can add more data to make the visualization more compelling. Lets retrieve the path of the metro lines from Open Street Map and display them on the map, add a basemap and choose a minimal theme.
 
-\[TODO\]
+## Exercise 4
 
 ## Closing thoughts
 

@@ -26,7 +26,7 @@ Building on the data from Lab 2-1, in this practical we will conduct a (relative
 
 This analysis will rely on the ideas of *residential anchoring* and *proximity-based accessibility* (meaning that accessibility of public transit can be understood based on the distance between an individual's home and their nearest public transit station). This is a popular idea in traditional urban studies, behind the idea of popular concepts such as food deserts. However, findings from "fast" behavioral data have begun to show the problems with taking this approach to understanding urban systems. While you work through this practical, consider factors which may be driving public transit accessibility but are not captured by the census, and how we can use behavioral data in future weeks to better understand features of urban life like access to and use of public transit.
 
-Also, remember to keep in mind that we are identifying *correlation*sbetween census variables*,* not causation. It is worth considering *why* certain demographic variables are correlated with lower / higher accessibility to public transit, and how we might address that question by combining census data with other behavioral big data.
+Also, remember to keep in mind that we are identifying *correlations* between census variables, not causation. It is worth considering *why* certain demographic variables are correlated with lower / higher accessibility to public transit, and how we might address that question by combining census data with other behavioral big data.
 
 ## Before starting:
 
