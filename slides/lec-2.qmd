@@ -46,79 +46,121 @@ This week: Introduction to Urban Data - Using Census data as a tool for understa
 - Understand the strengths and limitations of census data
 - Understand special considerations when combining census data with individual-level behavioral data (i.e. Ecological Fallacy and the Modifiable Areal Unit Problem)
 
-# Practical
+# Practical 1
 
 -   Use the [`tidycensus`](https://walker-data.com/tidycensus/) and [`osmdata`](https://docs.ropensci.org/osmdata/) R packages to load and combine urban data in R 
 - Reproduce and extend this analysis: [*Health Inequalities in Boston by T-Stops: A Pictorial Essay*](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/)
 
-
 ![](images/boston_health_t_stop_example.png){fig-align="center"}
+
+# Practical 2
+
+- Use the data from Practical 1 to conduct an analysis of accessibility to transit stations.
+- Explore cross-correlation of census variables.
+- Conduct a *Social Area Analysis* to identify key factors measured by census variables.
+
+[TODO Image]
 
 # What is the census
 
-Comprehensive survey measuring population characteristics. 
+A *comprehensive* survey measuring population characteristics
 
-Around the world: 
+**Aim:** count all individuals in a country / region (as well as some of their characteristics)
 
-Census data collection varies in terms of frequency and data accuracy. 
+**Around the world:**
 
-Some countries rely on very old censuses (DRC 1984, Iraq 1987, Afghanistan 1979).
+- In most countries, censuses occur every 10 years. Accuracy of census data varies by country but is high quality in most high-income countries
 
-Different variables are collected by different countries. For example, *Censuses of race and ethnic origin were banned by the French government in 1978*.
+- Some countries rely on very old censuses (DRC - 1984, Iraq - 1987, Afghanistan - 1979)
+
+- Different variables are collected by different countries. For example, censuses of race and ethnic origin are banned in France
+
+[TODO Image]
 
 # The US Census 
 
 A population census is required by the constitution every 10 years
 
-The census determines electoral representation, electoral re-districting, billions of dollars in federal and state funding
+The census determines electoral representation and re-districting, as well as billions of dollars in federal and state funding
 
-Collects basic information:
+The US Census (formerly called the "short form" census) collects basic information:
   * Number of people living in a household
   * Age, sex, race, hispanic origin, relationship to householder, housing tenure
 
-The comprehensive survey was formerly called the "short form" census
-
-The 2020 US Census cost a total of $13.7 Billion
+The Census is expensive! ($13.7 Billion in 2020)
 
 # American Community Survey (ACS)
 
-Annual survey mearuing detailed population characteristics in 4 domains: **Demographic**, **Economic**, **Housing**, **Social** characteristics.
+Annual survey measuring detailed population characteristics in 4 domains: **Demographic**, **Economic**, **Housing**, **Social**.
 
 See: [ACS Subjects Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html)
 
-Sample of US households (3.5 Million in 2015). 
+Detailed survey of a sample of US households (3.5 Million in 2015). The ACS has replaced the "long form" census. 
 
-Responses are: re-weighted to adjust for sampling bias, modelled to impute responses for small areas and analyse variance of different population characteristics.
+Responses are: re-weighted to adjust for sampling bias, modelled to impute responses for small areas.
 
 Because of the need to collect sufficient data for modelling detailed population characteristics, ACS estimates are released in rolling 5-year windows (i.e. 2020 release uses data from 2016 to 2020).
 
 # The Census is a form of "big data" 
 
-First UK census was the basis for E. G. Ravenstein's "Laws of Migration" [TODO cite]
+Although we now consider the Census to be "traditional," comprehensive data on population characteristics were a huge advance in quantitative social science.
 
-Census data was tabulated by hand and revealed regularities in migration behavior. 
+For example, the First UK census was the basis for E. G. Ravenstein's "Laws of Migration" [TODO cite]
 
-Intuition is the basis for the Gravity and Intervening Opportunities models. 
+- Census data was tabulated by hand and revealed regularities in migration behavior. 
 
-# Fast vs. Slow data
+- Intuition is the basis for the Gravity and Intervening Opportunities models of human mobility.
+
+[TODO Ravenstein headshot]
+
+# Fast vs. Slow data in CUS
 
 Traditional urban studies research is heavily reliant on Census data
 
-Ideas like residential anchoring, proximity-based accessibility produce scientific questions which are tractable using census data alone.
+Ideas like *residential anchoring*, *proximity-based accessibility* produce scientific questions which are tractable using census data alone.
 
 "Fast" behavioral data has expanded the questions that we can ask about urban systems. 
 
-[TODO Table comparing fast and slow data]
+What differentiates "fast" big data from traditional big data like the census. 
+
+* *Volume*: "data that outstrip our capabilities to analyze"
+* *Velocity*: continuously updating databases permitting longitudinal and near real-time analyses
+* *Variety*: broad range of possible formats (structured and unstructured)
 
 # Combining census and behavioral data
 
-Census data only represent some aspects of human behavior. Luckily, these are often complementary to 
+Census data only represent some aspects of human behavior. Luckily, behavioral data often complement (not replace) census data.
 
 Variables such as education, race, gender, and income, independently explain approximately 50–55% of the variation in economic outcomes (e.g., median household income or property values) [cite - moro infrequent]
 
-Similar finding: Exposure—driven by demographic distributions like SES—accounts for half of the variance in cross-class friendships [cite - chetty II]
+Similar finding: Exposure — driven by demographic distributions like SES — accounts for half of the variance in cross-class friendships [cite - chetty II]
 
 [TODO Figure here]
+
+# Today's practical: Social Area Analysis
+
+Consider the underlying social "factors" which are captured by the census. 
+
+A large number of census variables can be reduced to a small number of "factors"
+
+In the US, repeated studies have shown 3 important factors. 
+
+[TODO Image of table from review paper]
+
+# Limitations of census data
+
+The census is a "gold standard" survey, but it still has limitations: 
+
+- Systematically difficult groups
+
+- Small population subsets
+  Even at 1:6, it is still hard to capture infrequent population groups
+
+- Think about it like fishing: \[ONS fishing example\]
+
+[TODO Image here]
+
+These issues are general, and play an even greater role in behavioral data. 
 
 # Sidenote: Units of analysis
 
@@ -126,8 +168,7 @@ Census variables can refer to:
 * Individuals (Age, Gender, Race/Ethnicity, Educational Attainment, Employment Status) 
 * Households (Income, Household Size, Housing Tenure)
 
-Different variables refer to different population demonimators (i.e. employment statistics are meaningful for the working-age population).
-
+Different variables refer to different population demonimators (i.e. Employment Status is meaningful for the working-age population).
 
 # Sidenote: Geographic references
 
@@ -138,24 +179,6 @@ Different variables refer to different population demonimators (i.e. employment 
 - TODO GEOID naming convention
 
 *Take note of boundary changes. GEOIDs are re-defined every 10 years, meaning that additional work is required to compare data between censuses.*
-
-# Census: a 'Gold Standard' Survey
-
-The census is a "gold standard" survey, but it still has limitations: 
-
-- Systematically difficult groups
-
-- Small population subsets
-
-- Think about it like fishing: \[ONS fishing example\]
-
-[TODO Image here]
-
-# Accessing census data
-
--   API
-
--   Tidycensus
 
 # Managing spatial references of census data
 
