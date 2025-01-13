@@ -1,0 +1,35 @@
+---
+title: "Week 2"
+subtitle: "Urban Data - Maps + Census"
+editor: visual
+bibliography: ../references.bib
+csl: ../nature-communications.csl
+---
+
+Welcome back! This week, we will dive deeper into the use of administrative data from the census and look at how we can generate insights about urban dynamics by combining census data with other spatial features. Our lecture will walk through the availability of census data, how to reference census data spatially, and common considerations when using census data. In our practical exercise, we will conduct look at accessibility of public transit stations in Boston and conduct a *Social Area Analysis* to identify the key social factors measured by the census.
+
+## Prepare
+
+📖 Check out available census variables with the [American Community Survey Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html)
+
+📖 Check out this interactive dashboard which provides an interesting look at the role of spatial scale in defining income deprivation in the UK: [Exploring local income deprivation](https://www.ons.gov.uk/visualisations/dvc1371/#/E07000223)
+
+📖 Read this (slightly funny) introduction to census population estimation: [Trout, Catfish and Roach: The beginner’s guide to census population estimates](http://www.statlit.org/pdf/2010Benton-CensusUK-Trout_Catfish_And_Roach.pdf)
+
+📖 Read sections 1 and 2 of this paper on Social Area Analysis (this will give you an intuition about what we will do in our practical): [Social area analysis, data mining, and GIS](/pdfs/social_area_analysis_data_mining_and_gis.pdf)
+
+📖 Read (or at least familiarize yourself with) the foundational paper on ecological fallacy and the modifiable areal unit problem: [Ecological Fallacies and the Analysis of Areal Census Data](/pdfs/Openshaw%20-%201984%20-%20Ecological%20Fallacies%20and%20the%20Analysis%20of%20Areal%20Cen.pdf)
+
+## Participate
+
+🖥️ TBD
+
+## Perform
+
+⌨️ TBD
+
+<br><br>
+
+::: {style="font-size: 0.875em;"}
+Back to [course schedule](/) ⏎
+:::
