@@ -1,0 +1,148 @@
+---
+title: "Mobile Phone data"
+author: "Esteban Moro" 
+institute:
+  - Network Science Institute, Northeastern University
+  - NETS 7983 Computational Urban Science
+date: last-modified
+format: html
+bibliography: references.bib
+csl: ieee.csl
+---
+
+# Mobile Phone data
+
+## Introduction
+
+Mobile phone data is a rich source of information about human behavior. In this document we will explore the different types of mobile phone data, how it is collected, and how it can be used to study human behavior in urban challenges. 
+
+## Why mobile phone data?
+
+Mobile phone data is a valuable source of information about human behavior. Mobile phones are ubiquitous in modern society, and they are used by billions of people around the world. Mobile phones are always on and always connected, which means that they can be used to track the movements and activities of their users in real time.
+
+## Types of mobile phone data
+
+Mobile phone data can be classified into three main categories: Call Detail Records (CDRs), Location Data, and App Data.
+
+### Call Detail Records (CDRs)
+
+Call Detail Records (CDRs) are the most common type of mobile phone data. They contain information about the calls made and received by a mobile phone user. This information includes the phone numbers of the parties involved in the call, the duration of the call, the time and date of the call, and the location of the parties involved in the call.
+
+Locations of Cell Towers:
+https://www.opencellid.org/#zoom=18&lat=42.355723&lon=-71.064873
+
+
+### Location Data
+
+Location data is another type of mobile phone data that is collected by mobile phone operators. This data contains information about the location of the mobile phone user at different points in time. This information can be used to track the movements of the user and to infer their daily routines.
+
+### App Data
+
+App data is a third type of mobile phone data that is collected by mobile phone operators. This data contains information about the apps that are installed on the mobile phone and the usage patterns of the user. This information can be used to infer the interests and preferences of the user.
+
+### Data Traffic data
+
+Data traffic data is another type of mobile phone data that is collected by mobile phone operators. This data contains information about the data usage of the mobile phone user, including the amount of data used, the time and date of the data usage, and the location of the user.
+
+## Location Based Services (LBS)
+
+Location Based Services (LBS) are applications or services that use location data to provide information to the user. For example, LBS can be used to provide directions to a restaurant or to find the nearest gas station, or the local weather. 
+
+LBS can also be used to provide location-based advertising to the user. For example, a user who is near a shopping mall may receive an advertisement for a store in the mall. Also mall stores can have more information about their customers, their preferences, their competitors, etc. This allow them to put in place more efficeint marketing strategies.
+
+## Location Based Services (LBS)
+
+Location Based Services (LBS) are applications or services that use location data to provide information to the user. For example, LBS can be used to provide directions to a restaurant or to find the nearest gas station, or the local weather.
+ 
+
+Those services are based on the use of GPS technology, which allows the mobile phone to determine its location with a high degree of accuracy. GPS technology uses a network of satellites to triangulate the position of the mobile phone and to provide real-time location information. 
+
+LBS uses different technologies in your mobile phone to determine your location. The most common are:
+
+- GPS: Global Positioning System
+  - Uses satellites to pinpoint precise locations
+  - Common in smartphones, cars, and other devices
+  - High accuracy outdoors, but poor indoors or dense urban areas. Urban cannonying is a common problem.
+
+- Cellular Network Triangulation
+- Wi-Fi Positioning System
+- Bluetooth Low Energy (BLE) Beacons
+
+Most LBS applications combine multiple methods to balance accuracy, battery efficiency, and coverage, often adapting dynamically to the environment. It is was is called AGPS (Assisted GPS). However, location precision can vary depending on the method used. Typically, LBS applications use GPS for outdoor locations and Wi-Fi or cellular network triangulation for indoor locations and the accuracy is around 10-20 meters.
+
+Data collection in LBS is gathered using two ways:
+
+- Foreground data collection: The user actively uses the app and provides data.
+
+- Background data collection: The app collects data in the background without the user's active participation.
+
+Background data collection is more common and can be used to track the user's location and activities over time. This data can be used to infer the user's preferences and interests and to provide personalized recommendations and advertisements.
+
+In the last years, privacy policies and operating system's requirements have become more strict, and users have more control over the data that is collected by LBS applications and how it is used. For example, since iOS 14, Apple requires apps to ask for permission to track the user's location in the background.
+
+LBS data is made then of a list of events, each one with a timestamp, a location, and a user identifier. 
+
+LBS data from different apps or services is combined by different companies (aggregators). (Unique ID)
+
+
+Image of data collected by LBS
+
+LBS data has high spatial and temporal resolution, which means that it can be used to track the movements of the user in real time and to infer their daily routines. If the location is collected on the background, the temporal resolution can be very high, with data points collected every few seconds or minutes. 
+
+LBS data is prone to errors and biases. 
+
+- **Dirty**: For example, the location of the mobile phone may not be accurate if the GPS signal is weak or if the user is indoors. 
+- **Drifting**: Location services might disconnect in the battery is running low and thus we might get less data at the end of the day.
+- **Bias**: 
+  - Demographic: app users might not be representative of the general population.
+  - Geographical: data might be collected more frequently in urban areas than in rural areas.
+  - Temporal: data might be collected more frequently during the day than at night.
+  - Behavioral: data might be collected more frequently when the user is active than when the user is inactive. Also LBS might be more prevalent in apps related to some behaviors --traveling, shopping, dinning out-- and thus users of those apps might be more active than the general population.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Collection of mobile phone data
+
+Mobile phone data is collected by mobile phone operators through the use of mobile phone towers and GPS technology. When a mobile phone user makes a call or uses an app, the mobile phone sends a signal to the nearest mobile phone tower. The mobile phone tower then records the information about the call or app usage and sends it to the mobile phone operator.
+
+## Transforming mobile phone data to human behavior
+
+Mobile phone data can be transformed into human behavior data. Human trajectories and interaction patterns contain a lot of semantic information about the places visited and the activities performed. This information can be used to infer the preferences and interests of the mobile phone user.
+
+## Privacy concerns
+
+Mobile phone data raises important privacy concerns. Mobile phone data contains sensitive information about the behavior and preferences of mobile phone users, and it can be used to track the movements of individuals in real time. To address these concerns, mobile phone operators must take steps to protect the privacy of their users and to ensure that the data is used responsibly.
+
+
+## Uses of mobile phone data
+
+Mobile phone data can be used to study a wide range of urban challenges. For example, mobile phone data can be used to study traffic patterns, public transportation usage, and the spread of infectious diseases. Mobile phone data can also be used to study social networks, urban mobility, and urban planning.
+
+## Conclusion
+
+Mobile phone data is a rich source of information about human behavior. It can be used to study a wide range of urban challenges and to inform policy decisions. By analyzing mobile phone data, researchers can gain insights into the behavior of mobile phone users and develop strategies to address urban challenges.
+
+## References
+
+::: {#refs}
+:::
+
+
+
+

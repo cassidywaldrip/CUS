@@ -169,7 +169,6 @@ In `R` the library [`sf`](https://r-spatial.github.io/sf/) is the most widely ad
 
 ![{{< fa palette >}} Art by [Allison Horst](https://allisonhorst.com)](https://user-images.githubusercontent.com/520851/50280460-e35c1880-044c-11e9-9ed7-cc46754e49db.jpg)
 
-
 The older `sp` package also supports vector data but `sf` has become the go-to solution due to its more intuitive syntax and built-in functions.
 
 Let's see an example. The U.S. Census Bureau provides county boundaries in a zipped shapefile format through their [TIGER](https://www.census.gov/programs-surveys/geography/guidance/tiger-data-products-guide.html) geographical service. We’ll download that file, unzip it to a temporary directory, and then read it into `R` as an `sf` object.
