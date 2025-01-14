@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hamish Gibbs">
+
+<title>Lab 2-1 - Predicting transit accessibility with census data – CUS - Spring 2025</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7a430b9d82925c6f1660f24f0a9a8b39.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-66bb0d2574ad0359c09976f27e6f5bf8.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="../site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="../site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="../site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="../site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="../site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="../site_libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="../site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="../site_libs/leaflet-providers-plugin-2.2.1/leaflet-providers-plugin.js"></script>
+
+
+<meta property="og:title" content="Lab 2-1 - Predicting transit accessibility with census data – CUS - Spring 2025">
+<meta property="og:description" content="Homepage for Computational Urban Science - Network Science Institute, Spring 2025.">
+<meta property="og:image" content="https://socialurban.net/CUS/labs/lab-2-1_files/figure-html/unnamed-chunk-4-1.png">
+<meta property="og:site_name" content="CUS - Spring 2025">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1344">
+<meta name="twitter:title" content="Lab 2-1 - Predicting transit accessibility with census data – CUS - Spring 2025">
+<meta name="twitter:description" content="Homepage for Computational Urban Science - Network Science Institute, Spring 2025.">
+<meta name="twitter:image" content="https://socialurban.net/CUS/labs/images/twitter-card.png">
+<meta name="twitter:creator" content="@estebanmoro">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Lab 2-1 - Predicting transit accessibility with census data</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/SUNLab-NetSI/CUS" title="Course Github Repo" class="quarto-navigation-tool px-1" aria-label="Course Github Repo"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Course Information</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-team.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Teaching team</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Schedule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../course-faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FAQ</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Computing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing-access.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Access to the server</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing-working.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with the server</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing-toolkit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Meet the toolkit</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Project</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../project-description.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Description</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../project-tips-resources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tips + resources</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Weekly materials</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1 (Jan 7)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Supplemental notes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../supplemental/other-visualization-tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Other visualization tools</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective">Objective</a></li>
+  <li><a href="#before-starting" id="toc-before-starting" class="nav-link" data-scroll-target="#before-starting">Before starting:</a></li>
+  <li><a href="#loading-census-data-with-tidycensus" id="toc-loading-census-data-with-tidycensus" class="nav-link" data-scroll-target="#loading-census-data-with-tidycensus">Loading Census Data With <code>tidycensus</code></a></li>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
+  <li><a href="#mapping-census-data" id="toc-mapping-census-data" class="nav-link" data-scroll-target="#mapping-census-data">Mapping Census Data</a></li>
+  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2</a></li>
+  <li><a href="#restricting-census-data-to-our-area-of-interest" id="toc-restricting-census-data-to-our-area-of-interest" class="nav-link" data-scroll-target="#restricting-census-data-to-our-area-of-interest">Restricting Census data to our area of interest</a></li>
+  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3">Exercise 3</a></li>
+  <li><a href="#sidenote-using-data-visualizations-to-communicate-your-findings" id="toc-sidenote-using-data-visualizations-to-communicate-your-findings" class="nav-link" data-scroll-target="#sidenote-using-data-visualizations-to-communicate-your-findings">Sidenote: using data visualizations to communicate your findings</a></li>
+  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4">Exercise 4</a></li>
+  <li><a href="#combining-census-data-with-osm" id="toc-combining-census-data-with-osm" class="nav-link" data-scroll-target="#combining-census-data-with-osm">Combining census data with OSM</a></li>
+  <li><a href="#retrieving-acs-variables" id="toc-retrieving-acs-variables" class="nav-link" data-scroll-target="#retrieving-acs-variables">Retrieving ACS Variables</a></li>
+  <li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5">Exercise 5</a></li>
+  <li><a href="#retrieving-osm-data" id="toc-retrieving-osm-data" class="nav-link" data-scroll-target="#retrieving-osm-data">Retrieving OSM data</a></li>
+  <li><a href="#exercise-6" id="toc-exercise-6" class="nav-link" data-scroll-target="#exercise-6">Exercise 6</a></li>
+  <li><a href="#measuring-transit-accessibility" id="toc-measuring-transit-accessibility" class="nav-link" data-scroll-target="#measuring-transit-accessibility">Measuring transit accessibility</a></li>
+  <li><a href="#exercise-7" id="toc-exercise-7" class="nav-link" data-scroll-target="#exercise-7">Exercise 7</a></li>
+  <li><a href="#computing-a-measure-of-transit-accessibility" id="toc-computing-a-measure-of-transit-accessibility" class="nav-link" data-scroll-target="#computing-a-measure-of-transit-accessibility">Computing a measure of transit accessibility</a>
+  <ul class="collapse">
+  <li><a href="#sidenote-understanding-projected-coordinate-systems" id="toc-sidenote-understanding-projected-coordinate-systems" class="nav-link" data-scroll-target="#sidenote-understanding-projected-coordinate-systems"><strong>Sidenote: Understanding Projected Coordinate Systems</strong></a></li>
+  </ul></li>
+  <li><a href="#exercise-8" id="toc-exercise-8" class="nav-link" data-scroll-target="#exercise-8">Exercise 8</a></li>
+  <li><a href="#predicting-transit-accessibility" id="toc-predicting-transit-accessibility" class="nav-link" data-scroll-target="#predicting-transit-accessibility">Predicting transit accessibility</a></li>
+  <li><a href="#exercise-9" id="toc-exercise-9" class="nav-link" data-scroll-target="#exercise-9">Exercise 9</a></li>
+  <li><a href="#multicollinearity-of-census-variables" id="toc-multicollinearity-of-census-variables" class="nav-link" data-scroll-target="#multicollinearity-of-census-variables">Multicollinearity of census variables</a></li>
+  <li><a href="#exercise-10" id="toc-exercise-10" class="nav-link" data-scroll-target="#exercise-10">Exercise 10</a></li>
+  <li><a href="#introduction-social-area-analysis" id="toc-introduction-social-area-analysis" class="nav-link" data-scroll-target="#introduction-social-area-analysis">Introduction: Social Area Analysis</a></li>
+  <li><a href="#dimensionality-reduction-of-census-variables" id="toc-dimensionality-reduction-of-census-variables" class="nav-link" data-scroll-target="#dimensionality-reduction-of-census-variables">Dimensionality reduction of census variables</a></li>
+  <li><a href="#exercise-11" id="toc-exercise-11" class="nav-link" data-scroll-target="#exercise-11">Exercise 11</a></li>
+  <li><a href="#exercise-12" id="toc-exercise-12" class="nav-link" data-scroll-target="#exercise-12">Exercise 12</a></li>
+  <li><a href="#visualizing-key-social-factors" id="toc-visualizing-key-social-factors" class="nav-link" data-scroll-target="#visualizing-key-social-factors">Visualizing key social factors</a></li>
+  <li><a href="#exercise-13" id="toc-exercise-13" class="nav-link" data-scroll-target="#exercise-13">Exercise 13</a></li>
+  <li><a href="#exercise-14" id="toc-exercise-14" class="nav-link" data-scroll-target="#exercise-14">Exercise 14</a></li>
+  <li><a href="#closing-thoughts" id="toc-closing-thoughts" class="nav-link" data-scroll-target="#closing-thoughts">Closing thoughts</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/SUNLab-NetSI/CUS/edit/main/labs/lab-2-1.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/SUNLab-NetSI/CUS/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 2-1 - Predicting transit accessibility with census data</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliations</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Hamish Gibbs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Network Science Institute, Northeastern University
+          </p>
+        <p class="affiliation">
+            NETS 7983 Computational Urban Science
+          </p>
+        <p class="affiliation">
+            Last updated 2025-01-14
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objective" class="level2">
+<h2 class="anchored" data-anchor-id="objective">Objective</h2>
+<p>In this practical, we will conduct an analysis of transit accessibility, and use this analysis as a gateway to explore the underlying social characteristics measured by the census.</p>
+<p>The aim of this practical is to learn how to:</p>
+<ul>
+<li>Retrieve, process, and analyze census data for different geographies / variables.</li>
+<li>Combine geo-referenced census data with other spatial features (from Open Street Map) for analysis.</li>
+<li>Compute a measure of public transit accessibility and assess how well this measure is predicted by census variables.</li>
+<li>Conduct a <em>social area analysis</em> using dimensionality reduction (PCA) to identify the factors which differentiate census variables.</li>
+</ul>
+</section>
+<section id="before-starting" class="level2">
+<h2 class="anchored" data-anchor-id="before-starting">Before starting:</h2>
+<ol type="1">
+<li><p>Ensure you have access to the <code>stella</code> server:</p></li>
+<li><p><a href="https://api.census.gov/data/key_signup.html">Request a U.S. Census Data API Key</a></p></li>
+<li><p>Load required packages</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Configure the API key in your R environment</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">CENSUS_API_KEY =</span> <span class="st">"YOUR_API_KEY"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Then call the <code>tidycensus::census_api_key</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">census_api_key</span>(<span class="fu">Sys.getenv</span>(<span class="st">"CENSUS_API_KEY"</span>), <span class="at">install =</span> <span class="cn">TRUE</span>, <span class="at">overwrite=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "069a473f42727947c3c98006f89e926d874bc58b"</code></pre>
+</div>
+</div></li>
+</ol>
+</section>
+<section id="loading-census-data-with-tidycensus" class="level2">
+<h2 class="anchored" data-anchor-id="loading-census-data-with-tidycensus">Loading Census Data With <code>tidycensus</code></h2>
+<p>To recap, the <code>tidycensus</code> package gives us a simple way to retrieve census data for a given variable and set of geographic units.</p>
+<p><em>Note: in this practical, we will use data from the American Community Survey (ACS) because of the greater number of variables. To do this, we will use the <code>tidyverse::get_acs</code> function. The decennial census is also available with <code>tidyverse::get_decennial</code>.</em></p>
+<p>Lets start by retrieving median household income in US states. For a list of the different variables available from the ACS, a good place to start is the <a href="https://www.census.gov/programs-surveys/acs/guidance/subjects.html">ACS Variable Explorer</a>. If you know what you are looking for, you can use the search bar to find the variable code(s).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>medincome <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"state"</span>, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">variables =</span> <span class="st">"B19013_001"</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">year =</span> <span class="dv">2021</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(medincome)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  GEOID NAME       variable   estimate   moe
+  &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;
+1 01    Alabama    B19013_001    54943   377
+2 02    Alaska     B19013_001    80287  1113
+3 04    Arizona    B19013_001    65913   387
+4 05    Arkansas   B19013_001    52123   458
+5 06    California B19013_001    84097   236
+6 08    Colorado   B19013_001    80184   450</code></pre>
+</div>
+</div>
+</section>
+<section id="exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
+<ul>
+<li><p>Try downloading other variables using codes you find with the <a href="https://www.census.gov/programs-surveys/acs/guidance/subjects.html">ACS Variable Explorer</a>. Are cross-tabulations of multiple variables in the same format as univariate tables?</p></li>
+<li><p>Inspect all of the variables available in the 2021 ACS. <code>tidycensus</code> has a helpful function for this: <code>load_variables(2021, "acs5", cache = TRUE)</code> .</p></li>
+<li><p>The beginning of the variable code indicates the table. What does the suffix <code>_001</code> in the code block above indicate?</p></li>
+</ul>
+</section>
+<section id="mapping-census-data" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-census-data">Mapping Census Data</h2>
+<p><code>tidycensus</code> integrates with <code>sf</code> to return spatial boundaries for geographic units. We can add spatial boundaries using <code>geometry = TRUE</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>medincome <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"state"</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">variables =</span> <span class="st">"B19013_001"</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">year =</span> <span class="dv">2021</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">geometry=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |=====                                                                 |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |=======                                                               |   9%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |==========                                                            |  15%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |=============                                                         |  19%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |=================                                                     |  24%
+  |                                                                            
+  |=================                                                     |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |===================                                                   |  28%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |=========================                                             |  35%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |==============================                                        |  42%
+  |                                                                            
+  |===============================================                       |  68%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(medincome) <span class="sc">+</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill=</span>estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can simplify the plot by restricting to states in the continental US.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>medincome_continental_usa <span class="ot">&lt;-</span> medincome <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>NAME <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Alaska"</span>, <span class="st">"Hawaii"</span>, <span class="st">"Guam"</span>, <span class="st">"Puerto Rico"</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(medincome_continental_usa) <span class="sc">+</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill=</span>estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Remember the hierarchy of US statistical geographies? You can download data for any of these geographies with <code>tidycensus</code>.</p>
+<p><img src="https://walker-data.com/umich-workshop-2022/intro-2020-census/img/census_diagram.png" class="img-fluid"></p>
+<p>See the list of available geographies <a href="https://walker-data.com/tidycensus/articles/basic-usage.html#geography-in-tidycensus">here</a>.</p>
+<p>We can also filter for some higher-level geographies. Lets get median household income for Census Block Groups in Massachusetts.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>medincome_ma <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"cbg"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="st">"B19013_001"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">survey =</span> <span class="st">"acs5"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2021</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> <span class="st">"MA"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(medincome_ma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 5 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -73.23035 ymin: 42.02425 xmax: -70.17674 ymax: 42.71779
+Geodetic CRS:  NAD83
+         GEOID
+1 250092201013
+2 250277544002
+3 250010101003
+4 250039352004
+5 250092505002
+6 250251604003
+                                                               NAME   variable
+1  Block Group 3, Census Tract 2201.01, Essex County, Massachusetts B19013_001
+2 Block Group 2, Census Tract 7544, Worcester County, Massachusetts B19013_001
+3 Block Group 3, Census Tract 101, Barnstable County, Massachusetts B19013_001
+4 Block Group 4, Census Tract 9352, Berkshire County, Massachusetts B19013_001
+5     Block Group 2, Census Tract 2505, Essex County, Massachusetts B19013_001
+6   Block Group 3, Census Tract 1604, Suffolk County, Massachusetts B19013_001
+  estimate   moe                       geometry
+1    46375 31560 MULTIPOLYGON (((-70.62159 4...
+2   105221 46248 MULTIPOLYGON (((-71.88907 4...
+3    63333 52688 MULTIPOLYGON (((-70.18885 4...
+4       NA    NA MULTIPOLYGON (((-73.22953 4...
+5    42500 28364 MULTIPOLYGON (((-71.17149 4...
+6   112393 34802 MULTIPOLYGON (((-71.04615 4...</code></pre>
+</div>
+</div>
+<p>In this practical, we only want data for Boston, so we will have to filter for CBGs within the boundary of Boston. We can get this boundary from <code>tigris</code>, an R package that provides access to Census geographic boundaries and is closely coupled to <code>tidycensus</code>. See <a href="https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html">Census geographic data and applications in R</a> for more information.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>boston_area_towns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Boston"</span>, <span class="st">"Somerville"</span>, <span class="st">"Cambridge"</span>, <span class="st">"Brookline"</span>, <span class="st">"Revere"</span>, <span class="st">"Malden"</span>, <span class="st">"Everett"</span>, <span class="st">"Medford"</span>, <span class="st">"Chelsea"</span>, <span class="st">"Winthrop Town"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>boston_boundary <span class="ot">&lt;-</span> <span class="fu">places</span>(<span class="at">state =</span> <span class="st">"MA"</span>, <span class="at">cb =</span> <span class="cn">TRUE</span>, <span class="at">year=</span><span class="dv">2021</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NAME <span class="sc">%in%</span> boston_area_towns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+</div>
+</section>
+<section id="exercise-2" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2">Exercise 2</h2>
+<ul>
+<li>Using what you learned in lab-1-1, check that the Boston boundary is correct by plotting it on an interactive map using <code>leaflet</code>.</li>
+</ul>
+</section>
+<section id="restricting-census-data-to-our-area-of-interest" class="level2">
+<h2 class="anchored" data-anchor-id="restricting-census-data-to-our-area-of-interest">Restricting Census data to our area of interest</h2>
+<p>Now, using <code>st_filter</code> from the <code>sf</code> package, we can filter for CBGs within Boston.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>medincome_boston <span class="ot">&lt;-</span> medincome_ma <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_filter</span>(boston_boundary)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(medincome_boston)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 5 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -71.11753 ymin: 42.32981 xmax: -71.02934 ymax: 42.40286
+Geodetic CRS:  NAD83
+         GEOID
+1 250251604003
+2 250250106001
+3 250250709021
+4 250214001001
+5 250250811011
+6 250251601031
+                                                                NAME   variable
+1    Block Group 3, Census Tract 1604, Suffolk County, Massachusetts B19013_001
+2     Block Group 1, Census Tract 106, Suffolk County, Massachusetts B19013_001
+3  Block Group 1, Census Tract 709.02, Suffolk County, Massachusetts B19013_001
+4    Block Group 1, Census Tract 4001, Norfolk County, Massachusetts B19013_001
+5  Block Group 1, Census Tract 811.01, Suffolk County, Massachusetts B19013_001
+6 Block Group 1, Census Tract 1601.03, Suffolk County, Massachusetts B19013_001
+  estimate   moe                       geometry
+1   112393 34802 MULTIPOLYGON (((-71.04615 4...
+2   113875 65734 MULTIPOLYGON (((-71.08182 4...
+3    82813 41269 MULTIPOLYGON (((-71.07883 4...
+4    56528 27626 MULTIPOLYGON (((-71.11718 4...
+5    53988 27818 MULTIPOLYGON (((-71.11302 4...
+6    32788 31124 MULTIPOLYGON (((-71.03354 4...</code></pre>
+</div>
+</div>
+<p>We can then make a Choropleth map of the income in CBGs in Boston.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(medincome_boston) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> estimate), <span class="at">color =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-3" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3">Exercise 3</h2>
+<ul>
+<li>What is causing the missing values for some of these areas? <em>Tip: Removing CBGs with <code>NA</code> values and plotting with <code>leaflet</code> may give some indication.</em></li>
+</ul>
+</section>
+<section id="sidenote-using-data-visualizations-to-communicate-your-findings" class="level2">
+<h2 class="anchored" data-anchor-id="sidenote-using-data-visualizations-to-communicate-your-findings">Sidenote: using data visualizations to communicate your findings</h2>
+<p>Data visualizations are the best tool you have for conveying the results of your analysis. It is well worth spending a bit of effort to (1) <strong>think through how to best display your data</strong>, (2) <strong>take a extra time to polish your visualization</strong>, (3) <strong>be prepared to make and re-make your visualization as things change</strong>. Making a compelling data visualization is often a question of choosing which dimensions in your data that are most important for the message you are trying to convey, then finding a type of plot that can represent them clearly. There is some inspiration for different types of plots in the <a href="https://r-graph-gallery.com/">R Graph Gallery</a>.</p>
+<p>Things to keep in mind:</p>
+<ul>
+<li><p>Are your axis labels human readable?</p></li>
+<li><p>Are you maximizing the <em>data-to-ink ratio?</em></p></li>
+<li><p>Does your plot have an appropriate theme? Grid-lines (in default ggplot theme) are often not relevant or need to be reduced.</p></li>
+<li><p>Have you considered how you are using color? Common mistakes include: colors over-emphasizing minor variations in your data, diverging color scales used for non-diverging data, forgetting accessibility for color blind people.</p></li>
+<li><p>(Sometimes) Do you have a <strong>declarative title</strong> conveying the main message of your visualization?</p></li>
+</ul>
+<p>Here is a cleaned up version of the map from above.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> medincome_boston, <span class="fu">aes</span>(<span class="at">fill =</span> estimate), <span class="at">color =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"magma"</span>, <span class="at">direction =</span> <span class="dv">1</span>, <span class="at">name =</span> <span class="st">"MHI"</span>, <span class="at">label =</span> <span class="cf">function</span>(x){<span class="fu">paste0</span>(<span class="st">"$"</span>, scales<span class="sc">::</span><span class="fu">comma</span>(x))}) <span class="sc">+</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Median Household Income (2021)"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Block Groups in Boston"</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-4">Exercise 4</h2>
+<ul>
+<li>List or try to add a few more features to improve this visualization.</li>
+</ul>
+</section>
+<section id="combining-census-data-with-osm" class="level2">
+<h2 class="anchored" data-anchor-id="combining-census-data-with-osm">Combining census data with OSM</h2>
+<p>Now, the aim of this practical is to understand the factors which predict public transit accessibility in Boston.</p>
+<p>We will follow this methodology:</p>
+<ol type="1">
+<li>Download a range of ACS variables.</li>
+<li>Download Public Transit Stops in Boston from Open Street Map.</li>
+<li>Compute the “accessibility” of transit stations from CBGs.</li>
+<li>Explore which census variables predict transit station accessibility.</li>
+</ol>
+</section>
+<section id="retrieving-acs-variables" class="level2">
+<h2 class="anchored" data-anchor-id="retrieving-acs-variables">Retrieving ACS Variables</h2>
+<p>Now, lets retrieve a few more variables from the ACS. Because combining ACS variables can be complicated (for example, we might want broad age categories, not one year bands), we have pre-processed a few key variables into an easier-to-use format. You can find this in the file <code>/data/CUS/labs/2/14460_acs_2021_filtered_boston.parquet</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>census <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(<span class="st">"/data/CUS/labs/2/14460_acs_2021_filtered_boston.parquet"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(census)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "GEOID"                           "age.total"                      
+ [3] "age.u18"                         "age.u1825"                      
+ [5] "age.u2564"                       "age.a64"                        
+ [7] "race.total"                      "race.white"                     
+ [9] "race.black"                      "race.native"                    
+[11] "race.asian"                      "median_income"                  
+[13] "ratio_poverty"                   "education.grade_0_9"            
+[15] "education.grade_9_12"            "education.some_college"         
+[17] "education.bachelor"              "employment.total"               
+[19] "employment.labor_force"          "employment.civilian_labor_force"
+[21] "employment.civilian_employed"    "employment.civilian_unemployed" 
+[23] "employment.armed_forces"         "employment.not_labor_force"     </code></pre>
+</div>
+</div>
+</section>
+<section id="exercise-5" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-5">Exercise 5</h2>
+<ul>
+<li>Take a moment to re-construct one of the variables (like <code>age.u1825</code>) in this data frame using <code>tidycensus</code> and the <a href="https://www.census.gov/programs-surveys/acs/guidance/subjects.html">ACS Variable Explorer</a>. How many variables do you need to combine?</li>
+</ul>
+<p>Because this pre-processed <code>census</code> data doesn’t have any associated geography, we need to download and attach geographies using the <code>tigris</code> package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>block_groups <span class="ot">&lt;-</span> <span class="fu">block_groups</span>(<span class="at">state =</span> <span class="st">"25"</span>, <span class="at">year =</span> <span class="dv">2021</span>, <span class="at">class =</span> <span class="st">"sf"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |=====                                                                 |   8%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |======                                                                |   9%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |=========                                                             |  13%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |=================                                                     |  24%
+  |                                                                            
+  |=================                                                     |  25%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  26%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |===================                                                   |  28%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |=====================                                                 |  31%
+  |                                                                            
+  |======================                                                |  31%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=======================                                               |  32%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |========================                                              |  35%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |===========================                                           |  38%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |=================================                                     |  48%
+  |                                                                            
+  |==================================                                    |  48%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  49%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |===================================                                   |  51%
+  |                                                                            
+  |====================================                                  |  51%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |=====================================                                 |  52%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |=======================================                               |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |========================================                              |  58%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |===========================================                           |  62%
+  |                                                                            
+  |============================================                          |  62%
+  |                                                                            
+  |============================================                          |  63%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |=============================================                         |  65%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |=================================================                     |  69%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  72%
+  |                                                                            
+  |===================================================                   |  73%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=====================================================                 |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |======================================================                |  78%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |==========================================================            |  84%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  87%
+  |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |==============================================================        |  88%
+  |                                                                            
+  |===============================================================       |  89%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>census <span class="ot">&lt;-</span> census <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(block_groups <span class="sc">%&gt;%</span> <span class="fu">select</span>(GEOID, geometry), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"GEOID"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>()</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>census</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 1086 features and 24 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -71.21578 ymin: 42.17279 xmax: -70.9201 ymax: 42.47898
+Geodetic CRS:  NAD83
+# A tibble: 1,086 × 25
+   GEOID     age.total age.u18 age.u1825 age.u2564 age.a64 race.total race.white
+   &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+ 1 25009207…      1102     386        91       570      55       1102        382
+ 2 25009208…      1866     284       220      1074     288       1866       1223
+ 3 25009208…       391      27        47       238      79        391        353
+ 4 25009208…      1209     301        46       689     173       1209        998
+ 5 25009208…       942     217       128       474     123        942        795
+ 6 25009208…      1344     382        92       695     175       1344       1177
+ 7 25017336…      1898     508       213       911     266       1898       1885
+ 8 25017336…      1509     428       122       840     119       1509       1181
+ 9 25017336…       888     191       101       513      83        888        594
+10 25017336…      2320     201        98      1490     531       2320       1589
+# ℹ 1,076 more rows
+# ℹ 17 more variables: race.black &lt;dbl&gt;, race.native &lt;dbl&gt;, race.asian &lt;dbl&gt;,
+#   median_income &lt;dbl&gt;, ratio_poverty &lt;dbl&gt;, education.grade_0_9 &lt;dbl&gt;,
+#   education.grade_9_12 &lt;dbl&gt;, education.some_college &lt;dbl&gt;,
+#   education.bachelor &lt;dbl&gt;, employment.total &lt;dbl&gt;,
+#   employment.labor_force &lt;dbl&gt;, employment.civilian_labor_force &lt;dbl&gt;,
+#   employment.civilian_employed &lt;dbl&gt;, employment.civilian_unemployed &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
+</section>
+<section id="retrieving-osm-data" class="level2">
+<h2 class="anchored" data-anchor-id="retrieving-osm-data">Retrieving OSM data</h2>
+<p>Now that we have some nicely formatted census data, we can move on to downloading our transit stations from OSM.</p>
+<p>We have already loaded ACS data for CBGs in Boston. Now we need to retrieve public transit stations from OSM. We can do this using the <code>osmdata</code> R package (as we did in last week’s practical).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>boston_bb <span class="ot">&lt;-</span> <span class="fu">getbb</span>(<span class="st">"Boston, Massachusetts"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>public_transit_pts <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> boston_bb) <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">"public_transport"</span>, <span class="at">value =</span> <span class="st">"station"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>()</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>public_transit_pts <span class="ot">&lt;-</span> public_transit_pts<span class="sc">$</span>osm_points</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(public_transit_pts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 106 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -71.13438 ymin: 42.33002 xmax: -71.05716 ymax: 42.37337
+Geodetic CRS:  WGS 84
+           osm_id          name access addr:city addr:city_parent addr:country
+69479726 69479726 Griggs Street   &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;
+69480627 69480627       Harvard   &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;
+69481020 69481020 Summit Avenue   &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;
+69481065 69481065        Andrew   &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;
+69481493 69481493      Riverway   &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;
+69481663 69481663   Kent Street   &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;
+         addr:county addr:housenumber addr:neighbourhood addr:postcode
+69479726        &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;          &lt;NA&gt;
+69480627        &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;          &lt;NA&gt;
+69481020        &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;          &lt;NA&gt;
+69481065        &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;          &lt;NA&gt;
+69481493        &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;          &lt;NA&gt;
+69481663        &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;          &lt;NA&gt;
+         addr:state addr:street addr:street_1 addr:unit air_conditioning
+69479726       &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;
+69480627       &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;
+69481020       &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;
+69481065       &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;
+69481493       &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;
+69481663       &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;      &lt;NA&gt;             &lt;NA&gt;
+         alt_name amenity architect attribution automatic_door baby_feeding
+69479726     &lt;NA&gt;    &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;
+69480627     &lt;NA&gt;    &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;
+69481020     &lt;NA&gt;    &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;
+69481065     &lt;NA&gt;    &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;
+69481493     &lt;NA&gt;    &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;
+69481663     &lt;NA&gt;    &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;
+         bicycle bicycle_parking blind boat  bus check_date
+69479726    &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;       &lt;NA&gt;
+69480627    &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;       &lt;NA&gt;
+69481020    &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;       &lt;NA&gt;
+69481065    &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;       &lt;NA&gt;
+69481493    &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;       &lt;NA&gt;
+69481663    &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;       &lt;NA&gt;
+         check_date:wheelchair colour contact:phone contact:twitter
+69479726                  &lt;NA&gt;   &lt;NA&gt;          &lt;NA&gt;            &lt;NA&gt;
+69480627                  &lt;NA&gt;   &lt;NA&gt;          &lt;NA&gt;            &lt;NA&gt;
+69481020                  &lt;NA&gt;   &lt;NA&gt;          &lt;NA&gt;            &lt;NA&gt;
+69481065                  &lt;NA&gt;   &lt;NA&gt;          &lt;NA&gt;            &lt;NA&gt;
+69481493                  &lt;NA&gt;   &lt;NA&gt;          &lt;NA&gt;            &lt;NA&gt;
+69481663                  &lt;NA&gt;   &lt;NA&gt;          &lt;NA&gt;            &lt;NA&gt;
+         contact:website covered departures_board  dog door  ele elevator email
+69479726            &lt;NA&gt;    &lt;NA&gt;             &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;     &lt;NA&gt;  &lt;NA&gt;
+69480627            &lt;NA&gt;    &lt;NA&gt;             &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;     &lt;NA&gt;  &lt;NA&gt;
+69481020            &lt;NA&gt;    &lt;NA&gt;             &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;     &lt;NA&gt;  &lt;NA&gt;
+69481065            &lt;NA&gt;    &lt;NA&gt;             &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;     &lt;NA&gt;  &lt;NA&gt;
+69481493            &lt;NA&gt;    &lt;NA&gt;             &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;     &lt;NA&gt;  &lt;NA&gt;
+69481663            &lt;NA&gt;    &lt;NA&gt;             &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;     &lt;NA&gt;  &lt;NA&gt;
+         emergency_telephone_code entrance exit fare_zone  fee ferry foot
+69479726                     &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt;
+69480627                     &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt;
+69481020                     &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt;
+69481065                     &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt;
+69481493                     &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt;
+69481663                     &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; &lt;NA&gt;  &lt;NA&gt; &lt;NA&gt;
+         gnis:feature_id gtfs:stop_id heritage:website highway historic iata
+69479726            &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;
+69480627            &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;
+69481020            &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;
+69481065            &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;
+69481493            &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;
+69481663            &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;
+         indoor internet internet_access layer level light_rail line  lit
+69479726   &lt;NA&gt;     &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;        yes &lt;NA&gt; &lt;NA&gt;
+69480627   &lt;NA&gt;     &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;
+69481020   &lt;NA&gt;     &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;        yes &lt;NA&gt; &lt;NA&gt;
+69481065   &lt;NA&gt;     &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;
+69481493   &lt;NA&gt;     &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;        yes &lt;NA&gt; &lt;NA&gt;
+69481663   &lt;NA&gt;     &lt;NA&gt;            &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;        yes &lt;NA&gt; &lt;NA&gt;
+         location massgis:geom_id material motor_vehicle network network:guid
+69479726     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;    MBTA         &lt;NA&gt;
+69480627     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;    MBTA   US-MA-MBTA
+69481020     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;    MBTA         &lt;NA&gt;
+69481065     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;    MBTA         &lt;NA&gt;
+69481493     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;    MBTA         &lt;NA&gt;
+69481663     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;    MBTA         &lt;NA&gt;
+         network:short network:wikidata
+69479726          &lt;NA&gt;             &lt;NA&gt;
+69480627          MBTA          Q171985
+69481020          &lt;NA&gt;             &lt;NA&gt;
+69481065          &lt;NA&gt;          Q171985
+69481493          &lt;NA&gt;             &lt;NA&gt;
+69481663          &lt;NA&gt;             &lt;NA&gt;
+                                     network:wikipedia old_name oneway
+69479726                                          &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;
+69480627 en:Massachusetts Bay Transportation Authority     &lt;NA&gt;   &lt;NA&gt;
+69481020                                          &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;
+69481065                                          &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;
+69481493                                          &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;
+69481663                                          &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;
+         opening_hours operator operator:short operator:type operator:wikidata
+69479726          &lt;NA&gt;     MBTA           &lt;NA&gt;          &lt;NA&gt;              &lt;NA&gt;
+69480627          &lt;NA&gt;     MBTA           &lt;NA&gt;          &lt;NA&gt;           Q171985
+69481020          &lt;NA&gt;     MBTA           &lt;NA&gt;          &lt;NA&gt;              &lt;NA&gt;
+69481065          &lt;NA&gt;     MBTA           &lt;NA&gt;          &lt;NA&gt;              &lt;NA&gt;
+69481493          &lt;NA&gt;     MBTA           &lt;NA&gt;          &lt;NA&gt;              &lt;NA&gt;
+69481663          &lt;NA&gt;     MBTA           &lt;NA&gt;          &lt;NA&gt;              &lt;NA&gt;
+         parking phone phone:elevator platforms public_transport railway
+69479726    &lt;NA&gt;  &lt;NA&gt;           &lt;NA&gt;      &lt;NA&gt;          station    halt
+69480627    &lt;NA&gt;  &lt;NA&gt;           &lt;NA&gt;      &lt;NA&gt;          station station
+69481020    &lt;NA&gt;  &lt;NA&gt;           &lt;NA&gt;      &lt;NA&gt;          station    halt
+69481065    &lt;NA&gt;  &lt;NA&gt;           &lt;NA&gt;      &lt;NA&gt;          station station
+69481493    &lt;NA&gt;  &lt;NA&gt;           &lt;NA&gt;      &lt;NA&gt;          station    halt
+69481663    &lt;NA&gt;  &lt;NA&gt;           &lt;NA&gt;      &lt;NA&gt;          station    halt
+         railway:position railway:ref  ref shelter smoking source start_date
+69479726             &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;
+69480627             &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;
+69481020             &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;
+69481065             &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;
+69481493             &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;
+69481663             &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;
+            station stroller subway supervised surface toilets:wheelchair
+69479726 light_rail     &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;    &lt;NA&gt;               &lt;NA&gt;
+69480627     subway     &lt;NA&gt;    yes       &lt;NA&gt;    &lt;NA&gt;               &lt;NA&gt;
+69481020 light_rail     &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;    &lt;NA&gt;               &lt;NA&gt;
+69481065     subway     &lt;NA&gt;    yes       &lt;NA&gt;    &lt;NA&gt;               &lt;NA&gt;
+69481493 light_rail     &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;    &lt;NA&gt;               &lt;NA&gt;
+69481663 light_rail     &lt;NA&gt;   &lt;NA&gt;       &lt;NA&gt;    &lt;NA&gt;               &lt;NA&gt;
+         tracks train tunnel
+69479726   &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+69480627   &lt;NA&gt;   yes   &lt;NA&gt;
+69481020   &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+69481065   &lt;NA&gt;   yes   &lt;NA&gt;
+69481493   &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+69481663   &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+                                                                                url
+69479726                                                                       &lt;NA&gt;
+69480627 http://www.mbta.com/schedules_and_maps/subway/lines/stations/?stopId=12084
+69481020                                                                       &lt;NA&gt;
+69481065                                                                       &lt;NA&gt;
+69481493                                                                       &lt;NA&gt;
+69481663                                                                       &lt;NA&gt;
+         website wheelchair wheelchair:description wifi wikidata
+69479726    &lt;NA&gt;       &lt;NA&gt;                   &lt;NA&gt; &lt;NA&gt; Q5608979
+69480627    &lt;NA&gt;        yes                   &lt;NA&gt; &lt;NA&gt; Q5264971
+69481020    &lt;NA&gt;       &lt;NA&gt;                   &lt;NA&gt; &lt;NA&gt;     &lt;NA&gt;
+69481065    &lt;NA&gt;        yes                   &lt;NA&gt; &lt;NA&gt; Q4756160
+69481493    &lt;NA&gt;       &lt;NA&gt;                   &lt;NA&gt; &lt;NA&gt; Q7338796
+69481663    &lt;NA&gt;         no                   &lt;NA&gt; &lt;NA&gt; Q6391931
+         wikimedia_commons wikipedia                   geometry
+69479726              &lt;NA&gt;      &lt;NA&gt; POINT (-71.13438 42.34885)
+69480627              &lt;NA&gt;      &lt;NA&gt; POINT (-71.11894 42.37337)
+69481020              &lt;NA&gt;      &lt;NA&gt; POINT (-71.12577 42.34104)
+69481065              &lt;NA&gt;      &lt;NA&gt; POINT (-71.05716 42.33002)
+69481493              &lt;NA&gt;      &lt;NA&gt; POINT (-71.11193 42.33162)
+69481663              &lt;NA&gt;      &lt;NA&gt; POINT (-71.11435 42.34401)</code></pre>
+</div>
+</div>
+<p>Lets display the data in an interactive map that will let us check that we have downloaded the correct features.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(public_transit_pts) <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="at">provider=</span>providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="sc">~</span>name,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="dv">3</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.8</span>,</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-d84089a29054d207620f" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-d84089a29054d207620f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[42.3488466,42.3733705,42.3410445,42.3300185,42.3316217,42.3440124,42.3480379,42.3346084,42.3395019,42.338532,42.3400343,42.3406469,42.3336254,42.3486046,42.3440492,42.3325698,42.300732,42.233274,42.3369849,42.3736234,42.3396668,42.2675657,42.3486367,42.3517313,42.3504313,42.3492264,42.3421622,42.3294217,42.341582,42.3427676,42.3422427,42.3456782,42.338352,42.3489438,42.3743325,42.3868747,42.3796991,42.3312546,42.39051,42.3733695,42.3588043,42.3473297,42.2758631,42.3385164,42.2667647,42.3496554,42.2519622,42.3108218,42.3522166,42.3506338,42.3506969,42.3505254,42.3506693,42.3507044,42.3506845,42.3506161,42.3503255,42.3506717,42.350698,42.3494751,42.3505205,42.3504445,42.3506956,42.3507046,42.3502803,42.3506198,42.3506529,42.3506991,42.3505156,42.3504393,42.3506529,42.3507045,42.3506942,42.3506234,42.3506235,42.3506499,42.3506898,42.3506559,42.3504341,42.3506929,42.3505108,42.3507045,42.350627,42.3506469,42.3506914,42.3505443,42.3506587,42.3506914,42.3507029,42.3506006,42.3506445,42.3506437,42.3506929,42.3506615,42.3505396,42.3506999,42.3507034,42.3504653,42.3506085,42.3506046,42.3506641,42.3506943,42.3504601,42.3505349,42.350699,42.3507038,42.3506085,42.3506373,42.3506406,42.3506614,42.3506826,42.3505302,42.350698,42.350455,42.3507029,42.3507042,42.350634,42.3506438,42.3496686,42.3506123,42.3506587,42.3506846,42.3505626,42.3504497,42.3506825,42.3506968,42.3507023,42.3505843,42.3506306,42.3506469,42.3506558,42.35065,42.3506864,42.3504858,42.3505581,42.3506741,42.3507016,42.3506805,42.3506271,42.3505884,42.3502621,42.350674,42.3506881,42.3504806,42.3505535,42.3506763,42.3507,42.3506784,42.3507009,42.3505926,42.3497337,42.3506716,42.3507008,42.3504756,42.3505489,42.3506785,42.3505058,42.3507044,42.3506762,42.3505967,42.3497526,42.3506692,42.3506806,42.3504705,42.3507016,42.3505008,42.3507042,42.3506897,42.350567,42.3497011,42.3506667,42.3506406,42.3507023,42.3504183,42.3506642,42.3504958,42.3507038,42.3506881,42.3505714,42.3505913,42.35058,42.3506372,42.3506668,42.3506956,42.3504908,42.3506864,42.3507034,42.3503066,42.3505758,42.3597017,42.359704,42.3597433,42.3597169,42.359704,42.3597039,42.3597041,42.3597044,42.3597049,42.3597055,42.3597064,42.3597075,42.3597087,42.3597101,42.3597117,42.3597135,42.3597154,42.3597175,42.3597197,42.3597221,42.3597246,42.3597272,42.3597301,42.3597329,42.359736,42.3597391,42.3597423,42.3597456,42.359749,42.3597524,42.3597559,42.3597595,42.359763,42.3597667,42.3597703,42.3597739,42.3597776,42.3597812,42.3597848,42.3597884,42.3597919,42.3597954,42.3597988,42.3598021,42.3598054,42.3598086,42.3598117,42.3598147,42.3598176,42.3598203,42.3598229,42.3598254,42.3598278,42.35983,42.359832,42.3598339,42.3598356,42.3598371,42.3598386,42.3598397,42.3598408,42.3598416,42.3598422,42.3598427,42.3598429,42.359843,42.3598429,42.3598425,42.359842,42.3598276,42.3597914,42.3598603,42.3598584,42.3968962,42.3968014,42.3970791,42.39687,42.3971083,42.3971148,42.3966855,42.3970733,42.3971655,42.3966181,42.3969327,42.3968762,42.3958073,42.3595655,42.3967991,42.3573314,42.3492312,42.3494835,42.3503897,42.3506873,42.3506747,42.3506617,42.3492189,42.3494988,42.3365581,42.3512161,42.3556523,42.3727477,42.254171,42.3026554,42.3607955,42.3601422,42.3594308,42.3432532,42.3542823,42.3332029,42.2520578,42.2754299,42.3970819,42.3666784,42.3503458,42.3035008,42.3035095,42.3034349,42.3034037,42.3034217,42.3033496,42.3034704,42.3034447,42.3035568,42.3598648,42.3496821,42.3503998,42.350528,42.3505404,42.3505632,42.3505756,42.349253,42.349517,42.349619,42.3496533,42.3497645,42.3499949,42.3500896,42.3501876,42.3502033,42.3502284,42.3502424,42.3503205,42.3503984,42.3505815,42.3506256,42.3506287,42.3506539,42.350657,42.3506789,42.3506842,42.3019786,42.3588655,42.349491,42.3691041,42.2813757,42.2866423,42.2850048,42.2874874,42.328273,42.3506198,42.3504288,42.3503946,42.3503808,42.3501605,42.3503698,42.2546247,42.3362291,42.3475281,42.347601,42.347602,42.3474272,42.3474273,42.267,42.2795706,42.2987839,42.3195789,42.31922,42.3263375,42.3432148,42.37128,42.3535207,42.3598107,42.3506305,42.3624028,42.3612148,42.3961502,42.3968234,42.3525085,42.3554309,42.3563732,42.3883838,42.3205425,42.3499964,42.3667525,42.3662875,42.3613939,42.2999988,42.2931254,42.2844329,42.3532022,42.3620711,42.3621193,42.3651729,42.3652821,42.3656133,42.3926452,42.357566,42.3569522,42.3568235,42.3572636,42.3572151,42.3573827,42.3033871,42.2836794,42.2795773,42.2724325,42.2703406,42.2676149,42.2683709,42.2700151,42.3275642,42.3515458,42.35723,42.2701563,42.2700832,42.2705169,42.2712422,42.2726929,42.2728717,42.2710799,42.2704541,42.2703095,42.2721776,42.2722999,42.2727899,42.27012,42.3377285,42.322596,42.3939181,42.3503165,42.3417067,42.331321,42.3357966,42.3351797,42.3267628,42.3596262,42.3451868,42.3711832,42.2529377,42.2529563,42.2529559,42.2529297,42.2529251,42.2527239,42.2527284,42.2527031,42.2527038,42.2527271,42.2527292,42.25294,42.2379268,42.253865,42.2802855,42.2935384,42.3050204,42.3191048,42.2441681,42.2450061,42.2360571,42.2332641,42.3875743,42.3959794,42.2528047,42.3475422,42.3367191,42.3006593,42.2519231,42.3205447,42.3881267,42.3294524,42.3294524,42.3299234,42.3297998,42.3295301,42.3294144,42.3288692,42.3288081,42.3218254,42.3474816,42.3475827,42.3474349,42.341035,42.3653334,42.3103718,42.3172274,42.3361773,42.3379182,42.3400544,42.3448062,42.3459344,42.3497275,42.3500779,42.3517437,42.3401284,42.3394672,42.3842954,42.3674399,42.3476644,42.3476148,42.3475962,42.3475963,42.3476162,42.3476164,42.3476633,42.3476538,42.3476218,42.3476553,42.3476238,42.3476391,42.3476385,42.347615,42.3671445,42.3671617,42.3671816,42.3672049,42.3672293,42.3672455,42.3672541,42.3672594,42.367235,42.3672102,42.367194,42.3671771,42.367161,42.3671527,42.3672479,42.3672179,42.3671944,42.3672227,42.3672388,42.3597379,42.3597945,42.3573693,42.3475969,42.3966403,42.3967075,42.3492837,42.3492576,42.3492443,42.3493006,42.3493295,42.3493473,42.349377,42.3493943,42.3494235,42.3494411,42.34947,42.3494872,42.3509874,42.3516104,42.3769871,42.3573255,42.3797425,42.3879349,42.3942204,42.3969503,42.3656676,42.3658305,42.3655294,42.3649752,42.3648032,42.3474914,42.3474927,42.3475887,42.3475649,42.3476125,42.3476136,42.3475437,42.3474981,42.3474923,42.3600531,42.397001,42.3970205,42.3970382,42.3970039,42.3476012,42.3476018,42.3474601,42.3474591,42.3475233,42.3475358,42.3475646,42.3475936,42.3475978,42.3476011,42.3475502,42.3476015,42.3476129,42.3884015,42.3940649,42.3954713,42.3471251,42.3482905,42.352443],[-71.1343789,-71.1189433,-71.1257713,-71.0571623,-71.1119274,-71.114352,-71.0876524,-71.1036922,-71.13488409999999,-71.13845209999999,-71.12879409999999,-71.15092370000001,-71.1059084,-71.13761390000001,-71.1426244,-71.1169495,-71.114109,-71.00688940000001,-71.1456041,-71.0697182,-71.1311491,-71.0924273,-71.1402269,-71.0712808,-71.1310251,-71.1000939,-71.1213029,-71.11099729999999,-71.14629979999999,-71.08494880000001,-71.0571855,-71.0813915,-71.1528837,-71.0952999,-71.0302794,-71.0047749,-71.02281720000001,-71.0955776,-70.9971875,-71.11899029999999,-71.0577716,-71.07494060000001,-71.0302411,-71.0312759,-71.02048499999999,-71.0638505,-71.0054942,-71.0535376,-71.0626074,-71.0553567,-71.0557101,-71.0552465,-71.0558096,-71.0556327,-71.05547249999999,-71.0553306,-71.0564071,-71.0558034,-71.0557032,-71.0554772,-71.05524370000001,-71.0552153,-71.05551989999999,-71.0556256,-71.0564298,-71.0553357,-71.0553908,-71.05569610000001,-71.055241,-71.0552144,-71.0558461,-71.0556184,-71.0555131,-71.0553408,-71.05589620000001,-71.05538490000001,-71.05574420000001,-71.05584020000001,-71.0552136,-71.0555062,-71.05523839999999,-71.0556114,-71.05534609999999,-71.0553792,-71.0557374,-71.05525900000001,-71.0558341,-71.0554994,-71.055661,-71.05531120000001,-71.0561697,-71.05537339999999,-71.0557306,-71.05582819999999,-71.0552557,-71.0555478,-71.055654,-71.0552203,-71.0562597,-71.0553159,-71.0554149,-71.0557238,-71.05521880000001,-71.0552526,-71.0555408,-71.05564680000001,-71.0553207,-71.0558747,-71.0558691,-71.0554087,-71.05577099999999,-71.0552495,-71.05553380000001,-71.05521760000001,-71.05557589999999,-71.05563979999999,-71.0558802,-71.0558635,-71.0565972,-71.0553256,-71.0554027,-71.05576430000001,-71.0552732,-71.05521640000001,-71.055466,-71.0555268,-71.0555689,-71.0552933,-71.0558856,-71.0558578,-71.0553967,-71.05585189999999,-71.0557577,-71.0552272,-71.05526949999999,-71.0557969,-71.0555617,-71.0554593,-71.05589089999999,-71.0552977,-71.0563604,-71.0554399,-71.055751,-71.0552253,-71.05526589999999,-71.05579059999999,-71.0556892,-71.05545290000001,-71.0555547,-71.055302,-71.05662150000001,-71.0554336,-71.0556821,-71.0552235,-71.0552624,-71.055784,-71.0552359,-71.0556042,-71.05544639999999,-71.05530659999999,-71.05669159999999,-71.0554274,-71.0557776,-71.0552218,-71.0556751,-71.0552335,-71.05559719999999,-71.05549259999999,-71.0552771,-71.0567171,-71.0554211,-71.0553678,-71.055668,-71.055212,-71.05582200000001,-71.0552313,-71.05559,-71.0554858,-71.0552809,-71.05619609999999,-71.0552891,-71.0553623,-71.0558159,-71.05571689999999,-71.0552292,-71.05547919999999,-71.055583,-71.0563373,-71.055285,-71.0272047,-71.0272732,-71.02728759999999,-71.0274601,-71.02746089999999,-71.0274658,-71.0274706,-71.02747549999999,-71.02748029999999,-71.0274852,-71.02748990000001,-71.0274946,-71.02749919999999,-71.02750380000001,-71.0275082,-71.0275125,-71.02751670000001,-71.0275206,-71.0275245,-71.0275283,-71.02753180000001,-71.02753509999999,-71.0275383,-71.0275413,-71.0275441,-71.02754659999999,-71.0275489,-71.027551,-71.0275528,-71.0275544,-71.0275558,-71.02755689999999,-71.0275578,-71.0275584,-71.0275587,-71.02755879999999,-71.0275587,-71.0275583,-71.0275575,-71.02755670000001,-71.02755550000001,-71.0275541,-71.0275523,-71.0275505,-71.0275484,-71.02754590000001,-71.0275434,-71.02754059999999,-71.0275376,-71.0275343,-71.0275309,-71.0275274,-71.02752359999999,-71.0275197,-71.0275157,-71.02751139999999,-71.02750709999999,-71.02750260000001,-71.0274981,-71.02749350000001,-71.0274888,-71.027484,-71.0274792,-71.02747429999999,-71.0274695,-71.02746449999999,-71.0274596,-71.0274546,-71.0274498,-71.0274508,-71.02728449999999,-71.02725289999999,-71.02719500000001,-71.123035,-71.1216434,-71.1231789,-71.1219376,-71.1234248,-71.12317760000001,-71.1220161,-71.1232712,-71.123401,-71.1217237,-71.12332979999999,-71.12308160000001,-71.1416285,-71.0519869,-71.12196830000001,-71.1410862,-71.0567047,-71.0555049,-71.0551006,-71.05614850000001,-71.05610230000001,-71.0562333,-71.0567576,-71.0555547,-71.08927009999999,-71.04149459999999,-71.04968049999999,-71.0525492,-70.9198232,-70.92001449999999,-71.0499641,-71.0274572,-71.0504562,-71.0366207,-71.04832089999999,-71.10947590000001,-71.0052022,-71.02891510000001,-71.1231913,-70.9737713,-71.0563179,-70.9198835,-70.9198703,-70.9198032,-70.9198945,-70.9200634,-70.9199789,-70.92005760000001,-70.9200275,-70.919928,-71.0484848,-71.05664710000001,-71.0562911,-71.05622750000001,-71.0562733,-71.0562101,-71.0562558,-71.056611,-71.05660880000001,-71.0565579,-71.05654079999999,-71.0566062,-71.05521330000001,-71.0551653,-71.0563963,-71.0563885,-71.056376,-71.0563695,-71.05633039999999,-71.0551344,-71.056201,-71.05592249999999,-71.05593380000001,-71.0560263,-71.0560376,-71.0561527,-71.05613719999999,-71.03182769999999,-71.0485686,-71.0555299,-71.0395764,-71.1601407,-71.145562,-71.1539983,-71.1303173,-71.1103291,-71.0559013,-71.0552129,-71.0551198,-71.0550659,-71.0551293,-71.05502300000001,-71.1257073,-71.14900160000001,-71.0995561,-71.099699,-71.09955600000001,-71.0995559,-71.0996999,-70.92077999999999,-70.90153770000001,-70.9266298,-70.93111639999999,-71.01011,-70.9270736,-71.1172153,-71.07615,-71.043181,-71.027198,-71.05535140000001,-71.08572049999999,-71.07145269999999,-71.1406803,-71.12264810000001,-71.05494469999999,-71.0605001,-71.0624614,-71.1190344,-71.0523783,-71.0777332,-71.0678231,-71.0622845,-71.0621197,-71.0618652,-71.0657999,-71.0637251,-71.06453399999999,-71.0580373,-71.0578172,-71.06033069999999,-71.0601496,-71.0421216,-71.0772595,-71.1414705,-71.13694599999999,-71.1369768,-71.1402583,-71.1402721,-71.1415162,-70.9198751,-71.0630699,-71.06035199999999,-71.0625194,-71.0673729,-71.0873955,-71.0814166,-71.0735366,-71.065583,-71.0551533,-71.140372,-71.0977874,-71.0976287,-71.0970643,-71.09597119999999,-71.0938381,-71.0938341,-71.0964743,-71.09737130000001,-71.0973503,-71.0945787,-71.0946663,-71.0938359,-71.0977086,-71.1419597,-71.10025690000001,-71.07070330000001,-71.0404592,-71.1099518,-71.12676279999999,-71.1405583,-71.14823579999999,-71.1646379,-71.059488,-71.1045987,-71.04528790000001,-70.9200513,-70.9200522,-70.92006739999999,-70.9200661,-70.92023039999999,-70.92022009999999,-70.9200589,-70.92005760000001,-70.9200316,-70.9200328,-70.9199558,-70.91997050000001,-71.13359389999999,-71.1191616,-71.0860598,-71.0783921,-71.076928,-71.0686255,-70.83751669999999,-70.8683113,-70.902761,-71.1584704,-71.1907542,-71.1762516,-70.9199722,-71.07499,-71.08933930000001,-71.1139175,-71.00565520000001,-71.05211079999999,-71.1188003,-71.0837623,-71.0842317,-71.08432089999999,-71.0833773,-71.0845672,-71.0834533,-71.0844438,-71.0839879,-70.9886352,-71.0995559,-71.0995559,-71.09970029999999,-71.08396430000001,-71.1036028,-71.1076496,-71.1043073,-71.09954500000001,-71.0950201,-71.08969639999999,-71.111459,-71.1074235,-71.104313,-71.1071864,-71.12532179999999,-71.1668292,-71.1572443,-71.0769775,-71.0601013,-71.0735758,-71.0735748,-71.07354599999999,-71.0734015,-71.0734021,-71.0733736,-71.073374,-71.0735756,-71.0735749,-71.07337390000001,-71.0733737,-71.0733737,-71.0735748,-71.0735473,-71.0510592,-71.0510491,-71.051045,-71.0510501,-71.05106429999999,-71.0510831,-71.05110089999999,-71.0511161,-71.0511288,-71.0511283,-71.0511238,-71.05111359999999,-71.0510938,-71.0510811,-71.051124,-71.0510562,-71.0510465,-71.0511297,-71.05107409999999,-71.02732260000001,-71.0272987,-71.1414389,-71.07345239999999,-71.1217139,-71.1220079,-71.056479,-71.05659129999999,-71.0566484,-71.05640630000001,-71.05628230000001,-71.0562056,-71.0560782,-71.0560038,-71.0558781,-71.0558028,-71.0556783,-71.0556045,-71.1147441,-71.1199247,-71.0939352,-71.1410315,-71.0869371,-71.0967886,-71.1067638,-71.1233225,-71.10438329999999,-71.1041881,-71.10368200000001,-71.10274389999999,-71.10292370000001,-71.0995559,-71.099795,-71.09991789999999,-71.099918,-71.0997066,-71.09991789999999,-71.09955600000001,-71.0995559,-71.0997002,-71.0487316,-71.12311750000001,-71.12329320000001,-71.1232858,-71.12330009999999,-71.0996719,-71.0995953,-71.099795,-71.09970029999999,-71.09970010000001,-71.09970010000001,-71.0997,-71.0995559,-71.09955600000001,-71.0997067,-71.09970010000001,-71.099632,-71.099875,-71.02394529999999,-71.0284264,-71.03386209999999,-71.03843620000001,-71.0425506,-71.04692900000001],3,null,null,{"interactive":true,"className":"","stroke":false,"color":"blue","weight":5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.8},null,null,null,null,["Griggs Street","Harvard","Summit Avenue","Andrew","Riverway","Kent Street","Hynes Convention Center","Brigham Circle","Washington Square","Tappan Street","Brandon Hall","Chiswick Road","Fenwood Road","Allston Street","Washington Street","Brookline Village","Forest Hills","Quincy Adams","Englewood Avenue","Community College","Fairbanks Street","Mattapan","Warren Street","Arlington","Harvard Avenue","Blandford Street","Coolidge Corner","Back of the Hill","Sutherland Road","Symphony","Broadway","Prudential","Chestnut Hill Avenue","Kenmore","Airport","Orient Heights","Wood Island","Roxbury Crossing","Suffolk Downs","Harvard Square","State","Boston Back Bay","North Quincy","City Point Bus Terminal","Wollaston","Tufts Medical Center","Quincy Center","Savin Hill","Chinatown",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Alewife","Aquarium",null,null,null,null,null,null,null,null,null,null,"Ruggles","World Trade Center (West) Ferry Terminal","Rowes Wharf Ferry Terminal","Charlestown Navy Yard Ferry Terminal","Hewitts Cove Ferry Terminal","Hull","Long Wharf (North) Ferry Terminal","Logan Airport Ferry Terminal","Long Wharf (South) Ferry Terminal","EDIC Pier","Courthouse Dock","Mission Park","Quincy Center","North Quincy Station",null,"Winthrop Landing",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Quincy/Squantum Point Park","Central Wharf Ferry Terminal",null,"Maverick","West Roxbury","Bellevue","Highland","Roslindale Village","Heath Street",null,null,null,null,null,null,"Hyde Park","Cleveland Circle",null,null,null,null,null,"Grape Island Ferry Landing","Bumpkin Island Ferry Landing","Peddocks Island Ferry Landing","Georges Island Ferry Landing","Thompson Island Ferry Landing","Lovells Island Ferry Landing","Saint Paul Street","Lechmere","Fan Pier Ferry Terminal",null,null,"Kendall/MIT","Charles/MGH","Alewife","Davis","South Station","Downtown Crossing","Park Street","Porter","JFK/UMass","Copley","Science Park","Boston North Station","Bowdoin","Fields Corner","Shawmut","Ashmont/Peabody Square","Boylston","Haymarket","Haymarket","North Station","North Station","Lewis Wharf Ferry Terminal","Assembly",null,null,null,null,null,null,null,"Ashmont","Cedar Grove","Butler","Milton","Capen Street","Valley Road","Central Avenue","Newmarket","Boston South Station",null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Dean Road","Jackson Square","Encore Boston Harbor Ferry Landing","World Trade Center (East) Ferry Terminal","Longwood","Brookline Hills","Beaconsfield","Reservoir","Chestnut Hill","Government Center","Fenway","East Boston 6 New Street Ferry Landing",null,null,null,null,null,null,null,null,null,null,null,null,"Readville","Fairmount","Morton Street","Talbot Avenue","Four Corners/Geneva","Uphams Corner","Cohasset","Nantasket Junction","West Hingham","Endicott","Waverley","Belmont",null,"Back Bay","Ruggles","Forest Hills","Quincy Center","JFK/UMass","Porter",null,null,null,null,null,null,null,null,"Spectacle Island Ferry Landing","Lansdowne (South Station)","Lansdowne (Outbound)",null,"Massachusetts Avenue","Central Square","Green Street","Stony Brook","Longwood Medical Area","Museum of Fine Arts","Northeastern","Hawes Street","Saint Mary's Street","Boston University East","Boston University Central","Packards Corner","Boston College","South Street","Sullivan Square","Lovejoy Wharf Ferry Terminal",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Amory Street Station","Babcock Street","Union Square",null,"East Somerville","Gilman Square","Magoun Square",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Gate 4",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Eastern Avenue Station","Box District Station","Bellingham Square Station","Silver Line Way","Wolrd Trade Center","Courthouse"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[42.2332641,42.3971655],"lng":[-71.1907542,-70.83751669999999]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>It looks like this data has some duplicated stations, and isn’t restricted to T-stops. This is a common problem in OSM data, which is crowd-sourced from volunteers.</p>
+<p>Let’s see if we can filter the data to select only T stops. First, we can check the unique values in the station column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>public_transit_pts <span class="sc">%&gt;%</span> <span class="fu">pull</span>(station) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "light_rail" "subway"     NA           "yes"       </code></pre>
+</div>
+</div>
+<p>Then, lets filter for “subway” and “light_rail” stations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>t_stops <span class="ot">&lt;-</span> public_transit_pts <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(station <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"subway"</span>, <span class="st">"light_rail"</span>))</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(t_stops) <span class="sc">%&gt;%</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="at">provider=</span>providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">%&gt;%</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="sc">~</span>name,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="dv">3</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.8</span>,</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-8f1696751ef173fd7a7a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-8f1696751ef173fd7a7a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[42.3488466,42.3733705,42.3410445,42.3300185,42.3316217,42.3440124,42.3480379,42.3346084,42.3395019,42.338532,42.3400343,42.3406469,42.3336254,42.3486046,42.3440492,42.3325698,42.300732,42.233274,42.3369849,42.3736234,42.3396668,42.2675657,42.3486367,42.3517313,42.3504313,42.3492264,42.3421622,42.3294217,42.341582,42.3427676,42.3422427,42.3456782,42.338352,42.3489438,42.3743325,42.3868747,42.3796991,42.3312546,42.39051,42.3588043,42.2758631,42.2667647,42.3496554,42.2519622,42.3108218,42.3522166,42.3595655,42.3332029,42.3691041,42.328273,42.3362291,42.3432148,42.37128,42.3624028,42.3612148,42.3961502,42.3968234,42.3525085,42.3554309,42.3563732,42.3883838,42.3205425,42.3499964,42.3667525,42.3613939,42.2999988,42.2931254,42.2844329,42.3532022,42.3620711,42.3621193,42.3651729,42.3652821,42.3926452,42.2836794,42.2795773,42.2724325,42.2703406,42.2676149,42.2683709,42.2700151,42.3377285,42.322596,42.3417067,42.331321,42.3357966,42.3351797,42.3267628,42.3596262,42.3451868,42.3475422,42.3367191,42.341035,42.3653334,42.3103718,42.3172274,42.3361773,42.3379182,42.3400544,42.3448062,42.3459344,42.3497275,42.3500779,42.3517437,42.3401284,42.3394672,42.3842954,42.3509874,42.3516104,42.3769871,42.3797425,42.3879349,42.3942204],[-71.1343789,-71.1189433,-71.1257713,-71.0571623,-71.1119274,-71.114352,-71.0876524,-71.1036922,-71.13488409999999,-71.13845209999999,-71.12879409999999,-71.15092370000001,-71.1059084,-71.13761390000001,-71.1426244,-71.1169495,-71.114109,-71.00688940000001,-71.1456041,-71.0697182,-71.1311491,-71.0924273,-71.1402269,-71.0712808,-71.1310251,-71.1000939,-71.1213029,-71.11099729999999,-71.14629979999999,-71.08494880000001,-71.0571855,-71.0813915,-71.1528837,-71.0952999,-71.0302794,-71.0047749,-71.02281720000001,-71.0955776,-70.9971875,-71.0577716,-71.0302411,-71.02048499999999,-71.0638505,-71.0054942,-71.0535376,-71.0626074,-71.0519869,-71.10947590000001,-71.0395764,-71.1103291,-71.14900160000001,-71.1172153,-71.07615,-71.08572049999999,-71.07145269999999,-71.1406803,-71.12264810000001,-71.05494469999999,-71.0605001,-71.0624614,-71.1190344,-71.0523783,-71.0777332,-71.0678231,-71.0621197,-71.0618652,-71.0657999,-71.0637251,-71.06453399999999,-71.0580373,-71.0578172,-71.06033069999999,-71.0601496,-71.0772595,-71.0630699,-71.06035199999999,-71.0625194,-71.0673729,-71.0873955,-71.0814166,-71.0735366,-71.1419597,-71.10025690000001,-71.1099518,-71.12676279999999,-71.1405583,-71.14823579999999,-71.1646379,-71.059488,-71.1045987,-71.07499,-71.08933930000001,-71.08396430000001,-71.1036028,-71.1076496,-71.1043073,-71.09954500000001,-71.0950201,-71.08969639999999,-71.111459,-71.1074235,-71.104313,-71.1071864,-71.12532179999999,-71.1668292,-71.1572443,-71.0769775,-71.1147441,-71.1199247,-71.0939352,-71.0869371,-71.0967886,-71.1067638],3,null,null,{"interactive":true,"className":"","stroke":false,"color":"blue","weight":5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.8},null,null,null,null,["Griggs Street","Harvard","Summit Avenue","Andrew","Riverway","Kent Street","Hynes Convention Center","Brigham Circle","Washington Square","Tappan Street","Brandon Hall","Chiswick Road","Fenwood Road","Allston Street","Washington Street","Brookline Village","Forest Hills","Quincy Adams","Englewood Avenue","Community College","Fairbanks Street","Mattapan","Warren Street","Arlington","Harvard Avenue","Blandford Street","Coolidge Corner","Back of the Hill","Sutherland Road","Symphony","Broadway","Prudential","Chestnut Hill Avenue","Kenmore","Airport","Orient Heights","Wood Island","Roxbury Crossing","Suffolk Downs","State","North Quincy","Wollaston","Tufts Medical Center","Quincy Center","Savin Hill","Chinatown","Aquarium","Mission Park","Maverick","Heath Street","Cleveland Circle","Saint Paul Street","Lechmere","Kendall/MIT","Charles/MGH","Alewife","Davis","South Station","Downtown Crossing","Park Street","Porter","JFK/UMass","Copley","Science Park","Bowdoin","Fields Corner","Shawmut","Ashmont/Peabody Square","Boylston","Haymarket","Haymarket","North Station","North Station","Assembly","Ashmont","Cedar Grove","Butler","Milton","Capen Street","Valley Road","Central Avenue","Dean Road","Jackson Square","Longwood","Brookline Hills","Beaconsfield","Reservoir","Chestnut Hill","Government Center","Fenway","Back Bay","Ruggles","Massachusetts Avenue","Central Square","Green Street","Stony Brook","Longwood Medical Area","Museum of Fine Arts","Northeastern","Hawes Street","Saint Mary's Street","Boston University East","Boston University Central","Packards Corner","Boston College","South Street","Sullivan Square","Amory Street Station","Babcock Street","Union Square","East Somerville","Gilman Square","Magoun Square"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[42.233274,42.3968234],"lng":[-71.1668292,-70.9971875]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>This looks pretty good!</p>
+</section>
+<section id="exercise-6" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-6">Exercise 6</h2>
+<ul>
+<li><p>Take a moment to explore OSM data. What other features are accessible? Can you find features for other forms of public transit? Can you identify any limitations cause by the crowd-sourced nature of the data?</p>
+<ul>
+<li>For a list of all of the features available from Open Street Map, see <a href="https://wiki.openstreetmap.org/wiki/Map_features">here</a>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="measuring-transit-accessibility" class="level2">
+<h2 class="anchored" data-anchor-id="measuring-transit-accessibility">Measuring transit accessibility</h2>
+<p>Now that we have data on census variables in geographic areas and the location of public transit stations, we can move on to calculating a measure of public transit accessibility.</p>
+<p>Our measure will be based on the assumption of <em>proximity-based accessibility</em> and <em>residential anchoring</em>. This means that the proximity of an individual’s home to a transit station (in terms of geometric distance) is indicative of higher / lower public transit accessibility.</p>
+</section>
+<section id="exercise-7" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-7">Exercise 7</h2>
+<ul>
+<li><p>Take a moment to consider the assumptions underlying the ideas of <em>proximity-based accessibility</em> and <em>residential anchoring.</em> Could large-scale behavioral data shed more light on people’s true patterns of behavior in the city?</p></li>
+<li><p>Why do you think that these ideas have been widely adopted in traditional urban studies (in transit accessibility studies like this one, as well as concepts such as urban food deserts)?</p></li>
+<li><p>What other types of accessibility might better represent people’s actual ability to use public transportation?</p></li>
+</ul>
+</section>
+<section id="computing-a-measure-of-transit-accessibility" class="level2">
+<h2 class="anchored" data-anchor-id="computing-a-measure-of-transit-accessibility">Computing a measure of transit accessibility</h2>
+<p>In order to compute our accessibility measure, we can use the <code>st_distance</code> function to calculate the distance from each Block Group to the nearest transit station.</p>
+<p>To make sure our distance calculation is accurate, we need to transform our data into a projected coordinate system (which preserves distance). Because our study area is focused on Boston, we can use the <a href="https://epsg.io/26986">NAD83 / Massachusetts Mainland projection</a> (EPSG:26986).</p>
+<section id="sidenote-understanding-projected-coordinate-systems" class="level3">
+<h3 class="anchored" data-anchor-id="sidenote-understanding-projected-coordinate-systems"><strong>Sidenote: Understanding Projected Coordinate Systems</strong></h3>
+<p><strong>Geographic coordinate systems</strong> like <a href="https://epsg.io/4326">WGS84</a> (EPSG:4326), commonly used in latitude/longitude data represent locations on the Earth’s surface using angular measurements. While suitable for global mapping, they aren’t ideal for precise distance or area calculations because the Earth is curved.</p>
+<p><strong>Projected coordinate systems</strong>, such as the one we’re using, transform geographic data onto a flat surface. This preserves specific properties, such as distance or area, making it more accurate for spatial operations like buffering or intersection analysis within a localized region.</p>
+<p>By re-projecting our data to a system measured in meters, we ensure more accurate distance calculations between census block groups and transit stations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>t_stops <span class="ot">&lt;-</span> t_stops <span class="sc">%&gt;%</span> <span class="fu">st_transform</span>(<span class="dv">26986</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>census <span class="ot">&lt;-</span> census <span class="sc">%&gt;%</span> <span class="fu">st_transform</span>(<span class="dv">26986</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can compute the distance from each CBG to the nearest transit station.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>distances <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(census, t_stops)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>census<span class="sc">$</span>nearest_t_stop_dist <span class="ot">&lt;-</span> <span class="fu">apply</span>(distances, <span class="dv">1</span>, min)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>census <span class="sc">%&gt;%</span> <span class="fu">select</span>(GEOID, nearest_t_stop_dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 1086 features and 2 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 223439 ymin: 880324.7 xmax: 247797.2 ymax: 914345.2
+Projected CRS: NAD83 / Massachusetts Mainland
+# A tibble: 1,086 × 3
+   GEOID        nearest_t_stop_dist                                     geometry
+   &lt;chr&gt;                      &lt;dbl&gt;                           &lt;MULTIPOLYGON [m]&gt;
+ 1 250092072001               6411. (((242868.3 911299, 242875.1 911306.7, 2428…
+ 2 250092081012               6055. (((239792.5 911639, 239812 911636.9, 239841…
+ 3 250092081021               4483. (((241361.6 909071.3, 241374.5 909094.1, 24…
+ 4 250092081022               5707. (((240046.3 910469.8, 240050.5 910477, 2400…
+ 5 250092081024               4505. (((240120.3 910027.7, 240123.6 910028.7, 24…
+ 6 250092082004               6251. (((238867.6 910801.2, 238873.5 910823.3, 23…
+ 7 250173363003               5923. (((236574.5 911371.9, 236634.7 911377.2, 23…
+ 8 250173363006               6466. (((236827 911854.3, 236978.5 911887.3, 2370…
+ 9 250173364031               5152. (((234339 910108.2, 234351.6 910215.9, 2343…
+10 250173364032               5281. (((235200.4 910398.9, 235203.4 910435.1, 23…
+# ℹ 1,076 more rows</code></pre>
+</div>
+</div>
+<p><em>Tip: if you don’t understand an expression like this (or any of the more complicated expressions that have come before), please take a moment to break the code down piece-by-piece. For example, try inspecting the <code>distances</code></em> variable, or running only the expression <code>apply(distances, 1, min)</code> in the R console.</p>
+</section>
+</section>
+<section id="exercise-8" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-8">Exercise 8</h2>
+<ul>
+<li>Make a map (static or interactive) of the <code>nearest_t_stop_dist</code> distance variable.</li>
+<li>Add the <code>t_stops</code> to this map, overlaid on top of the census block groups.</li>
+</ul>
+</section>
+<section id="predicting-transit-accessibility" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-transit-accessibility">Predicting transit accessibility</h2>
+<p>Now we have a measure of public transit accessibility for census block groups in Boston. This means that we can ask the question: <em>what census variables predict the accessibility of transit stations?</em></p>
+<p>We can start with a simple approach: a linear regression of <code>our accessibility measure ~ block group characteristics</code>.</p>
+<p>The first step is to compose a formula for this regression. To do this efficiently, I’m using the <code>as.formula</code> function from base R. Again, if you are new to R, take a moment to break down this expression piece-by-piece to understand how each component works. Basically, I want to have my <code>nearest_t_stop_dist</code> on the LHS of the equation, and all other variables (except <code>geometry</code> and <code>GEOID</code> on the RHS.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>predictors <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">names</span>(census <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>GEOID) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>()), <span class="st">"nearest_t_stop_dist"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>lm_formula <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">"nearest_t_stop_dist ~"</span>, <span class="fu">paste</span>(predictors, <span class="at">collapse =</span> <span class="st">" + "</span>)))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(lm_formula)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>nearest_t_stop_dist ~ age.total + age.u18 + age.u1825 + age.u2564 + 
+    age.a64 + race.total + race.white + race.black + race.native + 
+    race.asian + median_income + ratio_poverty + education.grade_0_9 + 
+    education.grade_9_12 + education.some_college + education.bachelor + 
+    employment.total + employment.labor_force + employment.civilian_labor_force + 
+    employment.civilian_employed + employment.civilian_unemployed + 
+    employment.armed_forces + employment.not_labor_force</code></pre>
+</div>
+</div>
+<p>Now that we have the formula for our regression, we can create our model and inspect the results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(lm_formula, <span class="at">data =</span> census <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>GEOID) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>())</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = lm_formula, data = census %&gt;% select(-GEOID) %&gt;% 
+    st_drop_geometry())
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2839.5  -786.0  -215.2   573.2  4426.2 
+
+Coefficients: (5 not defined because of singularities)
+                                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                      1.679e+03  1.903e+02   8.826  &lt; 2e-16 ***
+age.total                       -2.934e+00  1.977e+00  -1.484  0.13818    
+age.u18                          4.452e+00  1.898e+00   2.346  0.01921 *  
+age.u1825                        1.148e+00  1.202e+00   0.955  0.33976    
+age.u2564                       -8.540e-01  5.259e-01  -1.624  0.10478    
+age.a64                                 NA         NA      NA       NA    
+race.total                              NA         NA      NA       NA    
+race.white                       1.315e+00  2.961e-01   4.441 1.01e-05 ***
+race.black                      -1.398e-01  3.000e-01  -0.466  0.64142    
+race.native                     -1.366e+00  3.281e+00  -0.416  0.67717    
+race.asian                       1.733e+00  3.270e-01   5.301 1.45e-07 ***
+median_income                   -3.743e-04  1.169e-03  -0.320  0.74898    
+ratio_poverty                   -2.237e+03  4.104e+02  -5.451 6.46e-08 ***
+education.grade_0_9             -8.983e-01  1.500e+00  -0.599  0.54945    
+education.grade_9_12             3.440e+00  1.248e+00   2.756  0.00596 ** 
+education.some_college           5.294e+00  1.243e+00   4.260 2.26e-05 ***
+education.bachelor               6.459e-01  1.155e+00   0.559  0.57613    
+employment.total                 5.577e-01  1.556e+00   0.358  0.72016    
+employment.labor_force          -3.015e+00  7.214e+00  -0.418  0.67612    
+employment.civilian_labor_force  2.336e+00  7.258e+00   0.322  0.74762    
+employment.civilian_employed     1.948e-01  8.757e-01   0.222  0.82403    
+employment.civilian_unemployed          NA         NA      NA       NA    
+employment.armed_forces                 NA         NA      NA       NA    
+employment.not_labor_force              NA         NA      NA       NA    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1204 on 910 degrees of freedom
+  (157 observations deleted due to missingness)
+Multiple R-squared:  0.3205,    Adjusted R-squared:  0.3071 
+F-statistic: 23.84 on 18 and 910 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="exercise-9" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-9">Exercise 9</h2>
+<ul>
+<li><p>Try to interpret these model results.</p>
+<ul>
+<li><p>Which variables are <em>positively</em> associated with <code>nearest_t_stop_dist</code>?</p></li>
+<li><p>Which variables are <em>negatively</em> associated?</p></li>
+<li><p>Why are some estimates <code>NA</code>?</p></li>
+<li><p>What does this indicate about the quantity of information contained in certain census variables?</p></li>
+<li><p>How many variables have any statistical significance? Which are they?</p></li>
+<li><p>What is the overall power of census variables to predict <code>nearest_t_stop_dist</code>?</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="multicollinearity-of-census-variables" class="level2">
+<h2 class="anchored" data-anchor-id="multicollinearity-of-census-variables">Multicollinearity of census variables</h2>
+<p>Our regression results raise a number of interesting questions: why is the overall predictability of <code>nearest_t_stop_dist</code> relatively low? Are all variables contributing unique information to our regression model? The answer seems to be no (because of the presence of <code>NA</code> coefficient estimates in our model).</p>
+<p>To understand how differentiated our census variables are from one another, we can create a cross-correlation plot using the <code>corrplot</code> function. This shows the correlation coefficient of each census variable against all others. A few variables contain missing values which we will drop for convenience.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(census <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>GEOID, <span class="sc">-</span>nearest_t_stop_dist) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()), <span class="at">method=</span><span class="st">"number"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-10" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-10">Exercise 10</h2>
+<ul>
+<li><p>Interpret the results of <code>corrplot</code> above. What variables seem to be providing unique information? What groups of variables seem to be correlated with one another?</p></li>
+<li><p>Explore the <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html"><code>corrplot</code></a> package. How else could we assess multicollinearity in our variables?</p></li>
+</ul>
+</section>
+<section id="introduction-social-area-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-social-area-analysis">Introduction: Social Area Analysis</h2>
+<p>The strong correlation between some of our variables raises the question of <em>what social characteristics</em> are differentiating census block groups from one another.</p>
+<p>This question is a well established area of research in human geography and sociology, called Social Area Analysis, where researchers seek to understand the <em>latent</em> or <em>underlying</em> social characteristics driving differences between locations. This involves using dimensionality reduction techniques like Principal Component Analysis (PCA) to collapse a large number of census or other social variables into a smaller number of components.</p>
+<p>Existing literature often identifies three recurring themes—socioeconomic status, household/family structure, and race/ethnicity—as the primary latent dimensions of social differentiation in U.S. Census data.</p>
+<p><img src="img/social_area_analysis_factors.png" class="img-fluid"></p>
+</section>
+<section id="dimensionality-reduction-of-census-variables" class="level2">
+<h2 class="anchored" data-anchor-id="dimensionality-reduction-of-census-variables">Dimensionality reduction of census variables</h2>
+<p>Using the same census variables as we did in our analysis of transit accessibility, we can perform a Social Area Analysis and see whether our results align with the existing literature.</p>
+<p><strong>Sidenote:</strong> R has a number of packages that make it very easy to create complex visualizations. One of them is <a href="https://rpkgs.datanovia.com/factoextra/"><code>factoextra</code></a> which is great for visualizing the results of Principal Component and Clustering analyses.</p>
+<p>First, lets run a PCA on our census variables. Note that I am removing the <code>GEOID</code>, <code>nearest_t_stop_dist</code>, and <code>geometry</code> columns because we are only interested in the census variables. Again, a few variables contain missing values which we will drop for convenience.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(census <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>GEOID, <span class="sc">-</span>nearest_t_stop_dist) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(), <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can plot the amount of variation in the original dataset captured by each principal component.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_eig</span>(pca, <span class="at">addlabels =</span> <span class="cn">TRUE</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">ncp=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It looks like three principal components explain ~64% of variation in our census variables. This is a major dimensionality reduction. Moreover, the first component is by far the most important for explaining differences between census block groups. Now we can dig in further to try to understand what these components are capturing in the census data.</p>
+<p>Now lets look at the Biplot, which shows the relationship between our original variables and the first two principal components we have identified.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_biplot</span>(pca, <span class="at">repel =</span> <span class="cn">TRUE</span>, <span class="at">col.var =</span> <span class="st">"blue"</span>, <span class="at">col.ind =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-11" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-11">Exercise 11</h2>
+<ul>
+<li><p>Variables pointing in the same direction indicate correlated variables. What variables seem to be correlated with one another?</p></li>
+<li><p>What variables seem to be driving the top three most important principal components? <em>Hint: these variables will be groups of longer vectors (arrows) pointing in similar directions.</em></p></li>
+</ul>
+<p>A final way we can analyze our PCA results is to look at the correlation between our original variables and the principal components. This can indicate which variables are playing a role in defining different components.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(census <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>GEOID, <span class="sc">-</span>nearest_t_stop_dist) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(), pca<span class="sc">$</span>x)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">is.corr =</span> <span class="cn">FALSE</span>, <span class="at">addCoef.col =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-2-1_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-12" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-12">Exercise 12</h2>
+<ul>
+<li><p>What variables are correlated (positively or negatively) with the first three principal components?</p></li>
+<li><p>If the first three principal components have identified the principle axes of differentiation in our census data, how do these results compare to the table based on existing literature above?</p></li>
+</ul>
+</section>
+<section id="visualizing-key-social-factors" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-key-social-factors">Visualizing key social factors</h2>
+<p>A final way that we can look at the principal components identified in our Social Area Analysis is by mapping them. To do this, we will have to combine the PCA results with our original geographic data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>top_3_components <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>pca_with_geoid <span class="ot">&lt;-</span> <span class="fu">cbind</span>(census <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> <span class="fu">pull</span>(GEOID), top_3_components)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pca_with_geoid)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"GEOID"</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>census_pca <span class="ot">&lt;-</span> census <span class="sc">%&gt;%</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(pca_with_geoid, <span class="at">by =</span> <span class="st">"GEOID"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-13" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-13">Exercise 13</h2>
+<ul>
+<li>Using leaflet, make three different maps of <code>PC1</code>, <code>PC2</code>, and <code>PC3</code>. Which of these principal components show a spatial pattern? Do any of them <em>not</em> show a spatial pattern?</li>
+</ul>
+</section>
+<section id="exercise-14" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-14">Exercise 14</h2>
+<ul>
+<li><p>In today’s lecture, we discussed the importance of considering the spatial units which define your analysis, and the challenge of the Modifiable Areal Unit Problem, where results can be sensitive to the choice of spatial aggregation. Re-conduct this analysis using higher-level statistical geographies (either Census Tract or County).</p>
+<ul>
+<li><p>Do the associations between transit accessibility and different demographic variables remain the same?</p></li>
+<li><p>Does the dimensionality reduction identify similar social factors differentiating areas?</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="closing-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="closing-thoughts">Closing thoughts</h2>
+<p>This practical is intended to show you some of the strengths and limitations of census data for understanding urban phenomena. Although census data are a valuable source of <em>big data</em> in cities, they capture only a limited subset of human behavior. Take a moment to consider how large-scale behavioral data could shed more light on urban dynamics, and how this data can complement the census.</p>
+<p>The finding that a majority of variation in census variables can be captured by a small number of components (3) is another important takeaway. Consider the reasons for the high level of multicollinearity in census variables, and what processes (social, behavioral, environmental, historical) might contribute to this pattern.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/socialurban\.net\/CUS");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, SUNLab, Northeastern University</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/SUNLab-NetSI/CUS/edit/main/labs/lab-2-1.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/SUNLab-NetSI/CUS/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
