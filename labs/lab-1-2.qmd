@@ -23,11 +23,11 @@ footer: "CUS, Northeastern Spring 2025"
 
 In this lab we will get familiar with mobility data by collecting, storing and analyzing our own mobility data. Specifically we will learn how
 
-- To enable [Google Timeline](google.com/maps/timeline) on our mobile phones
-- To collect our own mobility data
-- Familiarize ourselves with tris and visits mobility data
-- Prepare the data for analysis
-- Once we have enough data, we will analyze it in future labs.
+-   To enable [Google Timeline](google.com/maps/timeline) on our mobile phones
+-   To collect our own mobility data
+-   Familiarize ourselves with tris and visits mobility data
+-   Prepare the data for analysis
+-   Once we have enough data, we will analyze it in future labs.
 
 ::: callout-note
 Participation in this lab is completely voluntary. If you have any concerns about sharing or collecting your mobility data with Google or other providers, please don’t hesitate to reach out to the lab coordinator or instructor. We’re happy to explore alternative ways for you to participate. Your privacy matters, and we want to ensure that your involvement aligns with your preferences and comfort level.
