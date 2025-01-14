@@ -29,7 +29,7 @@ The aim of this practical is to learn how to:
 -   Retrieve, process, and analyze census data for different geographies / variables.
 -   Combine geo-referenced census data with other spatial features (from Open Street Map) for analysis.
 -   Compute a measure of public transit accessibility and assess how well this measure is predicted by census variables.
--   Conduct a *social area analysis* using dimensionality reduction (PCA) to identify the factos which differentiate census variables.
+-   Conduct a *social area analysis* using dimensionality reduction (PCA) to identify the factors which differentiate census variables.
 
 ## Before starting:
 
@@ -74,7 +74,7 @@ Lets start by retrieving median household income in US states. For a list of the
 ```{r}
 medincome <- get_acs(geography = "state", 
                    variables = "B19013_001", 
-                   year = 2020)
+                   year = 2021)
 
 head(medincome)
 ```
@@ -319,7 +319,7 @@ To make sure our distance calculation is accurate, we need to transform our data
 
 ### **Sidenote: Understanding Projected Coordinate Systems**
 
-**Geographic coordinate systems** like [WGS84](https://epsg.io/4326) (EPSG:4325), commonly used in latitude/longitude data represent locations on the Earth's surface using angular measurements. While suitable for global mapping, they aren't ideal for precise distance or area calculations because the Earth is curved.
+**Geographic coordinate systems** like [WGS84](https://epsg.io/4326) (EPSG:4326), commonly used in latitude/longitude data represent locations on the Earth's surface using angular measurements. While suitable for global mapping, they aren't ideal for precise distance or area calculations because the Earth is curved.
 
 **Projected coordinate systems**, such as the one we're using, transform geographic data onto a flat surface. This preserves specific properties, such as distance or area, making it more accurate for spatial operations like buffering or intersection analysis within a localized region.
 
@@ -404,7 +404,7 @@ The strong correlation between some of our variables raises the question of *wha
 
 This question is a well established area of research in human geography and sociology, called Social Area Analysis, where researchers seek to understand the *latent* or *underlying* social characteristics driving differences between locations. This involves using dimensionality reduction techniques like Principal Component Analysis (PCA) to collapse a large number of census or other social variables into a smaller number of components.
 
-Existing research in the United States has settled on three social *factors* measured by the census which explain social differentiation between areas:
+Existing literature often identifies three recurring themes—socioeconomic status, household/family structure, and race/ethnicity—as the primary latent dimensions of social differentiation in U.S. Census data.
 
 ![](img/social_area_analysis_factors.png)
 
