@@ -22,13 +22,14 @@ bibliography: references.bib
 
 ## Objective
 
-In this practical, we will re-create and extend an analysis of variation in census variables by T stations in Boston: [*Health Inequalities in Boston by T-Stops: A Pictorial Essay*](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/). This follows another analysis of life expectancy at tube stations in London. The idea of these types of visualizations is to connect relatively abstract statistics from the census with the more familiar public transit network, making it easier to understand how greatly health or socioeconomic outcomes can vary across a relatively short distances within a city.
+In this practical, we will conduct an analysis of transit accessibility, and use this analysis as a gateway to explore the underlying social characteristics measured by the census.
 
-In this practical, we will learn to:
+The aim of this practical is to learn how to:
 
 -   Retrieve, process, and analyze census data for different geographies / variables.
 -   Combine geo-referenced census data with other spatial features (from Open Street Map) for analysis.
--   Refine visualizations to effectively communicate urban dynamics.
+-   Compute a measure of public transit accessibility and assess how well this measure is predicted by census variables.
+-   Conduct a *social area analysis* using dimensionality reduction (PCA) to identify the factos which differentiate census variables.
 
 ## Before starting:
 
@@ -62,7 +63,7 @@ In this practical, we will learn to:
     census_api_key(Sys.getenv("CENSUS_API_KEY"), install = TRUE, overwrite=TRUE)
     ```
 
-## Loading Census Data
+## Loading Census Data With `tidycensus`
 
 To recap, the `tidycensus` package gives us a simple way to retrieve census data for a given variable and set of geographic units.
 
@@ -131,7 +132,7 @@ medincome_ma <- get_acs(
 head(medincome_ma)
 ```
 
-We only want data for Boston, so we will have to filter for CBGs within the boundary of Boston. We can get this boundary from `tigris`, an R package that provides access to Census geographic boundaries and is closely coupled to `tidycensus`. See [Census geographic data and applications in R](https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html) for more information.
+In this practical, we only want data for Boston, so we will have to filter for CBGs within the boundary of Boston. We can get this boundary from `tigris`, an R package that provides access to Census geographic boundaries and is closely coupled to `tidycensus`. See [Census geographic data and applications in R](https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html) for more information.
 
 ```{r}
 boston_area_towns <- c("Boston", "Somerville", "Cambridge", "Brookline", "Revere", "Malden", "Everett", "Medford", "Chelsea", "Winthrop Town")
@@ -154,7 +155,7 @@ medincome_boston <- medincome_ma %>%
 head(medincome_boston)
 ```
 
-We can then make a Choropleth map of the income in CBGs.
+We can then make a Choropleth map of the income in CBGs in Boston.
 
 ```{r}
 ggplot(medincome_boston) +
@@ -167,11 +168,13 @@ ggplot(medincome_boston) +
 
 ## Sidenote: using data visualizations to communicate your findings
 
-Data visualizations are the best tool you have for conveying the results of your analysis. When done right, they are interesting, compelling, and can contain much more information that you could write down concisely. When they are done wrong, that can confuse your audience or distract from the important message you are trying to convey. It is well worth spending a bit of effort to (1) **think through how to best display your data**, (2) **take a extra time to polish your visualization**, (3) **be prepared to make and re-make your visualization as things change**. Making a compelling data visualization if often a question of choosing which dimensions in your data that are most important for the message you are trying to convey, then finding a type of plot that can represent them clearly. There is some inspiration in the [R Graph Gallery](https://r-graph-gallery.com/).
+Data visualizations are the best tool you have for conveying the results of your analysis. It is well worth spending a bit of effort to (1) **think through how to best display your data**, (2) **take a extra time to polish your visualization**, (3) **be prepared to make and re-make your visualization as things change**. Making a compelling data visualization is often a question of choosing which dimensions in your data that are most important for the message you are trying to convey, then finding a type of plot that can represent them clearly. There is some inspiration for different types of plots in the [R Graph Gallery](https://r-graph-gallery.com/).
 
 Things to keep in mind:
 
 -   Are your axis labels human readable?
+
+-   Are you maximizing the *data-to-ink ratio?*
 
 -   Does your plot have an appropriate theme? Grid-lines (in default ggplot theme) are often not relevant or need to be reduced.
 
@@ -179,19 +182,7 @@ Things to keep in mind:
 
 -   (Sometimes) Do you have a **declarative title** conveying the main message of your visualization?
 
-More generally, consider Edward Tufte's data visualization design principles:
-
-1.  Above all else show data.
-
-2.  Maximize the data-ink ratio.
-
-3.  Erase non-data-ink.
-
-4.  Erase redundant data-ink.
-
-5.  Revise and edit.
-
-Here is a cleaned up version of the map.
+Here is a cleaned up version of the map from above.
 
 ```{r}
 ggplot() +
@@ -207,11 +198,11 @@ theme(legend.position = c(0.8, 0.2))
 
 ## Exercise 4
 
--   List a few additions that could make this map more compelling.
+-   List or try to add a few more features to improve this visualization.
 
 ## Combining census data with OSM
 
-Now, lets start combining our census data with data from open street map.
+Now, the aim of this practical is to understand the factors which predict public transit accessibility in Boston.
 
 We will follow this methodology:
 
@@ -222,7 +213,7 @@ We will follow this methodology:
 
 ## Retrieving ACS Variables
 
-Now, lets retrieve a few more variables from the ACS. Because combining ACS variables can be complicated (for example, we might want broad age categories, not one year bands), we have pre-processed a few key variables into an easier-to-use format. You can find this in the file `/data/CUS/labs/2/14460_acs_2021_filtered.parquet`.
+Now, lets retrieve a few more variables from the ACS. Because combining ACS variables can be complicated (for example, we might want broad age categories, not one year bands), we have pre-processed a few key variables into an easier-to-use format. You can find this in the file `/data/CUS/labs/2/14460_acs_2021_filtered_boston.parquet`.
 
 ```{r}
 census <- read_parquet("/data/CUS/labs/2/14460_acs_2021_filtered_boston.parquet")
@@ -231,9 +222,9 @@ colnames(census)
 
 ## Exercise 5
 
--   Take a moment to re-construct one of the variables (like `age.u1825`) in this data frame using `tidycensus` and the [ACS Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html).
+-   Take a moment to re-construct one of the variables (like `age.u1825`) in this data frame using `tidycensus` and the [ACS Variable Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html). How many variables do you need to combine?
 
-Because the `census` variable doesn't have any associated geography, we need to download and attach geographies using the `tigris` package.
+Because this pre-processed `census` data doesn't have any associated geography, we need to download and attach geographies using the `tigris` package.
 
 ```{r}
 block_groups <- block_groups(state = "25", year = 2021, class = "sf")
@@ -318,11 +309,21 @@ Our measure will be based on the assumption of *proximity-based accessibility* a
 
 -   Why do you think that these ideas have been widely adopted in traditional urban studies (in transit accessibility studies like this one, as well as concepts such as urban food deserts)?
 
+-   What other types of accessibility might better represent people's actual ability to use public transportation?
+
 ## Computing a measure of transit accessibility
 
-In order to compute the proximity of Census Block Groups to transit stations, we can use the `st_distance` function to calculate the distance from each Block Group to the nearest transit station.
+In order to compute our accessibility measure, we can use the `st_distance` function to calculate the distance from each Block Group to the nearest transit station.
 
-To make sure our distance calculation is accurate, we need to transform our data into a projected coordinate system (which preserves distance). Because of our study area, we can use the
+To make sure our distance calculation is accurate, we need to transform our data into a projected coordinate system (which preserves distance). Because our study area is focused on Boston, we can use the [NAD83 / Massachusetts Mainland projection](https://epsg.io/26986) (EPSG:26986).
+
+### **Sidenote: Understanding Projected Coordinate Systems**
+
+**Geographic coordinate systems** like [WGS84](https://epsg.io/4326) (EPSG:4325), commonly used in latitude/longitude data represent locations on the Earth's surface using angular measurements. While suitable for global mapping, they aren't ideal for precise distance or area calculations because the Earth is curved.
+
+**Projected coordinate systems**, such as the one we're using, transform geographic data onto a flat surface. This preserves specific properties, such as distance or area, making it more accurate for spatial operations like buffering or intersection analysis within a localized region.
+
+By re-projecting our data to a system measured in meters, we ensure more accurate distance calculations between census block groups and transit stations.
 
 ```{r}
 t_stops <- t_stops %>% st_transform(26986)
@@ -337,26 +338,25 @@ census$nearest_t_stop_dist <- apply(distances, 1, min)
 census %>% select(GEOID, nearest_t_stop_dist)
 ```
 
-*Tip: if you don't understand an expression like this, take a moment to break it down one by one. For example, try inspecting the `distances`* variable, or running only the expression `apply(distances, 1, min)`.
+*Tip: if you don't understand an expression like this (or any of the more complicated expressions that have come before), please take a moment to break the code down piece-by-piece. For example, try inspecting the `distances`* variable, or running only the expression `apply(distances, 1, min)` in the R console.
 
 ## Exercise 8
 
--   Make a map of the `nearest_t_stop_dist` distance variable, with the `t_stops` variable overlaid on top.
+-   Make a map (static or interactive) of the `nearest_t_stop_dist` distance variable.
+-   Add the `t_stops` to this map, overlaid on top of the census block groups.
 
 ## Predicting transit accessibility
 
-Now that we have prepared our data, we can ask the question: *what census variables predict the accessibility of transit stations?*
+Now we have a measure of public transit accessibility for census block groups in Boston. This means that we can ask the question: *what census variables predict the accessibility of transit stations?*
 
-We can start with a simple approach: a linear regression of: `accessibility measure ~ block group characteristics`. To do this efficiently, I'm using the `as.formula` function from base R. Again, if you are new to R, take a moment to break down this expression piece-by-piece to understand how each component works.
+We can start with a simple approach: a linear regression of `our accessibility measure ~ block group characteristics`.
+
+The first step is to compose a formula for this regression. To do this efficiently, I'm using the `as.formula` function from base R. Again, if you are new to R, take a moment to break down this expression piece-by-piece to understand how each component works. Basically, I want to have my `nearest_t_stop_dist` on the LHS of the equation, and all other variables (except `geometry` and `GEOID` on the RHS.
 
 ```{r}
 predictors <- setdiff(names(census %>% select(-GEOID) %>% st_drop_geometry()), "nearest_t_stop_dist")
 lm_formula <- as.formula(paste("nearest_t_stop_dist ~", paste(predictors, collapse = " + ")))
 print(lm_formula)
-```
-
-```{r}
-census <- census %>% drop_na()
 ```
 
 Now that we have the formula for our regression, we can create our model and inspect the results.
@@ -378,73 +378,100 @@ summary(model)
 
     -   What does this indicate about the quantity of information contained in certain census variables?
 
-    -   How many variables have any statistical significance?
+    -   How many variables have any statistical significance? Which are they?
 
-    -   What is the overall power of these variables to predict `nearest_t_stop_dist`?
+    -   What is the overall power of census variables to predict `nearest_t_stop_dist`?
 
 ## Multicollinearity of census variables
 
+Our regression results raise a number of interesting questions: why is the overall predictability of `nearest_t_stop_dist` relatively low? Are all variables contributing unique information to our regression model? The answer seems to be no (because of the presence of `NA` coefficient estimates in our model).
+
+To understand how differentiated our census variables are from one another, we can create a cross-correlation plot using the `corrplot` function. This shows the correlation coefficient of each census variable against all others. A few variables contain missing values which we will drop for convenience.
+
 ```{r}
-corrplot(cor(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry()), method="number")
+corrplot(cor(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry() %>% drop_na()), method="number")
 ```
+
+## Exercise 10
+
+-   Interpret the results of `corrplot` above. What variables seem to be providing unique information? What groups of variables seem to be correlated with one another?
+
+-   Explore the [`corrplot`](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) package. How else could we assess multicollinearity in our variables?
+
+## Introduction: Social Area Analysis
+
+The strong correlation between some of our variables raises the question of *what social characteristics* are differentiating census block groups from one another.
+
+This question is a well established area of research in human geography and sociology, called Social Area Analysis, where researchers seek to understand the *latent* or *underlying* social characteristics driving differences between locations. This involves using dimensionality reduction techniques like Principal Component Analysis (PCA) to collapse a large number of census or other social variables into a smaller number of components.
+
+Existing research in the United States has settled on three social *factors* measured by the census which explain social differentiation between areas:
+
+![](img/social_area_analysis_factors.png)
 
 ## Dimensionality reduction of census variables
 
+Using the same census variables as we did in our analysis of transit accessibility, we can perform a Social Area Analysis and see whether our results align with the existing literature.
+
+**Sidenote:** R has a number of packages that make it very easy to create complex visualizations. One of them is [`factoextra`](https://rpkgs.datanovia.com/factoextra/) which is great for visualizing the results of Principal Component and Clustering analyses.
+
+First, lets run a PCA on our census variables. Note that I am removing the `GEOID`, `nearest_t_stop_dist`, and `geometry` columns because we are only interested in the census variables. Again, a few variables contain missing values which we will drop for convenience.
+
 ```{r}
-pca <- prcomp(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry(), scale. = TRUE)
+pca <- prcomp(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry() %>% drop_na(), scale. = TRUE)
 ```
 
-scree plot
+Now we can plot the amount of variation in the original dataset captured by each principal component.
 
 ```{r}
 fviz_eig(pca, addlabels = TRUE, ylim = c(0, 50), ncp=Inf)
 ```
 
-## Exercise
+It looks like three principal components explain \~64% of variation in our census variables. This is a major dimensionality reduction. Moreover, the first component is by far the most important for explaining differences between census block groups. Now we can dig in further to try to understand what these components are capturing in the census data.
 
--   What proportion of variance is explained by the top 3 components?
-
-biplot
+Now lets look at the Biplot, which shows the relationship between our original variables and the first two principal components we have identified.
 
 ```{r}
 fviz_pca_biplot(pca, repel = TRUE, col.var = "blue", col.ind = NA)
 ```
 
-Individual contributions
+## Exercise 11
+
+-   Variables pointing in the same direction indicate correlated variables. What variables seem to be correlated with one another?
+
+-   What variables seem to be driving the top three most important principal components? *Hint: these variables will be groups of longer vectors (arrows) pointing in similar directions.*
+
+A final way we can analyze our PCA results is to look at the correlation between our original variables and the principal components. This can indicate which variables are playing a role in defining different components.
 
 ```{r}
-fviz_pca_ind(pca, col.ind = "cos2", gradient.cols = c("blue", "green", "red"))
-```
-
-```{r}
-cor_matrix <- cor(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry(), pca$x)
+cor_matrix <- cor(census %>% select(-GEOID, -nearest_t_stop_dist) %>% st_drop_geometry() %>% drop_na(), pca$x)
 corrplot(cor_matrix, method = "color", is.corr = FALSE, addCoef.col = "black")
 ```
 
+## Exercise 12
+
+-   What variables are correlated (positively or negatively) with the first three principal components?
+
+-   If the first three principal components have identified the principle axes of differentiation in our census data, how do these results compare to the table based on existing literature above?
+
 ## Visualizing key social factors
+
+A final way that we can look at the principal components identified in our Social Area Analysis is by mapping them. To do this, we will have to combine the PCA results with our original geographic data.
 
 ```{r}
 top_3_components <- as.data.frame(pca$x[, 1:3])
 
-pca_with_geoid <- cbind(census$GEOID, top_3_components)
+pca_with_geoid <- cbind(census %>% drop_na() %>% pull(GEOID), top_3_components)
 colnames(pca_with_geoid)[1] <- "GEOID"
 census_pca <- census %>%
   left_join(pca_with_geoid, by = "GEOID") 
 ```
 
-```{r}
-ggplot() + 
-    geom_sf(data=census_pca, aes(fill=PC3))
-```
+## Exercise 13
 
-```{r}
-leaflet(census_pca %>% st_transform(4326)) %>%
-  addProviderTiles(provider=providers$CartoDB.Positron) %>%
-  addPolygons(fillColor = ~ pal(PC3),
-              weight=2,
-              opacity=0.5,
-              color="white",
-              fillOpacity = 0.5)
-```
+-   Using leaflet, make three different maps of `PC1`, `PC2`, and `PC3`. Which of these principal components show a spatial pattern? Do any of them *not* show a spatial pattern?
 
 ## Closing thoughts
+
+This practical is intended to show you some of the strengths and limitations of census data for understanding urban phenomena. Although census data are a valuable source of *big data* in cities, they capture only a limited subset of human behavior. Take a moment to consider how large-scale behavioral data could shed more light on urban dynamics, and how this data can complement the census.
+
+The finding that a majority of variation in census variables can be captured by a small number of components (3) is another important takeaway. Consider the reasons for the high level of multicollinearity in census variables, and what processes (social, behavioral, environmental, historical) might contribute to this pattern.
