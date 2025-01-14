@@ -469,6 +469,14 @@ census_pca <- census %>%
 
 -   Using leaflet, make three different maps of `PC1`, `PC2`, and `PC3`. Which of these principal components show a spatial pattern? Do any of them *not* show a spatial pattern?
 
+## Exercise 14
+
+-   In today's lecture, we discussed the importance of considering the spatial units which define your analysis, and the challenge of the Modifiable Areal Unit Problem, where results can be sensitive to the choice of spatial aggregation. Re-conduct this analysis using higher-level statistical geographies (either Census Tract or County).
+
+    -   Do the associations between transit accessibility and different demographic variables remain the same?
+
+    -   Does the dimensionality reduction identify similar social factors differentiating areas?
+
 ## Closing thoughts
 
 This practical is intended to show you some of the strengths and limitations of census data for understanding urban phenomena. Although census data are a valuable source of *big data* in cities, they capture only a limited subset of human behavior. Take a moment to consider how large-scale behavioral data could shed more light on urban dynamics, and how this data can complement the census.
