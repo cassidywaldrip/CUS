@@ -41,25 +41,16 @@ This week: Introduction to Urban Data - Using Census data as a tool for understa
 
 # Aims
 
-- Understand the uses of census data in Computational Urban Science
-- Understand how data from the census can complement large-scale behavioral data
-- Understand the strengths and limitations of census data
-- Understand special considerations when combining census data with individual-level behavioral data (i.e. Ecological Fallacy and the Modifiable Areal Unit Problem)
+-   Understand the uses of census data in Computational Urban Science
+-   Understand how data from the census can complement large-scale behavioral data
+-   Understand the strengths and limitations of census data
+-   Understand special considerations when combining census data with individual-level behavioral data (i.e. Ecological Fallacy and the Modifiable Areal Unit Problem)
 
-# Practical 1
+# Practical
 
--   Use the [`tidycensus`](https://walker-data.com/tidycensus/) and [`osmdata`](https://docs.ropensci.org/osmdata/) R packages to load and combine urban data in R 
-- Reproduce and extend this analysis: [*Health Inequalities in Boston by T-Stops: A Pictorial Essay*](https://www.bu.edu/sph/news/articles/2015/health-of-a-city-health-inequalities-in-boston-by-t-stops-a-pictorial-essay/)
-
-![](images/boston_health_t_stop_example.png){fig-align="center"}
-
-# Practical 2
-
-- Use the data from Practical 1 to conduct an analysis of accessibility to transit stations.
-- Explore cross-correlation of census variables.
-- Conduct a *Social Area Analysis* to identify key factors measured by census variables.
-
-[TODO Image]
+-   Conduct an analysis of accessibility to transit stations.
+-   Explore cross-correlation of census variables.
+-   Conduct a *Social Area Analysis* to identify key factors measured by census variables.
 
 # What is the census
 
@@ -69,25 +60,21 @@ A *comprehensive* survey measuring population characteristics
 
 **Around the world:**
 
-- In most countries, censuses occur every 10 years. Accuracy of census data varies by country but is high quality in most high-income countries
+-   In most countries, censuses occur every 10 years. Accuracy of census data varies by country but is high quality in most high-income countries
 
-- Some countries rely on very old censuses (DRC - 1984, Iraq - 1987, Afghanistan - 1979)
+-   Some countries rely on very old censuses (DRC - 1984, Iraq - 1987, Afghanistan - 1979)
 
-- Different variables are collected by different countries. For example, censuses of race and ethnic origin are banned in France
+-   Different variables are collected by different countries. For example, censuses of race and ethnic origin are banned in France
 
-[TODO Image]
-
-# The US Census 
+# The US Census
 
 A population census is required by the constitution every 10 years
 
 The census determines electoral representation and re-districting, as well as billions of dollars in federal and state funding
 
-The US Census (formerly called the "short form" census) collects basic information:
-  * Number of people living in a household
-  * Age, sex, race, hispanic origin, relationship to householder, housing tenure
+The US Census (formerly called the "short form" census) collects basic information: \* Number of people living in a household \* Age, sex, race, hispanic origin, relationship to householder, housing tenure
 
-The Census is expensive! ($13.7 Billion in 2020)
+The Census is expensive! (\$13.7 Billion in 2020)
 
 # American Community Survey (ACS)
 
@@ -95,23 +82,21 @@ Annual survey measuring detailed population characteristics in 4 domains: **Demo
 
 See: [ACS Subjects Explorer](https://www.census.gov/programs-surveys/acs/guidance/subjects.html)
 
-Detailed survey of a sample of US households (3.5 Million in 2015). The ACS has replaced the "long form" census. 
+Detailed survey of a sample of US households (3.5 Million in 2015). The ACS has replaced the "long form" census.
 
 Responses are: re-weighted to adjust for sampling bias, modelled to impute responses for small areas.
 
 Because of the need to collect sufficient data for modelling detailed population characteristics, ACS estimates are released in rolling 5-year windows (i.e. 2020 release uses data from 2016 to 2020).
 
-# The Census is a form of "big data" 
+# The Census is a form of "big data"
 
 Although we now consider the Census to be "traditional," comprehensive data on population characteristics were a huge advance in quantitative social science.
 
-For example, the First UK census was the basis for E. G. Ravenstein's "Laws of Migration" [TODO cite]
+For example, the First UK census was the basis for E. G. Ravenstein's "Laws of Migration"
 
-- Census data was tabulated by hand and revealed regularities in migration behavior. 
+-   Census data was tabulated by hand and revealed regularities in migration behavior.
 
-- Intuition is the basis for the Gravity and Intervening Opportunities models of human mobility.
-
-[TODO Ravenstein headshot]
+-   Results supported the Gravity and Intervening Opportunities models of human mobility.
 
 # Fast vs. Slow data in CUS
 
@@ -119,64 +104,67 @@ Traditional urban studies research is heavily reliant on Census data
 
 Ideas like *residential anchoring*, *proximity-based accessibility* produce scientific questions which are tractable using census data alone.
 
-"Fast" behavioral data has expanded the questions that we can ask about urban systems. 
+"Fast" behavioral data has expanded the questions that we can ask about urban systems.
 
-What differentiates "fast" big data from traditional big data like the census. 
+What differentiates "fast" big data from traditional big data like the census.
 
-* *Volume*: "data that outstrip our capabilities to analyze"
-* *Velocity*: continuously updating databases permitting longitudinal and near real-time analyses
-* *Variety*: broad range of possible formats (structured and unstructured)
+-   *Volume*: "data that outstrip our capabilities to analyze" \[cite - miller\]
+-   *Velocity*: continuously updating databases permitting longitudinal and near real-time analyses
+-   *Variety*: broad range of possible formats (structured and unstructured)
 
 # Combining census and behavioral data
 
 Census data only represent some aspects of human behavior. Luckily, behavioral data often complement (not replace) census data.
 
-Variables such as education, race, gender, and income, independently explain approximately 50–55% of the variation in economic outcomes (e.g., median household income or property values) [cite - moro infrequent]
+Variables such as education, race, gender, and income, independently explain approximately 50–55% of the variation in economic outcomes (e.g., median household income or property values) \[cite - moro infrequent\]
 
-Similar finding: Exposure — driven by demographic distributions like SES — accounts for half of the variance in cross-class friendships [cite - chetty II]
+Similar finding: Exposure — driven by demographic distributions like SES — accounts for half of the variance in cross-class friendships \[cite - chetty II\]
 
-[TODO Figure here]
+\[TODO Figure here\]
 
 # Today's practical: Social Area Analysis
 
-Consider the underlying social "factors" which are captured by the census. 
+Consider the underlying social "factors" which are captured by the census.
 
 A large number of census variables can be reduced to a small number of "factors"
 
-In the US, repeated studies have shown 3 important factors. 
+In the US, repeated studies have shown 3 important factors.
 
-[TODO Image of table from review paper]
+![](/labs/img/social_area_analysis_factors.png)
 
 # Limitations of census data
 
-The census is a "gold standard" survey, but it still has limitations: 
+The census is a "gold standard" survey, but it still has limitations:
 
-- Systematically difficult groups
+-   Systematically difficult groups
 
-- Small population subsets
-  Even at 1:6, it is still hard to capture infrequent population groups
+-   Small population subsets Even at 1:6, it is still hard to capture infrequent population groups
 
-- Think about it like fishing: \[ONS fishing example\]
+-   Think about it like fishing: \[ONS fishing example\]
 
-[TODO Image here]
+\[TODO Image here\]
 
-These issues are general, and play an even greater role in behavioral data. 
+These issues are general, and play an even greater role in behavioral data.
 
 # Sidenote: Units of analysis
 
-Census variables can refer to: 
-* Individuals (Age, Gender, Race/Ethnicity, Educational Attainment, Employment Status) 
-* Households (Income, Household Size, Housing Tenure)
+Census variables can refer to:
+
+-   Individuals (Age, Gender, Race/Ethnicity, Educational Attainment, Employment Status)
+
+<!-- -->
+
+-   Households (Income, Household Size, Housing Tenure)
 
 Different variables refer to different population demonimators (i.e. Employment Status is meaningful for the working-age population).
 
 # Sidenote: Geographic references
 
--   Hierarchy of US admin geographies 
+-   Hierarchy of US admin geographies
 
-[TODO image of hierarchy from tidycensus]
+![](https://walker-data.com/umich-workshop-2022/intro-2020-census/img/census_diagram.png)
 
-- TODO GEOID naming convention
+-   GEOID naming convention
 
 *Take note of boundary changes. GEOIDs are re-defined every 10 years, meaning that additional work is required to compare data between censuses.*
 
@@ -186,11 +174,9 @@ Spatial overlap, resolution mismatch
 
 aggregation vs. re-projection
 
-See: World Pop Re-weighted data
-
 # Combining census data with behavioral data
 
-TODO How census data is used (demographic characteristics are attributed to individuals by home / work location)
+Demographic characteristics are attributed to individuals by home / work location
 
 By majority? By random choice? By repeated random choices?
 
@@ -202,7 +188,7 @@ Classic example of MAUP: you can change the results of a regression analysis by 
 
 In geostatistics: a *support* is the fundamental unit of geostatistical analysis
 
-In satellite imagery data: a support would be a specific pixel resolution. In census data, it is the chosen spatial tesselation.  
+In satellite imagery data: a support would be a specific pixel resolution. In census data, it is the chosen spatial tesselation.
 
 # Sidenote: Privacy and the census
 

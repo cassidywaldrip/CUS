@@ -1,5 +1,5 @@
 ---
-title: "Lab 2-1 - Visualizing socioeconomic outcomes by T station"
+title: "Lab 2-1 - Predicting transit accessibility with census data"
 author: "Hamish Gibbs"
 institute:
   - Network Science Institute, Northeastern University
