@@ -233,7 +233,7 @@ block_groups <- block_groups(state = "25", year = 2021, class = "sf",progress=FA
 census <- census %>% 
     left_join(block_groups %>% select(GEOID, geometry), by = c("GEOID")) %>% 
     st_as_sf()
-census
+head(census)
 ```
 
 ## Retrieving OSM data
