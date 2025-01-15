@@ -1,0 +1,52 @@
+---
+title: "Lab 3-1 - Working with LBS Data"
+author: "Esteban Moro"
+institute:
+  - Network Science Institute, Northeastern University
+  - NETS 7983 Computational Urban Science
+date: last-modified
+format: html
+code-line-numbers: false
+execute:
+  echo: true
+#  cache: true
+  warning: false
+  messages: false
+editor: visual
+logo: ./img/logo.png
+footer: "CUS, Northeastern Spring 2025"
+#link-external-icon: true
+#link-external-newwindow: true
+bibliography: ../references.bib
+csl: ../ieee.csl
+---
+
+
+## Methodology, how the data was constructed:
+
+Advan Research data is based on SafeGraph data, but it is processed differently. The main differences are:
+
+- ???
+
+See here: https://community.deweydata.io/t/safegraph-advan-research-methodology-differences/26163 the differences
+
+Advan provides three different datasets to the academic community (see [here](https://docs.deweydata.io/docs/advan-research)):
+
+- Monthly Patterns, Aggregated raw counts of visits to POIs from a panel of mobile devices over a given time 
+- Weekly Patterns, Aggregated raw counts of visits to POIs from a panel of mobile devices over a given week.
+- Neighborhood Patters, Aggregated raw counts of visits to CBGs from a panel of mobile devices over a given month
+
+Let's work with the [Monthly patterns](https://docs.deweydata.io/docs/advan-research-monthly-patterns) dataset. It contains aggregated raw counts of visits to POIs from a panel of mobile devices over a given time since 2019 in the United States. The data is aggregated at the month level and includes the following groups of variables (see the [full schema](https://docs.deweydata.io/docs/advan-research-monthly-patterns)):
+
+- Information about the POI (e.g., name, location, category, street, size of venue, etc.)
+- Information about the visits (e.g., raw counts, unique visitors, dwell time, etc.)
+- Information about the visitors (e.g., home CBG, distance traveled, etc.)
+
+Let's load some of the data to have a look into it. We have put the Monthly Patterns for the city of Boston since 2019 in the `/data/CUS/Boston_Monthly_Patterns` folder. They are already in `parquet` format
+```{r}
+library(tidyverse)
+library(arrow)
+files <- "/data/CUS/Boston_Monthly_Patterns/*.parquet"
+```
+
+

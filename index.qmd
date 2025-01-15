@@ -12,7 +12,7 @@ This page contains an outline of the topics, content, and assignments for the se
 |:------:|--------|--------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
 | [1](/weeks/week-1.html) | Tue Jan 7 | Introduction to the course | [📖](/weeks/week-1.html "Week 1 Summary") |  |  |  |  |  |  |
 |  |  | Lecture 1-1 - Welcome to CUS 2025 |  | [🖥️](/slides/lec-1-1.html "Lab slides") |  |  |  |  |  |
-|  |  | Lecture 1-2 - Intro to Computational Social Science |  | [🖥️](/slides/lec-1-2.html "Lab slides") |  |  |  |  |  |
+|  |  | Lecture 1-2 - Intro to Computational Urban Science |  | [🖥️](/slides/lec-1-2.html "Lab slides") |  |  |  |  |  |
 |  |  | Lab 1-1 - Crash course on GIS using R |  |  | [💻](/labs/lab-1-1.html "Lab instructions") |  |  |  |  |
 |  |  | Lab 1-2 - Collect your own mobility data |  |  | [💻](/labs/lab-1-2.html "Lab instructions") |  |  |  |  |
 | [2](/weeks/week-2.html) | Tue Jan 14 | Urban Data - Maps + Census | [📖](/weeks/week-2.html "Week 2 Summary") | [🖥️](/slides/lec-2.html "Lab slides") | [💻](/labs/lab-2-1.html "Lab instructions") |  |  |  |  |

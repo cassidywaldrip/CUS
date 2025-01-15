@@ -624,5 +624,3 @@ We just scratched the surface of using `R` to use geographical information. Here
 -   [Geospatial Analysis Made Easy: A Beginner’s Guide to RStudio](https://ohm-np.github.io/R_tutorial/index.html) by Bhandari
 -   [`sf` package webpage](https://r-spatial.github.io/sf/index.html)
 -   [Spatial manipulation with `sf`](https://rstudio.github.io/cheatsheets/sf.pdf), cheat sheet.
-
-![](https://user-images.githubusercontent.com/520851/50280460-e35c1880-044c-11e9-9ed7-cc46754e49db.jpg)
