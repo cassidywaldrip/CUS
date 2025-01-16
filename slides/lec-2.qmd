@@ -144,7 +144,7 @@ What differentiates "fast" big data from traditional big data like the census?
 
 # Combining census and behavioral data
 
-Census data only represent some aspects of human behavior. Luckily, behavioral data often complement (rather than duplicate) ibnformation from the census.
+Census data only represent some aspects of human behavior. Luckily, behavioral data often complement (rather than duplicate) information from the census.
 
 - *Variables such as education, race, gender, and income, independently explain approximately 50–55% of the variation in economic outcomes (e.g., median household income or property values) @wang_infrequent_2024*
 
@@ -241,7 +241,7 @@ The problem of **Ecological Fallacy** is connected to the general **Modifiable A
 
 **Consider:** How accurate is assignment of income by residence at the Census Block Group level? What if we instead use ZIP Codes?
 
-A classic example of MAUP: *you can change the results of a regression analysis simply by re-districting your data, without changing the underlying distribution of of individual variables.*
+A classic example of MAUP: *you can change the results of a regression analysis simply by re-districting your data, without changing the underlying distribution of individual variables.*
 
 **A helpful concept:** in Geostatistics a *spatial* *support* is the fundamental unit of a geostatistical analysis
 
