@@ -53,7 +53,7 @@ The aim of this practical is to learn how to:
 4.  Configure the API key in your R environment
 
     ``` r
-    Sys.setenv(CENSUS_API_KEY = "YOUR_API_KEY")
+    Sys.setenv(CENSUS_API_KEY = "a5a667d4686d1d13e486f9a9aa38d9a0bf31c83e")
     ```
 
 5.  Then call the `tidycensus::census_api_key` function:
@@ -61,6 +61,10 @@ The aim of this practical is to learn how to:
     ```{r}
     census_api_key(Sys.getenv("CENSUS_API_KEY"), install = TRUE, overwrite=TRUE)
     ```
+
+```{r}
+readRenviron("~/.Renviron")
+```
 
 ## Loading Census Data With `tidycensus`
 
@@ -85,7 +89,21 @@ head(medincome)
 
 -   Inspect all of the variables available in the 2021 ACS. `tidycensus` has a helpful function for this: `load_variables(2021, "acs5", cache = TRUE)` .
 
--   The beginning of the variable code indicates the table. What does the suffix `_001` in the code block above indicate?
+-   The beginning of the variable code indicates the table. What does the suffix `_001` in the code block above indicate? It is the aggregate of every category of the data.
+
+```{r}
+
+occupants_per_room <- get_acs(geography = "state", 
+                   variables = "B25014_001", 
+                   year = 2021,
+                   progress = FALSE)
+
+head(occupants_per_room)
+```
+
+```{r}
+load_variables(2021, "acs5", cache = TRUE)
+```
 
 ## Mapping Census Data
 
@@ -105,7 +123,7 @@ ggplot(medincome) +
 We can simplify the plot by restricting to states in the continental US.
 
 ```{r}
-medincome_continental_usa <- medincome %>% 
+medincome_continental_usa <- medincome |> 
     filter(!NAME %in% c("Alaska", "Hawaii", "Guam", "Puerto Rico"))
 
 ggplot(medincome_continental_usa) + 
@@ -146,15 +164,20 @@ boston_boundary <- places(state = "MA", cb = TRUE, year=2021,progress=FALSE) %>%
 
 -   Using what you learned in lab-1-1, check that the Boston boundary is correct by plotting it on an interactive map using `leaflet`.
 
+```{r}
+require(leaflet)
+boston_boundary |> leaflet() |> addTiles() |> addPolygons()
+```
+
 ## Restricting Census data to our area of interest
 
 Now, using `st_filter` from the `sf` package, we can filter for CBGs within Boston.
 
 ```{r}
-medincome_boston <- medincome_ma %>%
+medincome_boston <- medincome_ma |>
   st_filter(boston_boundary)
 
-head(medincome_boston)
+View(medincome_boston)
 ```
 
 We can then make a Choropleth map of the income in CBGs in Boston.
@@ -167,6 +190,14 @@ ggplot(medincome_boston) +
 ## Exercise 3
 
 -   What is causing the missing values for some of these areas? *Tip: Removing CBGs with `NA` values and plotting with `leaflet` may give some indication.*
+
+```{r}
+medincome_boston_no_NA <- medincome_ma |>
+  st_filter(boston_boundary) |>
+  filter(!is.na(estimate)) 
+
+medincome_boston_no_NA |> leaflet() |> addTiles() |> addPolygons()
+```
 
 ## Sidenote: using data visualizations to communicate your findings
 
@@ -188,7 +219,7 @@ Here is a cleaned up version of the map from above.
 
 ```{r}
 ggplot() +
-  geom_sf(data = medincome_boston, aes(fill = estimate), color = NA, alpha = 0.8) +
+  geom_sf(data = medincome_boston_no_NA, aes(fill = estimate), color = NA, alpha = 0.8) +
   scale_fill_viridis_c(option = "magma", direction = 1, name = "MHI", label = function(x){paste0("$", scales::comma(x))}) + 
   theme_void() +
   labs(
@@ -201,6 +232,8 @@ theme(legend.position = c(0.8, 0.2))
 ## Exercise 4
 
 -   List or try to add a few more features to improve this visualization.
+    -   Static map behind this one
+    -   Fill in the NA areas with green and add a legend
 
 ## Combining census data with OSM
 
@@ -229,9 +262,18 @@ colnames(census)
 Because this pre-processed `census` data doesn't have any associated geography, we need to download and attach geographies using the `tigris` package.
 
 ```{r}
+ageu1825 <- get_acs(geography = "state", 
+                   variables = c("B19013_001", ), 
+                   year = 2021,
+                   progress = FALSE)
+
+head(medincome)
+```
+
+```{r}
 block_groups <- block_groups(state = "25", year = 2021, class = "sf",progress=FALSE)
-census <- census %>% 
-    left_join(block_groups %>% select(GEOID, geometry), by = c("GEOID")) %>% 
+census <- census |> 
+    left_join(block_groups |> select(GEOID, geometry), by = c("GEOID")) |>
     st_as_sf()
 head(census)
 ```
@@ -309,9 +351,15 @@ Our measure will be based on the assumption of *proximity-based accessibility* a
 
 -   Take a moment to consider the assumptions underlying the ideas of *proximity-based accessibility* and *residential anchoring.* Could large-scale behavioral data shed more light on people's true patterns of behavior in the city?
 
+    -   Assuming that residential proximity means you will use transit. What if the places you need to get to aren't close to transit?
+
+    -   
+
 -   Why do you think that these ideas have been widely adopted in traditional urban studies (in transit accessibility studies like this one, as well as concepts such as urban food deserts)?
 
 -   What other types of accessibility might better represent people's actual ability to use public transportation?
+
+    -   
 
 ## Computing a measure of transit accessibility
 
@@ -346,6 +394,19 @@ census %>% select(GEOID, nearest_t_stop_dist)
 
 -   Make a map (static or interactive) of the `nearest_t_stop_dist` distance variable.
 -   Add the `t_stops` to this map, overlaid on top of the census block groups.
+
+```{r}
+ggplot() +
+  geom_sf(data = census$geometry,
+          aes(color=census$nearest_t_stop_dist),
+          size = .4,
+          alpha = .65) +
+  theme_void() +
+  geom_sf(data = t_stops,
+          aes(color=t_stops),
+          size = .4,
+          alpha = .65) 
+```
 
 ## Predicting transit accessibility
 
